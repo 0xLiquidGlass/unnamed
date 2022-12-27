@@ -2,13 +2,17 @@
 
 ### Introduction
 
-This project is an Algorand wallet that is designed to use a new address for every new transaction. It solves the problem related to privacy due to reusing addresses. This wallet will also be able to reduce the chance that your Algos will be stolen from just one account. Think of Unnamed like Algorand's Electrum
+This project is an Algorand wallet that is designed to use a new address for every new transaction. It solves the problem related to privacy due to reusing addresses. This wallet will also be able to reduce the chance that your Algos will be stolen from just one account. Think of Unnamed like Algorand's Electrum.
 
 ### Motivation
 
 Due to incidences like [signing wallets on malicious websites](https://blockworks.co/news/metamask-moves-to-help-crypto-scam-victims-recover-stolen-digital-assets) or [stolen seed phrase](https://cointelegraph.com/news/stepn-impersonators-stealing-users-seed-phrases-warn-security-experts), it is clear that users must not rely on just one wallet to store all the crypto. This is not easy to do on Algorand as Algorand uses an account model which means that it reuses addresses unlike Bitcoin and Cardano that uses the UTXO model. Therefore, Unnamed solves the issue of compromised wallets by avoiding address reuse and generating a new keypair that is not tied to a master key.
 
 Speaking of address reuse, transaction privacy is also an issue. take a look on this [article](https://en.bitcoin.it/wiki/Address_reuse) on bitcoin.it. I am pretty sure that you do not want all of your savings to be revealed do you? On public ledgers like Algorand, people are able to view the blockchain to confirm that the transactions went through, which is a good thing. This becomes a pain point when users reuse address due to convinience. Unnamed solves the issue of transaction privacy due to address reuse by allowing users of the wallet to generate a new wallet for every transaction and giving users the choice to isolate a keypair for actions that require address reuse.
+
+### What Is It Built On?
+
+[Algorand Python SDK](https://github.com/algorand/py-algorand-sdk)
 
 ### Code Architecture
 

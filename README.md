@@ -4,6 +4,8 @@
 
 This project is an Algorand wallet that is designed to use a new address for every new transaction. It solves the problem related to privacy due to reusing addresses. This wallet will also be able to reduce the chance that your Algos will be stolen from just one account. Think of Unnamed like Algorand's Electrum.
 
+Note that this project is currently work in progress. Many features are not yet developed.
+
 ### Motivation
 
 Due to incidences like [signing wallets on malicious websites](https://blockworks.co/news/metamask-moves-to-help-crypto-scam-victims-recover-stolen-digital-assets) or [stolen seed phrase](https://cointelegraph.com/news/stepn-impersonators-stealing-users-seed-phrases-warn-security-experts), it is clear that users must not rely on just one wallet to store all the crypto. This is not easy to do on Algorand as Algorand uses an account model which means that it reuses addresses unlike Bitcoin and Cardano that uses the UTXO model. Therefore, Unnamed solves the issue of compromised wallets by avoiding address reuse and generating a new keypair that is not tied to a master key.

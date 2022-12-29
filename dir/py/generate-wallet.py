@@ -1,5 +1,3 @@
-#!/bin/py
-
 from algosdk import account, mnemonic
 
 def generate_keypair ():

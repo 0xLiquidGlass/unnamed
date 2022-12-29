@@ -23,3 +23,9 @@ One file, one purpose in text format for portability to other Operating Systems 
 ### Operating System
 
 Linux
+
+### Donations
+
+If you support this project, please feel free to donate. The proceeds will be used for the development of this project.
+
+  a. Algorand: 7VMA5N3QN6EN4DZ5WE4FZB4YTYDLPVELJNPX3GANZ7DMR4DL7YVXKO7WCM

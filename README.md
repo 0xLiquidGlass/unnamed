@@ -1,4 +1,4 @@
-# Unnamed - An Algorand Wallet With UTXO Capabilities
+# Unnamed - An Algorand Wallet That Mimics UTXO
 
 ### Introduction
 

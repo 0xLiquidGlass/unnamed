@@ -1,8 +1,6 @@
 import os
 
-import AssetBalance
-
-def query_all_wallets():
+def query_all_wallets(address):
 
 	wallet_file = [filename for filename in os.listdir("../wallets") if filename.endswith(".txt")]
 	
@@ -20,10 +18,8 @@ def query_all_wallets():
 			
 			Address_to_list = text_lines.split(" ")
 
-			# print ("Combining adddress in the list: " + Address_to_list[9:67]) # For testing
-			
-			AssetBalance.what_is_my_balance(Address_to_list[9:67])
-			
-	current_wallet.close()
+			# print ("Combining address " + Address_to_list[9:67]) # For testing
 
-query_all_wallets()
+			address = Address_to_list[9:67]			
+
+	current_wallet.close()

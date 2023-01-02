@@ -22,7 +22,7 @@ One file, one purpose in text format for portability to other Operating Systems 
 
 ### Operating System
 
-Linux
+Linux (Current: Debian)
 
 ### Donations
 

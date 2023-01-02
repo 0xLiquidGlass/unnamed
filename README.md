@@ -22,7 +22,16 @@ One file, one purpose in text format for portability to other Operating Systems 
 
 ### Operating System
 
-Linux (Current: Debian)
+Linux
+
+### Project Development Related
+
+This project needs someone who can:
+
+1. Do Python
+2. Do a proper documentation
+
+If you are interested, please contact me through [Gmail or Twitter](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact)
 
 ### Donations
 

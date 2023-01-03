@@ -18,7 +18,11 @@ Speaking of address reuse, transaction privacy is also an issue. take a look at 
 
 ### Code Architecture
 
-One file, one purpose in text format for portability to other Operating Systems when needed
+- One file, one purpose in text format
+
+- For easy portability to other Operating Systems when needed
+
+- For new features to be added or removed easily
 
 ### Operating System
 

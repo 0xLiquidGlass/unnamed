@@ -7,10 +7,10 @@ def generate_keypair ():
 
 filename = input("Name of File: ")
 
-new_document_path = open("../wallets/"+filename+".txt", "x")
+new_document_path = open(filename+".txt", "x")
 
 generate_keypair()
 
 new_document_path.close()
 
-print("Please Keep The Newly Generated Keypair Safe!\n\nAnyone Who Has Your Seed CAN Spend Your Algos!")
+print("\n\nPlease Keep The Newly Generated Keypair Safe!\n\nAnyone Who Has Your Seed CAN Spend Your Algos!\n\n")

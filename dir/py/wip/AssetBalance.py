@@ -1,3 +1,5 @@
+#requires CombineKeypairs.py
+
 from algosdk import account, mnemonic
 
 from algosdk.v2client import algod
@@ -6,22 +8,24 @@ import CombineKeypairs
 
 total_balance_in_microalgos = 0
 
-def what_is_my_balance():
+algod_address = "node.algoexplorerapi.io/"
 
-	algod_address = "node.algoexplorerapi.io/"
+algod token = ""
 
-	algod token = ""
+algod_client = algod.AlgodClient(algod_token, algod_address)
 
-	algod_client = algod.AlgodClient(algod_token, algod_address)
-
-	# Obtain balance through one address at a time
-
-	account_info = algod_client.account_info(CombineKeypairs.query_all_wallets(address))
+def query_balance_per_address():
+	
+	account_info = algod_client.account_info(CombineKeypairs.query_every_wallet(address))
 
 	total_balance_in_microalgos += acccount_info.get("amount")
+
+def show_total_balance():
 	
 	print ("Your Balance: {:.2f} Algos" . format(total_balance_in_microalgos*(10**-6)))
 
-while True:	
+while (keypairs_counted <= total_keypairs):
 
-	what_is_my_balance()
+	query_balance_per_addresss()
+
+show_total_balance()

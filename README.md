@@ -16,14 +16,6 @@ Speaking of address reuse, transaction privacy is also an issue. take a look at 
 
 [Algorand Python SDK](https://github.com/algorand/py-algorand-sdk)
 
-### Code Architecture
-
-- One file, one purpose in text format
-
-- For easy portability to other Operating Systems when needed
-
-- For new features to be added or removed easily
-
 ### Operating System
 
 Linux

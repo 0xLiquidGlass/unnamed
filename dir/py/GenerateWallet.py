@@ -7,7 +7,7 @@ def generate_keypair ():
 
 filename = input("Name of File: ")
 
-new_document_path = open(filename+".txt", "x")
+new_document_path = open("./wallets/"+filename+".txt", "x")
 
 generate_keypair()
 

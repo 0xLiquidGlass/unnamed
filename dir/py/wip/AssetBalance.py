@@ -1,5 +1,5 @@
-#requires CombineKeypairs.py
-from algosdk import account, mnemonic
+# (temp hacky implementation of Total asset balance of the user, 
+# this file would need refactoring later)
 from algosdk.v2client import algod
 import CombineKeypairs
 # Load algod and kmd endpoints and respective tokens
@@ -7,22 +7,24 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+# globals 
 total_balance_in_microalgos = 0
+algod_client = algod.AlgodClient(os.getenv("ALGOD_TOKEN"), os.getenv("ALGOD_ADDRESS"))
 
-algod_address = os.getenv("ALGOD_ADDRESS")
-algod_token = os.getenv("ALGOD_TOKEN")
+# Query total balance of the user
+def query_total_balance():
+	global total_balance_in_microalgos
+	global algod_client
+	# get all addresses 
+	all_wallets = CombineKeypairs.query_every_user_wallet()
+	# call account_info() for every wallet and calculate total balance
+	for i in range(len(all_wallets)):
+		account_info = algod_client.account_info(all_wallets[i])
+		total_balance_in_microalgos += account_info.get("amount")
 
-algod_client = algod.AlgodClient(algod_token, algod_address)
-
-def query_balance_per_address(address):
-	
-	account_info = algod_client.account_info(CombineKeypairs.query_every_wallet(address))
-
-	total_balance_in_microalgos += account_info.get("amount")
-
+# Show total balance the user have
 def show_total_balance():
 	print ("Your Balance: {:.2f} Algos" . format(total_balance_in_microalgos*(10**-6)))
-	while (keypairs_counted <= total_keypairs):
-		query_balance_per_addresss()
+
 
 show_total_balance()

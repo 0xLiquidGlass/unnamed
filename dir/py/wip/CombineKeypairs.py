@@ -16,7 +16,7 @@ def query_every_user_wallet() -> list: # we return list of addresses
 	# as wallet(s) should be deleted once one or more wallets are consumed as input utxo, 
 	# and it should result into one or more output wallets (output utxo in a sense)
 	## total_keypairs = len(wallet_file)
-	print(f'Total wallets: {len(wallet_files)}')
+	# print(f'Total wallets: {len(wallet_files)}')
 	wallet_addresses = []
 	for wallet in wallet_files:
 		# open that wallet file and read address line
@@ -24,4 +24,4 @@ def query_every_user_wallet() -> list: # we return list of addresses
 			wallet_addresses.append(wal.readline().split(':')[1].strip())	# pub address
 	return wallet_addresses # can be empty list if no wallets created yet
 
-print(query_every_user_wallet())
+# print(query_every_user_wallet())

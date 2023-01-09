@@ -38,7 +38,7 @@ This project needs someone who can:
 
 1. Do a proper documentation
 
-If you are interested, please contact 0xLiquidGlass through [Gmail or Twitter](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact)
+If you are interested, please contact 0xLiquidGlass through [any of my contacts](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
 
 ### Socials
 

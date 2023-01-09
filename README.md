@@ -36,10 +36,18 @@ Linux
 
 This project needs someone who can:
 
-1. Do Python
-2. Do a proper documentation
+1. Do a proper documentation
 
-If you are interested, please contact me through [Gmail or Twitter](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact)
+If you are interested, please contact 0xLiquidGlass through [Gmail or Twitter](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact)
+
+### Socials
+
+[Reddit](https://www.reddit.com/r/unnamed_wallet/)
+
+### Credits
+
+1. [0xLiquidGlass](https://github.com/0xLiquidGlass) (Founder, Documentation)
+2. [SolDev-HP](https://github.com/SolDev-HP) (Development)
 
 ### Donations
 

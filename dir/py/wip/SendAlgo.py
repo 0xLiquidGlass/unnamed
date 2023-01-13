@@ -13,6 +13,7 @@ from algosdk.transaction import *
 import os 
 
 def send_algo_from_wallet():
+    algo_client = algodinstance().getclient()
     # get all wallets and list them for user selection
     wallets = CombineKeypairs.query_every_user_wallet()
     print(f'Total wallets: {len(wallets)}')
@@ -22,7 +23,7 @@ def send_algo_from_wallet():
     print('Send Algo from: ', end='')
     selection = int(input())    # send algo from 
     sender_wallet = wallets[selection-1]
-    account_info = algodinstance().getclient().account_info(sender_wallet)
+    account_info = algo_client.account_info(sender_wallet)
     print(f'Sending algo from: {sender_wallet} | {account_info["amount"]}')
     print('Amount to send (micro Algos): ', end='')
     amount = int(input())
@@ -53,13 +54,13 @@ def send_algo_from_wallet():
     # Send transaction is privatekey for sender_wallet valid
     if(sender_sk != None):
         # Prepare txn parameters, and unsigned txn,
-        algo_transfer_params = algodinstance().getclient().suggested_params()
+        algo_transfer_params = algo_client.suggested_params()
         algo_transfer_txn = PaymentTxn(sender_wallet, algo_transfer_params, receiver_address, amount)
         print(f'Transaction Processing: ID - {algo_transfer_txn.get_txid()}')
         # sign that unsigned tx and send it 
         signed_algo_transfer_txn = algo_transfer_txn.sign(sender_sk)    # sign with sender's private key
 
-        algo_transfer_txn_id = algodinstance().getclient().send_transaction(signed_algo_transfer_txn)
+        algo_transfer_txn_id = algo_client.send_transaction(signed_algo_transfer_txn)
         print(f'Transaction sent: {algo_transfer_txn_id}')
 
     # Verify balance change

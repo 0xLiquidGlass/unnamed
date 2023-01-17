@@ -2,4 +2,4 @@
 .env
 __pycache__
 *.txt
-/unnamedwallet/walletcore/wallets/*
+/unnamedwallet/walletcore/wallets/*.txt

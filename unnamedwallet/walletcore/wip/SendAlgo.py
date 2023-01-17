@@ -5,7 +5,7 @@
 # and combine them under one group ID so that we can process all of them
 # in one combined transaction
 # Ref Doc: https://developer.algorand.org/docs/get-details/atomic_transfers/
-from algod_utils.algodinstance import algodinstance
+from utils.algodinstance import algodinstance
 import CombineKeypairs
 import AssetBalance
 from algosdk import mnemonic, account

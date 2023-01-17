@@ -2,7 +2,7 @@
 # this file would need refactoring later)
 from algosdk.v2client import algod
 import CombineKeypairs
-from algod_utils.algodinstance import algodinstance
+from utils.algodinstance import algodinstance
 # Load algod and kmd endpoints and respective tokens
 import os
 from dotenv import load_dotenv

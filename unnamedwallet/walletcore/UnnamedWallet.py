@@ -3,6 +3,8 @@
 # Allow user to receive/send algo from those wallets/subaccounts
 
 from algosdk import account, mnemonic
+from utils.algodinstance import algodinstance
+from walletcore import constants
 import os 
 from dotenv import load_dotenv
 load_dotenv()
@@ -40,15 +42,6 @@ class UnnamedWallet:
             wallet_file.write("Seed: {}" .format(mnemonic.from_private_key(private_key)))
 		
     """
-    Total user balance in Algo
-    Counts algo from all the sub-accounts present in /wallets/
-    """
-    def total_algo_balance(self) -> int:
-        total_algo_balance = 0
-        
-        pass
-
-    """
     Returns a list of all accounts generated within wallet and
     Note: This was handled by CombineKeypairs.py previously
     """
@@ -64,11 +57,36 @@ class UnnamedWallet:
         return wallet_addresses # can be empty list if no wallets created yet
 
     """
+    Total user balance in Algo
+    Counts algo from all the sub-accounts present in /wallets/
+    print_details: if we want to print all subaccounts with their respective balances while 
+    calculating the total balance
+    returns: balance in microalgo
+    """
+    def total_algo_balance(self, print_details: bool = False) -> int:
+        total_mAlgo_balance = 0
+        algod_client = algodinstance().getclient()
+        all_wallets = self.get_all_accounts()
+        if(print_details):
+            print(f'Total sub-accounts - {len(all_wallets)}')
+        
+        # get account_info() for every account present in /wallets/ dir 
+        for i in range(len(all_wallets)):
+            account_info = algod_client.account_info(all_wallets[i])
+            total_mAlgo_balance += account_info.get("amount")
+            # Print details about the account and algo balance
+            if(print_details):
+                print(f'Account-{i+1}: {all_wallets[i]} | Balance: {str(int(account_info.get("amount"))/constants.MICROALGOS_TO_ALGOS_RATIO)} Algo')
+
+        return total_mAlgo_balance
+
+    """
     Prints the list of accounts available and their balances
     """
     def print_all_balances(self):
-        pass
-
+        total_mAlgo_balance = self.total_algo_balance(print_details=True)
+        print ("Balance: {:.2f} Algos" . format(total_mAlgo_balance/constants.MICROALGOS_TO_ALGOS_RATIO))
+        
     """
     Send algo to one receiver, 
     remaining funds will be sent to a new account

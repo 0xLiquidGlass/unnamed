@@ -3,7 +3,7 @@
 # Allow user to receive/send algo from those wallets/subaccounts
 
 from algosdk import account, mnemonic
-from utils.algodinstance import algodinstance
+from . import utils
 from walletcore import constants
 import os 
 from dotenv import load_dotenv
@@ -12,9 +12,11 @@ load_dotenv()
 
 class UnnamedWallet:
     
-    def __init__(self, walletname):
+    def __init__(self, walletname: str):
         self._wallet = walletname
         self._total_accounts = 0
+        self.generate_new_account()
+        print(f'New wallet {walletname} has been generated.')
 
     @property
     def wallet(self) -> str:
@@ -36,8 +38,9 @@ class UnnamedWallet:
         account_name = self.wallet + "_" + str(self.total_accounts + 1)
         # create the wallet file as txt, and add pub key and seed to the file
         # @Todo: change these plaintexts to ECIES
-        with open("./wallets/"+account_name+".txt", "x") as wallet_file:
+        with open(os.path.dirname(__file__)  + "/wallets/" + account_name + ".txt", "x") as wallet_file:
             private_key, address = account.generate_account()
+            self._total_accounts += 1
             wallet_file.write("Address: {}\n\n" .format(address))
             wallet_file.write("Seed: {}" .format(mnemonic.from_private_key(private_key)))
 		
@@ -65,7 +68,7 @@ class UnnamedWallet:
     """
     def total_algo_balance(self, print_details: bool = False) -> int:
         total_mAlgo_balance = 0
-        algod_client = algodinstance().getclient()
+        algod_client = utils.algodinstance().getclient()
         all_wallets = self.get_all_accounts()
         if(print_details):
             print(f'Total sub-accounts - {len(all_wallets)}')
@@ -86,7 +89,7 @@ class UnnamedWallet:
     def print_all_balances(self):
         total_mAlgo_balance = self.total_algo_balance(print_details=True)
         print ("Balance: {:.2f} Algos" . format(total_mAlgo_balance/constants.MICROALGOS_TO_ALGOS_RATIO))
-        
+
     """
     Send algo to one receiver, 
     remaining funds will be sent to a new account

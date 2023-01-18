@@ -31,6 +31,8 @@
 from walletcore import utils, constants
 from walletcore.UnnamedWallet import UnnamedWallet
 
+# Active wallet intance should handle all sub-account related actions
+# unnamedWallet object
 active_wallet = None 
 # @Todo: consider adding console_menu from 
 # https://github.com/aegirhall/console-menu
@@ -39,15 +41,15 @@ def print_main_wallet_menu():
     global active_wallet
     print('-------------- Welcome to Unnamed Wallet --------------')
     print('---------- Algorand wallet that mimics utxo -----------')
-    print(f'-Active Wallet: {active_wallet}')
-    print(f'-Total accounts under {active_wallet} wallet: {None}')
-    print(f'-Total Algo across all accounts in wallet {active_wallet}: {None}')
-    print(f'-Total wallets: {None}')
+    print(f'-Active Wallet: {active_wallet.wallet if active_wallet else None}')
+    print(f'-Total accounts under {active_wallet.wallet if active_wallet else None} wallet: {str(active_wallet.total_accounts) if active_wallet else None}')
+    print(f'-Total Algo across all accounts in wallet {active_wallet.wallet if active_wallet else None}: {str(active_wallet.total_algo_balance_of_active_wallet()) if active_wallet else None}')
+    print(f'-Total wallets: {str(UnnamedWallet.total_wallets())}')
     print(f'-Total Algo across all wallets: {None}')
     print('-------------------------------------------------------')
     print('1. Create New Wallet (container for sub-accounts)')
     print('2. Select Operating Wallet')
-    print(f'3. Create New Sub-Account {("under:" + active_wallet) if active_wallet else ""}')
+    print(f'3. Create New Sub-Account {("under:" + active_wallet.wallet) if active_wallet else ""}')
     print('4. Print all sub-accounts balances')
     print('5. Receive Algo') # Display all accounts - and select one to receive Algo to
     # Send specified amount of Algo to someone, and send remaining funds to a new account
@@ -72,9 +74,11 @@ def handle_sel_1_new_wallet():
     global active_wallet
     print("Enter new wallet name: ", end='')
     wallet_name = input()
-    wallet = UnnamedWallet(wallet_name)
+    # If no active wallet present, select recently created as active one
     if(active_wallet is None):
-        active_wallet = wallet.wallet
+        active_wallet = UnnamedWallet(wallet_name)
+    else:
+        UnnamedWallet(wallet_name)
 
 def handle_sel_2_new_wallet():
     pass
@@ -100,7 +104,7 @@ def handle_menu_selection(user_selection: int, limited: bool = True):
         # Check if user_selection within 1 to 5, if not indicate "wallet selection required"
         if(user_selection < 1 or user_selection > 5):
             # Select active wallet first
-            print('Select an active wallet first.')
+            print('Select an active wallet first.\n')
             return
     
     # As limited menu option selection is verified above
@@ -145,7 +149,7 @@ def main():
         try:
             # Handle program exit condition first
             if(int(user_selection) == 10):
-                print("Exiting unnamed wallet...")
+                print("Exiting unnamed wallet...\n\n")
                 break
             # If active_wallet is not present, only allow certain options to be selected
             # indicated by where to show menu in limited accessibility form
@@ -154,7 +158,7 @@ def main():
             else: 
                 handle_menu_selection(int(user_selection), limited=True)
         except:
-            print('Invalid Input. Please enter correct selection: ')
+            print('Invalid Input. Please enter correct selection.\n\n')
             continue
 
 if __name__ == '__main__':

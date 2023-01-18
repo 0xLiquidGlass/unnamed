@@ -76,36 +76,87 @@ def handle_sel_1_new_wallet():
     if(active_wallet is None):
         active_wallet = wallet.wallet
 
+def handle_sel_2_new_wallet():
+    pass
+def handle_sel_3_new_wallet():
+    pass
+def handle_sel_4_new_wallet():
+    pass
+def handle_sel_5_new_wallet():
+    pass
+def handle_sel_6_new_wallet():
+    pass
+def handle_sel_7_new_wallet():
+    pass
+def handle_sel_8_new_wallet():
+    pass
+def handle_sel_9_new_wallet():
+    pass
+
+# To handle menu interactions
+def handle_menu_selection(user_selection: int, limited: bool = True):
+    # active wallet not present, don't allow Algo send options without an active wallet
+    if limited == True:
+        # Check if user_selection within 1 to 5, if not indicate "wallet selection required"
+        if(user_selection < 1 or user_selection > 5):
+            # Select active wallet first
+            print('Select an active wallet first.')
+            return
+    
+    # As limited menu option selection is verified above
+    # control only comes here if one of following is true  
+    # limited is False (active_wallet present, allow user to perform all actions)
+    # limited is True, user_selection is within range 
+
+    # dispatch handler - associated function call dispatch using dictionary
+    # https://stackoverflow.com/questions/9205081/is-there-a-way-to-store-a-function-in-a-list-or-dictionary-so-that-when-the-inde
+    function_call_dispatcher = {
+        1: handle_sel_1_new_wallet,
+        2: handle_sel_2_new_wallet,
+        3: handle_sel_3_new_wallet,
+        4: handle_sel_4_new_wallet,
+        5: handle_sel_5_new_wallet,
+        6: handle_sel_6_new_wallet,
+        7: handle_sel_7_new_wallet,
+        8: handle_sel_8_new_wallet,
+        9: handle_sel_9_new_wallet,
+    }
+    
+    # Call related functions to handle interaction 
+    # This can throw - key not found, as we haven't verified whether 
+    # user input was within 1 and 10. We don't need to actually, if it throws,
+    # main will handle the case and "invalid input - please add correct input" (@Todo: verify)
+    function_call_dispatcher[user_selection]()
+    
+
+
+# Handle unnamed wallet init
+# Check if any wallet can be loaded while initializing 
+# load up the default wallet 
+def init_wallet():
+    pass
 
 
 def main():
+    # init_wallet()
     while(True):
         print_main_wallet_menu()
         user_selection = input()
         try:
-            # @Todo: next refactoring should remove this complex nested if.else
+            # Handle program exit condition first
+            if(int(user_selection) == 10):
+                print("Exiting unnamed wallet...")
+                break
+            # If active_wallet is not present, only allow certain options to be selected
+            # indicated by where to show menu in limited accessibility form
             if(active_wallet):
-                pass # All options are selectable 
+                handle_menu_selection(int(user_selection), limited=False)
             else: 
-                # Exit condition
-                if(int(user_selection) == 10):
-                    break
-                # Only create new wallet, select new active wallet, 
-                if(1 <= int(user_selection) <= 5):
-                    if int(user_selection) == 1:
-                        handle_sel_1_new_wallet()
-                    # perform related actions 
-                    continue
-                else: 
-                    # Select active wallet first
-                    print('Select an active wallet first.')
-                    continue
+                handle_menu_selection(int(user_selection), limited=True)
         except:
             print('Invalid Input. Please enter correct selection: ')
             continue
-    print('Exiting unnamed wallet...')
 
 if __name__ == '__main__':
     # @Todo: load default wallet once user logs in (if any)
-    # main()
-    handle_sel_1_new_wallet()
+    main()

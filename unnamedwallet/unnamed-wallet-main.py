@@ -27,7 +27,7 @@
 # 7. Send Algo (multiple-receipients-one-new-account) (*operating wallet required)
 # 8. Send Algo (multiple-receivers-multiple-new-accounts) (*operating wallet required)
 
-
+import os
 from walletcore import utils, constants
 from walletcore.UnnamedWallet import UnnamedWallet
 
@@ -75,13 +75,44 @@ def handle_sel_1_new_wallet():
     print("Enter new wallet name: ", end='')
     wallet_name = input()
     # If no active wallet present, select recently created as active one
-    if(active_wallet is None):
-        active_wallet = UnnamedWallet(wallet_name)
-    else:
-        UnnamedWallet(wallet_name)
+    try:
+        if(active_wallet is None):
+            active_wallet = UnnamedWallet(wallet_name)
+        else:
+            UnnamedWallet(wallet_name)
+    except:
+        print('Wallet Creation Error. Please try again.')
 
+# Defining what selection 2 does - Select operating wallet
+# Allow user to select operating/active wallet, all those subaccounts
+# under this wallet should be considered while making Algo tx from this wallet
 def handle_sel_2_new_wallet():
-    pass
+    global active_wallet
+    # Get all local wallets
+    wallets = UnnamedWallet.get_all_local_wallets()
+    # Verify if we have atleast one wallet to display
+    if(len(wallets) == 0):
+        print('No wallets present. Create new one to begin.')
+        return 
+    
+    # print all available wallets
+    # @Todo: change current display to a better descriptive one like this
+    # ex: Wallet X : [Wallet name] [Total sub-accounts under it] [Total Algo across all subaccounts]
+    print('---------------------- All wallets ----------------------')
+    for i in range(len(wallets)):
+        print(f'Wallet {i+1}: {wallets[i]}')
+        
+    print('---------------------------------------------------------')
+    print('Enter wallet no. to make it active wallet: ')
+    user_selection = input()
+
+    # Verify user_selection should be within (1, len(total_wallets))
+    # Reset active_wallet with new UnnamedWallet object
+    del active_wallet
+    wallet_filename = wallets[int(user_selection) - 1]
+    active_wallet = UnnamedWallet(walletpath=os.path.dirname(__file__) + '/walletcore/wallets/' + wallet_filename, reset_active_wallet=True)
+
+
 def handle_sel_3_new_wallet():
     pass
 def handle_sel_4_new_wallet():

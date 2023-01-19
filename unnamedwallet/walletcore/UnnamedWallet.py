@@ -12,11 +12,29 @@ load_dotenv()
 
 class UnnamedWallet:
     
+    # When user selects 1. Create new wallet. We need fresh wallet
+    # with a new account created. 
+    # @Todo: put a path output to indicate wallet storage location
+    # First account would be wallet_filename_1.txt, and further 
+    # accounts under this wallet would be created using filename + (total accounts + 1)
     def __init__(self, walletname: str):
         self._wallet = walletname
         self._total_accounts = 0
         self.generate_new_account()
         print(f'New wallet {walletname} has been generated.\n\n')
+
+    # Doesn't matter if we initialize object with second param(bool) as True or False
+    # Having a bool in the arg list would allow reset the active wallet 
+    def __init__(self, walletpath: str, reset_active_wallet: bool):
+        # Split path by '/' and get last part - the filename 
+        wallet_path_arr = walletpath.split('/')
+        wallet_filename = wallet_path_arr[len(wallet_path_arr) - 1]
+        print('Loading wallet: ', end='')
+        walletname = wallet_filename.split('_')[0]
+        print(walletname)
+        self._wallet = walletname
+        self._total_accounts = self.get_all_accounts_in_current_active_wallet()
+        print(f'Wallet {self.wallet} selected...')
 
     @property
     def wallet(self) -> str:
@@ -36,6 +54,17 @@ class UnnamedWallet:
         # Get all present wallets
         wallet_files = [filename for filename in os.listdir("./walletcore/wallets/") if filename.endswith(".txt")]
         return len(wallet_files)    # can be 0 if no wallet has been created yet
+
+
+    """
+    Get all the wallets present locally, so that we can show user with selection of 
+    which wallet should be an active wallet
+    """
+    @staticmethod
+    def get_all_local_wallets() -> list:
+        # Get all wallets
+        wallet_files = [filename for filename in os.listdir("./walletcore/wallets/") if filename.endswith(".txt")]
+        return wallet_files
 
 
     """

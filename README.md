@@ -19,11 +19,7 @@ Note that this project is currently work in progress. Many features are not yet 
 
 ### Project Development Related
 
-This project needs someone who can:
-
-1. Do a proper documentation
-
-If you are interested, please contact 0xLiquidGlass through [any of the contacts listed here](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
+If you are interested in helping the project, please contact 0xLiquidGlass through [any of the contacts listed here](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
 
 ### Socials
 

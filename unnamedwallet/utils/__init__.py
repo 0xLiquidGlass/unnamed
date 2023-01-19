@@ -1,4 +1,4 @@
-from algodinstance import algodinstance 
-import constants
+from . import algodinstance
+from . import constants
 
 name = "utils"

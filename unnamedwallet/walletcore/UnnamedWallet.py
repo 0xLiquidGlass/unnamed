@@ -32,7 +32,7 @@ class UnnamedWallet:
         walletname = wallet_filename.split('_')[0]
         print(walletname)
         self._wallet = walletname
-        self._total_accounts = self.get_all_accounts_in_current_active_wallet()
+        self._total_accounts = len(self.get_all_accounts_in_current_active_wallet())
         print(f'Wallet {self.wallet} selected...')
 
     @property
@@ -51,7 +51,7 @@ class UnnamedWallet:
     @staticmethod
     def total_wallets() -> int:
         # Get all present wallets
-        wallet_files = [filename for filename in os.listdir("./walletcore/wallets/") if filename.endswith(".txt")]
+        wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__)  + "/../wallets/")) if filename.endswith(".txt")]
         return len(wallet_files)    # can be 0 if no wallet has been created yet
 
 
@@ -60,9 +60,9 @@ class UnnamedWallet:
     which wallet should be an active wallet
     """
     @staticmethod
-    def get_all_local_wallets() -> list:
+    def list_all_local_wallets() -> list:
         # Get all wallets
-        wallet_files = [filename for filename in os.listdir("./walletcore/wallets/") if filename.endswith(".txt")]
+        wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__)  + "/../wallets/")) if filename.endswith(".txt")]
         return wallet_files
 
 
@@ -87,7 +87,7 @@ class UnnamedWallet:
         account_name = self.wallet + "_" + str(self.total_accounts + 1)
         # create the wallet file as txt, and add pub key and seed to the file
         # @Todo: change these plaintexts to ECIES
-        with open(os.path.dirname(__file__)  + "/wallets/" + account_name + ".txt", "x") as wallet_file:
+        with open(os.path.dirname(__file__)  + "/../wallets/" + account_name + ".txt", "x") as wallet_file:
             private_key, address = account.generate_account()
             self._total_accounts += 1
             wallet_file.write("Address: {}\n\n" .format(address))
@@ -100,12 +100,12 @@ class UnnamedWallet:
     """
     def get_all_accounts_in_current_active_wallet(self) -> list:
         # Get all present wallets + check if wallet name is matching with current active wallet 
-        wallet_files = [filename for filename in (os.path.dirname(__file__) + "/wallets/") if filename.endswith(".txt") and self.wallet in filename]
+        wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__) + "/../wallets/")) if filename.endswith(".txt") and self.wallet in filename]
         # list of wallet addresses
         accounts = []
         for wallet in wallet_files:
             # open that wallet file and read address line
-            with open(os.path.dirname(__file__) + '/wallets/' + wallet) as wal:
+            with open(os.path.dirname(__file__) + '/../wallets/' + wallet) as wal:
                 accounts.append(wal.readline().split(':')[1].strip())	# pub address
         return accounts # can be empty list if no wallets created yet 
 
@@ -119,7 +119,7 @@ class UnnamedWallet:
     """
     def total_algo_balance_of_active_wallet(self, print_details: bool = False) -> int:
         total_mAlgo_balance = 0
-        algod_client = algodinstance().getclient()
+        algod_client = algodinstance.algodinstance().getclient()
         all_wallets = self.get_all_accounts_in_current_active_wallet()   # list of all subaccounts present under wallet
         if(print_details == True):
             print(f'Total sub-accounts - {len(all_wallets)}')

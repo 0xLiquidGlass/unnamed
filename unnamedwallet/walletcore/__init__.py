@@ -1,3 +1,3 @@
-from UnnamedWallet import UnnamedWallet
+from . import UnnamedWallet
 
 name = "walletcore"

@@ -31,8 +31,8 @@
 # 8. Send Algo (multiple-receivers-multiple-new-accounts) (*operating wallet required)
 
 import os
-from unnamedwallet.utils import constants
-from unnamedwallet.walletcore import UnnamedWallet
+from utils import constants
+from walletcore.UnnamedWallet import UnnamedWallet
 
 # Active wallet intance should handle all sub-account related actions
 # unnamedWallet object
@@ -68,7 +68,7 @@ def print_main_wallet_menu():
     print('9. Send Algo (multiple-receipients-multiple-new-accounts')      
     print('10. Exit')  
     print('-------------------------------------------------------')
-    print('Enter your selection: ')
+    print('Enter your selection: ', end='')
 
 # Defining selection 1 - Creating a new wallet (creates one sub-account)
 # Create new wallet - set newly created wallet as active wallet 
@@ -92,7 +92,7 @@ def handle_sel_1_new_wallet():
 def handle_sel_2_new_wallet():
     global active_wallet
     # Get all local wallets
-    wallets = UnnamedWallet.get_all_local_wallets()
+    wallets = UnnamedWallet.list_all_local_wallets()
     # Verify if we have atleast one wallet to display
     if(len(wallets) == 0):
         print('No wallets present. Create new one to begin.')
@@ -106,7 +106,7 @@ def handle_sel_2_new_wallet():
         print(f'Wallet {i+1}: {wallets[i]}')
         
     print('---------------------------------------------------------')
-    print('Enter wallet no. to make it active wallet: ')
+    print('Enter wallet no. to make it active wallet: ', end='')
     user_selection = input()
 
     # Verify user_selection should be within (1, len(total_wallets))

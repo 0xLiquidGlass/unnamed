@@ -3,8 +3,11 @@
 # Notes: Operating wallet is NOT using same derivation path 
 # for generating new accounts. all accounts are generated through 
 # generate_account() method provided by algosdk.account class 
+
 # Alrand account creation methods ref:
 # https://developer.algorand.org/docs/get-details/accounts/create/
+# Wallet files location + path reference:
+# https://docs.python.org/3/library/pathlib.html
 
 # - We use wallet here to create a container that will hold all the 
 # accounts created by user either manually or automatically when tx is sent
@@ -28,8 +31,8 @@
 # 8. Send Algo (multiple-receivers-multiple-new-accounts) (*operating wallet required)
 
 import os
-from walletcore import utils, constants
-from walletcore.UnnamedWallet import UnnamedWallet
+from unnamedwallet.utils import constants
+from unnamedwallet.walletcore import UnnamedWallet
 
 # Active wallet intance should handle all sub-account related actions
 # unnamedWallet object

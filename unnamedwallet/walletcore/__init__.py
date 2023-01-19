@@ -1,5 +1,3 @@
-from . import constants
-from . import UnnamedWallet
-from . import utils 
+from UnnamedWallet import UnnamedWallet
 
 name = "walletcore"

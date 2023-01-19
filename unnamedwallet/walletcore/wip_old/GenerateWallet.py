@@ -7,7 +7,7 @@ def generate_keypair ():
 	wallet_file_name = input("Name of File: ")
 	# Create that file, this can potentially replace existing wallets too
 	# Todo: fix this way to wallet gathering 
-	with open("./wallets/"+wallet_file_name+".txt", "x") as wallet_file:
+	with open("../../wallets/"+wallet_file_name+".txt", "x") as wallet_file:
 		private_key, address = account.generate_account()
 		wallet_file.write("Address: {}\n\n" .format(address))
 		wallet_file.write("Seed: {}" .format(mnemonic.from_private_key(private_key)))

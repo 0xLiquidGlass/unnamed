@@ -3,8 +3,7 @@
 # Allow user to receive/send algo from those wallets/subaccounts
 
 from algosdk import account, mnemonic
-from walletcore import constants
-from walletcore.utils import algodinstance
+from utils import constants, algodinstance
 import os 
 from dotenv import load_dotenv
 load_dotenv()
@@ -120,7 +119,7 @@ class UnnamedWallet:
     """
     def total_algo_balance_of_active_wallet(self, print_details: bool = False) -> int:
         total_mAlgo_balance = 0
-        algod_client = algodinstance.algodinstance().getclient()
+        algod_client = algodinstance().getclient()
         all_wallets = self.get_all_accounts_in_current_active_wallet()   # list of all subaccounts present under wallet
         if(print_details == True):
             print(f'Total sub-accounts - {len(all_wallets)}')

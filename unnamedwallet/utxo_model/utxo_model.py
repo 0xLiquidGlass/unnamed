@@ -10,3 +10,5 @@
 # Bitcoin UTXO models doesn't have accounts, there's no "from" account or address
 # Addresses are never directly inscribed on the blockchain 
 # Instead they are encoded with scriptPubKeys (included in tx output)
+
+# WIP

@@ -131,8 +131,18 @@ def handle_sel_3_new_wallet():
         print('Public Address: {}\n'.format(new_account))
 
 
+# Printing all subaccounts algo balances requires
+# active wallet to be present 
 def handle_sel_4_new_wallet():
-    pass
+    global active_wallet
+    if(active_wallet is None):
+        print('Select an active wallet first.\n')
+        return
+    else:
+        active_wallet.total_algo_balance_of_given_wallet(active_wallet.wallet, print_details=True)
+
+
+
 def handle_sel_5_new_wallet():
     pass
 def handle_sel_6_new_wallet():

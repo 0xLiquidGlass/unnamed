@@ -23,6 +23,9 @@ class UnnamedWallet:
         print(f'New wallet {walletname} has been generated.\n\n')
 
     # If we want to initialize wallet object with 
+    # previous method of overloading __init__ was wrong and a better solution
+    # would be to create a classmethod 
+    # ref: https://stackoverflow.com/questions/682504/what-is-a-clean-pythonic-way-to-implement-multiple-constructors
     @classmethod
     def reset_active_wallet(cls, walletpath: str, reset_active_wallet: bool):
         wallet_obj = cls.__new__(cls)

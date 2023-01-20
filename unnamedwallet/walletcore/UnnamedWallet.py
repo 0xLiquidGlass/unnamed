@@ -22,18 +22,24 @@ class UnnamedWallet:
         self.generate_new_account()
         print(f'New wallet {walletname} has been generated.\n\n')
 
-    # Doesn't matter if we initialize object with second param(bool) as True or False
-    # Having a bool in the arg list would allow reset the active wallet 
-    def __init__(self, walletpath: str, reset_active_wallet: bool):
+    # If we want to initialize wallet object with 
+    @classmethod
+    def reset_active_wallet(cls, walletpath: str, reset_active_wallet: bool):
+        wallet_obj = cls.__new__(cls)
+        super(UnnamedWallet, wallet_obj).__init__()
+
         # Split path by '/' and get last part - the filename 
         wallet_path_arr = walletpath.split('/')
         wallet_filename = wallet_path_arr[len(wallet_path_arr) - 1]
+
         print('Loading wallet: ', end='')
         walletname = wallet_filename.split('_')[0]
         print(walletname)
-        self._wallet = walletname
-        self._total_accounts = len(self.get_all_accounts_in_current_active_wallet())
-        print(f'Wallet {self.wallet} selected...')
+        # Set props
+        wallet_obj._wallet = walletname
+        wallet_obj._total_accounts = len(wallet_obj.get_all_accounts_in_given_wallet(wallet_obj.wallet))
+        print(f'Wallet {wallet_obj.wallet} selected...')
+        return wallet_obj
 
     @property
     def wallet(self) -> str:
@@ -98,7 +104,7 @@ class UnnamedWallet:
     Returns a list of all accounts generated within wallet and
     Note: This was handled by CombineKeypairs.py previously
     """
-    def get_all_accounts_in_current_active_wallet(self) -> list:
+    def get_all_accounts_in_given_wallet(self, walletname: str) -> list:
         # Get all present wallets + check if wallet name is matching with current active wallet 
         wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__) + "/../wallets/")) if filename.endswith(".txt") and self.wallet in filename]
         # list of wallet addresses
@@ -111,16 +117,15 @@ class UnnamedWallet:
 
 
     """
-    Total user balance in Algo (In Active Wallet)
-    Counts algo from all the sub-accounts present in /wallets/
-    print_details: if we want to print all subaccounts with their respective balances while 
-    calculating the total balance
+    Total user balance in Algo (In Given Wallet, walletname: str)
+    Counts algo from all the sub-accounts present in /wallets/ where walletname matches
+    print_details: if we want to print all subaccounts with their respective balances 
     returns: balance in microalgo
     """
-    def total_algo_balance_of_active_wallet(self, print_details: bool = False) -> int:
+    def total_algo_balance_of_given_wallet(self, walletname: str, print_details: bool = False) -> int:
         total_mAlgo_balance = 0
         algod_client = algodinstance.algodinstance().getclient()
-        all_wallets = self.get_all_accounts_in_current_active_wallet()   # list of all subaccounts present under wallet
+        all_wallets = self.get_all_accounts_in_given_wallet(walletname)   # list of all subaccounts present under wallet
         if(print_details == True):
             print(f'Total sub-accounts - {len(all_wallets)}')
         

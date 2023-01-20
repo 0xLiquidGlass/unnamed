@@ -46,7 +46,7 @@ def print_main_wallet_menu():
     print('---------- Algorand wallet that mimics utxo -----------')
     print(f'-Active Wallet: {active_wallet.wallet if active_wallet else None}')
     print(f'-Total accounts under {active_wallet.wallet if active_wallet else None} wallet: {str(active_wallet.total_accounts) if active_wallet else None}')
-    print(f'-Total Algo across all accounts in wallet {active_wallet.wallet if active_wallet else None}: {str(active_wallet.total_algo_balance_of_active_wallet()) if active_wallet else None}')
+    print(f'-Total Algo across all accounts in wallet {active_wallet.wallet if active_wallet else None}: {str(active_wallet.total_algo_balance_of_given_wallet(active_wallet.wallet)) if active_wallet else None}')
     print(f'-Total wallets: {str(UnnamedWallet.total_wallets())}')
     print(f'-Total Algo across all wallets: {None}')
     print('-------------------------------------------------------')
@@ -56,16 +56,16 @@ def print_main_wallet_menu():
     print('4. Print all sub-accounts balances')
     print('5. Receive Algo') # Display all accounts - and select one to receive Algo to
     # Send specified amount of Algo to someone, and send remaining funds to a new account
-    print('6. Send Algo (single-receipient-single-new-account') 
+    print('6. Send Algo (single-receipient-single-new-account)') 
     # Send specified amount of Algo to someone, and send remaining funds to multiple new accounts
     # Allow user to choose size of new accounts + single account handling all tx fees +
     # maintain minimum algo requirement before sending 
-    print('7. Send Algo (single-receipient-multiple-new-accounts')
+    print('7. Send Algo (single-receipient-multiple-new-accounts)')
     # This is where we might need to add better UI - to visulize txs across multiple sub-accounts
     # These sub-accounts are treated as utxo 
     # (input utxo for Send Algo tx) OR (output utxo when tx happens and new accounts are created)
-    print('8. Send Algo (multiple-receipients-single-new-account') # Aggregate back to single account  
-    print('9. Send Algo (multiple-receipients-multiple-new-accounts')      
+    print('8. Send Algo (multiple-receipients-single-new-account)') # Aggregate back to single account  
+    print('9. Send Algo (multiple-receipients-multiple-new-accounts)')      
     print('10. Exit')  
     print('-------------------------------------------------------')
     print('Enter your selection: ', end='')
@@ -82,9 +82,10 @@ def handle_sel_1_new_wallet():
         if(active_wallet is None):
             active_wallet = UnnamedWallet(wallet_name)
         else:
-            UnnamedWallet(wallet_name)
-    except:
+            newwallet = UnnamedWallet(wallet_name)
+    except Exception as inst:
         print('Wallet Creation Error. Please try again.')
+        print(inst)
 
 # Defining what selection 2 does - Select operating wallet
 # Allow user to select operating/active wallet, all those subaccounts
@@ -113,7 +114,7 @@ def handle_sel_2_new_wallet():
     # Reset active_wallet with new UnnamedWallet object
     del active_wallet
     wallet_filename = wallets[int(user_selection) - 1]
-    active_wallet = UnnamedWallet(walletpath=os.path.dirname(__file__) + '/walletcore/wallets/' + wallet_filename, reset_active_wallet=True)
+    active_wallet = UnnamedWallet.reset_active_wallet(walletpath=os.path.dirname(__file__) + '/walletcore/wallets/' + wallet_filename, reset_active_wallet=True)
 
 
 def handle_sel_3_new_wallet():

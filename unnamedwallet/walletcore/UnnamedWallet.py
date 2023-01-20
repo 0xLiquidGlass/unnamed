@@ -98,6 +98,8 @@ class UnnamedWallet:
             self._total_accounts += 1
             wallet_file.write("Address: {}\n\n" .format(address))
             wallet_file.write("Seed: {}" .format(mnemonic.from_private_key(private_key)))
+        # return the address to display newly created account
+        return address
 		
 
     """

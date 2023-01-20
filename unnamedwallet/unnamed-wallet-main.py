@@ -116,9 +116,21 @@ def handle_sel_2_new_wallet():
     wallet_filename = wallets[int(user_selection) - 1]
     active_wallet = UnnamedWallet.reset_active_wallet(walletpath=os.path.dirname(__file__) + '/walletcore/wallets/' + wallet_filename, reset_active_wallet=True)
 
-
+# Account creation can only happen if there exists atleast one 
+# wallet and is active
 def handle_sel_3_new_wallet():
-    pass
+    global active_wallet
+    # Verify if active wallet is present
+    if(active_wallet is None):
+        print('Select an active wallet first.\n')
+        return
+    else:
+        print(f'Creating new account under wallet: {active_wallet.wallet}\n')
+        new_account = active_wallet.generate_new_account()
+        print(f'New account has been generated')
+        print('Public Address: {}\n'.format(new_account))
+
+
 def handle_sel_4_new_wallet():
     pass
 def handle_sel_5_new_wallet():

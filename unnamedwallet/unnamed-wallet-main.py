@@ -33,6 +33,7 @@
 import os
 from utils import constants
 from walletcore.UnnamedWallet import UnnamedWallet
+from utils.algodinstance import algodinstance
 
 # Active wallet intance should handle all sub-account related actions
 # unnamedWallet object
@@ -42,13 +43,14 @@ active_wallet = None
 # for better user interaction.
 def print_main_wallet_menu():
     global active_wallet
-    print('-------------- Welcome to Unnamed Wallet --------------')
+    TXT_ACTIVE_WALLET = "Active wallet selection required"
+    print('\n-------------- Welcome to Unnamed Wallet --------------')
     print('---------- Algorand wallet that mimics utxo -----------')
-    print(f'-Active Wallet: {active_wallet.wallet if active_wallet else None}')
-    print(f'-Total accounts under {active_wallet.wallet if active_wallet else None} wallet: {str(active_wallet.total_accounts) if active_wallet else None}')
-    print(f'-Total Algo across all accounts in wallet {active_wallet.wallet if active_wallet else None}: {str(active_wallet.total_algo_balance_of_given_wallet(active_wallet.wallet)) if active_wallet else None}')
+    print(f'-Active Wallet: {active_wallet.wallet if active_wallet else "-"}')
+    print(f'-Total accounts under {active_wallet.wallet if active_wallet else "-"} wallet: {str(active_wallet.total_accounts) if active_wallet else TXT_ACTIVE_WALLET}')
+    print(f'-Total Algo across all accounts in wallet {active_wallet.wallet if active_wallet else "-"}: {str(active_wallet.total_algo_balance_of_given_wallet(active_wallet.wallet)/constants.MICROALGOS_TO_ALGOS_RATIO) if active_wallet else TXT_ACTIVE_WALLET}')
     print(f'-Total wallets: {str(UnnamedWallet.total_wallets())}')
-    print(f'-Total Algo across all wallets: {None}')
+    print(f'-Total Algo across all wallets: {str(active_wallet.total_algo_across_all_wallets()/constants.MICROALGOS_TO_ALGOS_RATIO) if active_wallet else TXT_ACTIVE_WALLET}')
     print('-------------------------------------------------------')
     print('1. Create New Wallet (container for sub-accounts)')
     print('2. Select Operating Wallet')
@@ -70,7 +72,7 @@ def print_main_wallet_menu():
     print('-------------------------------------------------------')
     print('Enter your selection: ', end='')
 
-# Defining selection 1 - Creating a new wallet (creates one sub-account)
+# selection 1 - Creating a new wallet (creates one sub-account)
 # Create new wallet - set newly created wallet as active wallet 
 # active wallet should only be changed if one hasn't been selected yet 
 def handle_sel_1_new_wallet():
@@ -87,10 +89,10 @@ def handle_sel_1_new_wallet():
         print('Wallet Creation Error. Please try again.')
         print(inst)
 
-# Defining what selection 2 does - Select operating wallet
+# what selection 2 does - Select operating wallet
 # Allow user to select operating/active wallet, all those subaccounts
 # under this wallet should be considered while making Algo tx from this wallet
-def handle_sel_2_new_wallet():
+def handle_sel_2_active_wallet():
     global active_wallet
     # Get all local wallets
     wallets = UnnamedWallet.list_all_local_wallets()
@@ -118,7 +120,7 @@ def handle_sel_2_new_wallet():
 
 # Account creation can only happen if there exists atleast one 
 # wallet and is active
-def handle_sel_3_new_wallet():
+def handle_sel_3_new_subaccount():
     global active_wallet
     # Verify if active wallet is present
     if(active_wallet is None):
@@ -133,7 +135,7 @@ def handle_sel_3_new_wallet():
 
 # Printing all subaccounts algo balances requires
 # active wallet to be present 
-def handle_sel_4_new_wallet():
+def handle_sel_4_print_all_subaccounts():
     global active_wallet
     if(active_wallet is None):
         print('Select an active wallet first.\n')
@@ -142,11 +144,59 @@ def handle_sel_4_new_wallet():
         active_wallet.total_algo_balance_of_given_wallet(active_wallet.wallet, print_details=True)
 
 
+# def handle_sel_5_receive_algo():
+#     # receive algo, display available addresses and their balances 
+#     # This is effectively handled by option_4 as of now, in future
+#     # we can expand this and add it back to function_call_dispatcher dict 
+#     pass
 
-def handle_sel_5_new_wallet():
-    pass
-def handle_sel_6_new_wallet():
-    pass
+
+# @Todo: Start adding tx from one account to the other
+# Verify first account creation, start molding sub-account selection
+# methods when txs happen
+
+# Send user_specified amount of algo to receipient address
+# Create new account and send remaining Algo to it
+# 1 Receipient, 1 New Account
+# Constaints: 
+# - Remaining funds tx need to set field close-to 
+# and add newly created account to it. [https://developer.algorand.org/docs/get-details/transactions/#close-an-account]
+# - Accounts need to maintain minimum algo requirements 
+# [https://developer.algorand.org/docs/get-details/accounts/#minimum-balance] 
+# 100,000 microAlgos or 0.1 Algo - Increases with each asset held by the account 
+def handle_sel_6_send_algo_1R1N():  # one receipient, one new account
+    algo_client = algodinstance.getclient()
+    # Receive `receiver` address from user 
+    print("---- Sending Algo to 1 Receiver ------")
+    print("- Enter Receiver Address: ", end='')
+    receiver_address = input()
+    # Receive `amount` from user 
+    print("- Enter the Amount to Send: ", end='')
+    try:
+        amount = float(input())
+    except:
+        print("Algo amount not valid.\n")
+        return
+    # Verify `receiver` is a valid address,
+    # Verify `amount` satisfies 
+    #   `amount` <= totalAlgo in current active wallet 
+    #   If not, then check `amount` <= totalAlgo in all wallets (if yes, indicate to the user)
+    totalAlgo_currentwallet = float(UnnamedWallet.total_algo_balance_of_given_wallet()/constants.MICROALGOS_TO_ALGOS_RATIO)
+
+    if(amount > totalAlgo_currentwallet):
+        # Check if we have enough across all wallets 
+        totalAlgo_allwallets = float(UnnamedWallet.total_algo_across_all_wallets()/constants.MICROALGOS_TO_ALGOS_RATIO)
+        if(amount > totalAlgo_allwallets):
+            print("Not enough Algo across all wallets. Please enter lesser amount and try again")
+            return 
+        else:
+            # Perform the collection (across all wallets) -> and send transaction 
+            pass 
+    else:
+        # Perform the collection of accounts (within active wallet) -> send tx
+        pass
+
+
 def handle_sel_7_new_wallet():
     pass
 def handle_sel_8_new_wallet():
@@ -158,8 +208,8 @@ def handle_sel_9_new_wallet():
 def handle_menu_selection(user_selection: int, limited: bool = True):
     # active wallet not present, don't allow Algo send options without an active wallet
     if limited == True:
-        # Check if user_selection within 1 to 5, if not indicate "wallet selection required"
-        if(user_selection < 1 or user_selection > 5):
+        # Check if user_selection within 1 and 2, if not indicate "wallet selection required"
+        if(user_selection < 1 or user_selection > 2): 
             # Select active wallet first
             print('Select an active wallet first.\n')
             return
@@ -173,11 +223,11 @@ def handle_menu_selection(user_selection: int, limited: bool = True):
     # https://stackoverflow.com/questions/9205081/is-there-a-way-to-store-a-function-in-a-list-or-dictionary-so-that-when-the-inde
     function_call_dispatcher = {
         1: handle_sel_1_new_wallet,
-        2: handle_sel_2_new_wallet,
-        3: handle_sel_3_new_wallet,
-        4: handle_sel_4_new_wallet,
-        5: handle_sel_5_new_wallet,
-        6: handle_sel_6_new_wallet,
+        2: handle_sel_2_active_wallet,
+        3: handle_sel_3_new_subaccount,
+        4: handle_sel_4_print_all_subaccounts,
+        5: handle_sel_4_print_all_subaccounts,     # Change to handler_sel_5_new_wallet
+        6: handle_sel_6_send_algo_1R1N,
         7: handle_sel_7_new_wallet,
         8: handle_sel_8_new_wallet,
         9: handle_sel_9_new_wallet,

@@ -3,7 +3,8 @@
 # Allow user to receive/send algo from those wallets/subaccounts
 
 from algosdk import account, mnemonic
-from utils import constants, algodinstance
+from utils.algodinstance import algodinstance
+from utils import constants
 import os 
 from dotenv import load_dotenv
 load_dotenv()
@@ -22,7 +23,7 @@ class UnnamedWallet:
         self.generate_new_account()
         print(f'New wallet {walletname} has been generated.\n\n')
 
-    # If we want to initialize wallet object with 
+    # If we want to initialize wallet object with wallet path 
     # previous method of overloading __init__ was wrong and a better solution
     # would be to create a classmethod 
     # ref: https://stackoverflow.com/questions/682504/what-is-a-clean-pythonic-way-to-implement-multiple-constructors
@@ -76,12 +77,36 @@ class UnnamedWallet:
 
 
     """
-    Static method to handle total algo present across all wallets
+    method to handle total algo present across all wallets
 
     """
-    @staticmethod
-    def total_algo_across_all_wallets() -> int:
-        pass
+    def total_algo_across_all_wallets(self, print_details: bool = False) -> int:
+        total_mAlgo_balance = 0
+        algod_client = algodinstance().getclient()
+        # Get all wallets 
+        wallets = UnnamedWallet.list_all_local_wallets()
+        if(print_details):
+            print(f"Total Wallets: {len(wallets)}")
+        
+        # Get total algo across all subaccounts in each wallet
+        for wallet in wallets:
+            if(print_details):
+                print(f"Wallet: {wallet}")
+            # Get all accounts in given wallet 
+            accounts =  UnnamedWallet.get_all_accounts_in_given_wallet(wallet.split('_')[0])
+            if(print_details == True):
+                print(f'Total sub-accounts - {len(accounts)}')
+            
+            # get account_info() for every account present in /wallets/ dir 
+            for i in range(len(accounts)):
+                account_info = algod_client.account_info(accounts[i])
+                total_mAlgo_balance += account_info.get("amount")
+                # Print details about the account and algo balance
+                if(print_details == True):
+                    print(f'Account-{i+1}: {accounts[i]} | Balance: {str(int(account_info.get("amount"))/constants.MICROALGOS_TO_ALGOS_RATIO)} Algo')
+
+        # All wallets - total mAlgo balance
+        return total_mAlgo_balance
 
 
     """
@@ -109,15 +134,20 @@ class UnnamedWallet:
     Returns a list of all accounts generated within wallet and
     Note: This was handled by CombineKeypairs.py previously
     """
-    def get_all_accounts_in_given_wallet(self, walletname: str) -> list:
+    @staticmethod
+    def get_all_accounts_in_given_wallet(walletname: str) -> list:
         # Get all present wallets + check if wallet name is matching with current active wallet 
-        wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__) + "/../wallets/")) if filename.endswith(".txt") and self.wallet in filename]
+        wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__) + "/../wallets/")) if filename.endswith(".txt") and walletname in filename]
+        # Debug: print(f'[ -- {wallet_files} --]')
         # list of wallet addresses
         accounts = []
         for wallet in wallet_files:
             # open that wallet file and read address line
             with open(os.path.dirname(__file__) + '/../wallets/' + wallet) as wal:
-                accounts.append(wal.readline().split(':')[1].strip())	# pub address
+                try:
+                    accounts.append(wal.readline().split(':')[1].strip())	# pub address
+                except:
+                    print(wal)
         return accounts # can be empty list if no wallets created yet 
 
 
@@ -129,8 +159,8 @@ class UnnamedWallet:
     """
     def total_algo_balance_of_given_wallet(self, walletname: str, print_details: bool = False) -> int:
         total_mAlgo_balance = 0
-        algod_client = algodinstance.algodinstance().getclient()
-        all_wallets = self.get_all_accounts_in_given_wallet(walletname)   # list of all subaccounts present under wallet
+        algod_client = algodinstance().getclient()
+        all_wallets = UnnamedWallet.get_all_accounts_in_given_wallet(walletname)   # list of all subaccounts present under wallet
         if(print_details == True):
             print(f'Total sub-accounts - {len(all_wallets)}')
         
@@ -148,9 +178,9 @@ class UnnamedWallet:
     """
     Prints the list of accounts available and their balances
     """
-    def print_all_balances(self):
-        total_mAlgo_balance = self.total_algo_balance(print_details=True)
-        print ("Balance: {:.2f} Algos" . format(total_mAlgo_balance/constants.MICROALGOS_TO_ALGOS_RATIO))
+    # def print_all_balances(self):
+    #     total_mAlgo_balance = self.total_algo_balance(print_details=True)
+    #     print ("Balance: {:.2f} Algos" . format(total_mAlgo_balance/constants.MICROALGOS_TO_ALGOS_RATIO))
 
 
     """

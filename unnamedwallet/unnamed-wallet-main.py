@@ -193,6 +193,11 @@ def handle_sel_6_send_algo_1R1N():  # one receipient, one new account
             # Perform the collection (across all wallets) -> and send transaction 
             pass 
     else:
+        # Check if amount can be satisfied by:
+        # - single account 
+        # - multiple accounts with highest Algo balances first 
+        # - multiple accounts with lowest Algo balances first 
+        # - Best fit
         # Perform the collection of accounts (within active wallet) -> send tx
         pass
 

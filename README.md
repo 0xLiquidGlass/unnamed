@@ -21,6 +21,8 @@ Note that this project is currently work in progress. Many features are not yet 
 
 If you are interested in helping the project, please contact 0xLiquidGlass through [any of the contacts listed here](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
 
+The current progress is on the [dev_wallet](https://github.com/0xLiquidGlass/unnamed/tree/dev_wallet) branch.
+
 ### Socials
 
 [Reddit](https://www.reddit.com/r/unnamed_wallet/)

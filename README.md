@@ -25,7 +25,8 @@ The current progress is on the [dev_wallet](https://github.com/0xLiquidGlass/unn
 
 ### Socials
 
-[Reddit](https://www.reddit.com/r/unnamed_wallet/)
+- [Discord](https://discord.gg/kePECdcXad)
+- [Reddit](https://www.reddit.com/r/unnamed_wallet/)
 
 ### Credits
 

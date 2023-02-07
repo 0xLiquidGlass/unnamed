@@ -31,9 +31,9 @@
 # 8. Send Algo (multiple-receivers-multiple-new-accounts) (*operating wallet required)
 
 import os
-from utils import constants
 from walletcore.UnnamedWallet import UnnamedWallet
 from utils.algodinstance import algodinstance
+from algosdk import constants
 
 # Active wallet intance should handle all sub-account related actions
 # unnamedWallet object
@@ -42,6 +42,7 @@ active_wallet = None
 # https://github.com/aegirhall/console-menu
 # for better user interaction.
 def print_main_wallet_menu():
+
     global active_wallet
     TXT_ACTIVE_WALLET = "Active wallet selection required"
     print('\n-------------- Welcome to Unnamed Wallet --------------')
@@ -167,7 +168,7 @@ def handle_sel_4_print_all_subaccounts():
 def handle_sel_6_send_algo_1R1N():  # one receipient, one new account
     algo_client = algodinstance.getclient()
     # Receive `receiver` address from user 
-    print("---- Sending Algo to 1 Receiver ------")
+    print("---- Sending Algo to a single Receiver ------")
     print("- Enter Receiver Address: ", end='')
     receiver_address = input()
     # Receive `amount` from user 
@@ -179,20 +180,19 @@ def handle_sel_6_send_algo_1R1N():  # one receipient, one new account
         return
     # Verify `receiver` is a valid address,
     # Verify `amount` satisfies 
-    #   `amount` <= totalAlgo in current active wallet 
-    #   If not, then check `amount` <= totalAlgo in all wallets (if yes, indicate to the user)
-    totalAlgo_currentwallet = float(UnnamedWallet.total_algo_balance_of_given_wallet()/constants.MICROALGOS_TO_ALGOS_RATIO)
+    amount_mAlgo = int(amount * constants.MICROALGOS_TO_ALGOS_RATIO)
+    tx_total_cost = amount_mAlgo + constants.MIN_TXN_FEE
+    totalAlgo_currentwallet = UnnamedWallet.total_algo_balance_of_given_wallet()
+    totalAlgo_allwallets = UnnamedWallet.total_algo_across_all_wallets()
 
-    if(amount > totalAlgo_currentwallet):
-        # Check if we have enough across all wallets 
-        totalAlgo_allwallets = float(UnnamedWallet.total_algo_across_all_wallets()/constants.MICROALGOS_TO_ALGOS_RATIO)
-        if(amount > totalAlgo_allwallets):
-            print("Not enough Algo across all wallets. Please enter lesser amount and try again")
-            return 
-        else:
-            # Perform the collection (across all wallets) -> and send transaction 
-            pass 
-    else:
+    
+    # Check if,
+    # 1. amount + fees <= total algo in current wallet (1 or more accounts)
+    # 2. amount + fees <= total algo in all wallets (1 or more accounts from all wallets)
+    # 3. amount > total Algo (error "not enough algo across all wallets")
+    #   OR amount + fees results in algo balance (account) < 100000 microAlgo (tx reverts: minimum balance requirements)
+    #   OR corner cases (based on unit-tests)
+    if(tx_total_cost <= totalAlgo_currentwallet):
         # Check if amount can be satisfied by:
         # - single account 
         # - multiple accounts with highest Algo balances first 
@@ -200,6 +200,13 @@ def handle_sel_6_send_algo_1R1N():  # one receipient, one new account
         # - Best fit
         # Perform the collection of accounts (within active wallet) -> send tx
         pass
+    else:
+        if(amount > totalAlgo_allwallets):
+            print("Not enough Algo across all wallets. Please enter lesser amount and try again")
+            return 
+        else:
+            # Perform the collection (across all wallets) -> and send transaction 
+            pass 
 
 
 def handle_sel_7_new_wallet():

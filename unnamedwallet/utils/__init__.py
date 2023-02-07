@@ -1,4 +1,4 @@
 from . import algodinstance
-from . import constants
+from . import localconstants
 
 name = "utils"

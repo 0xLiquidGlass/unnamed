@@ -3,8 +3,8 @@
 # Allow user to receive/send algo from those wallets/subaccounts
 
 from algosdk import account, mnemonic
+from algosdk import constants
 from utils.algodinstance import algodinstance
-from utils import constants
 import os 
 from dotenv import load_dotenv
 load_dotenv()
@@ -74,6 +74,29 @@ class UnnamedWallet:
         # Get all wallets
         wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__)  + "/../wallets/")) if filename.endswith(".txt")]
         return wallet_files
+		
+
+    """
+    Returns a list of all accounts generated within wallet and
+    Note: This was handled by CombineKeypairs.py previously
+    """
+    @staticmethod
+    def get_all_accounts_in_given_wallet(walletname: str) -> list:
+        # Get all present wallets + check if wallet name is matching with current active wallet 
+        wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__) + "/../wallets/")) if filename.endswith(".txt") and walletname in filename]
+        # Debug: print(f'[ -- {wallet_files} --]')
+        # list of wallet addresses
+        accounts = []
+        for wallet in wallet_files:
+            # open that wallet file and read address line
+            with open(os.path.dirname(__file__) + '/../wallets/' + wallet) as wal:
+                try:
+                    accounts.append(wal.readline().split(':')[1].strip())	# pub address
+                except:
+                    print(wal)
+        return accounts # can be empty list if no wallets created yet 
+
+
 
 
     """
@@ -128,27 +151,7 @@ class UnnamedWallet:
             wallet_file.write("Seed: {}" .format(mnemonic.from_private_key(private_key)))
         # return the address to display newly created account
         return address
-		
 
-    """
-    Returns a list of all accounts generated within wallet and
-    Note: This was handled by CombineKeypairs.py previously
-    """
-    @staticmethod
-    def get_all_accounts_in_given_wallet(walletname: str) -> list:
-        # Get all present wallets + check if wallet name is matching with current active wallet 
-        wallet_files = [filename for filename in (os.listdir(os.path.dirname(__file__) + "/../wallets/")) if filename.endswith(".txt") and walletname in filename]
-        # Debug: print(f'[ -- {wallet_files} --]')
-        # list of wallet addresses
-        accounts = []
-        for wallet in wallet_files:
-            # open that wallet file and read address line
-            with open(os.path.dirname(__file__) + '/../wallets/' + wallet) as wal:
-                try:
-                    accounts.append(wal.readline().split(':')[1].strip())	# pub address
-                except:
-                    print(wal)
-        return accounts # can be empty list if no wallets created yet 
 
 
     """

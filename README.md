@@ -14,14 +14,53 @@ Note that this project is currently work in progress. Many features are not yet 
 
 ### Operating System
 
-- Linux
-- Other Operating Systems (Python Files)
+- Various Operating Systems (Python Files)
 
-### Project Development Related
+### Project Related
+
+The project is currently looking for volunteers to help contribute to Unnamed Wallet. Here are some of the roles that you can apply for:
+
+#### 1. Developers (Transactions Track)
+- Assist developer in developing Unnamed Wallet for regular transactions
+- Good in Python
+- Understand Algorand's Documentation on the dev portal
+- Submit Github profile
+
+#### 2. Developers (Dapps Track)
+- Starting from scratch to develop functionalities for Unnamed Wallet to be able to handle Dapps
+- Good in Python
+- Understand Algorand's documentation on the dev portal
+- Submit Github profile
+
+#### 3. Social Network Moderators
+- Maintain order for various social networks
+- Interact with the Unnamed Wallet community
+- PGP optional, but encouraged
+- Submit Linkedin or Github profile
+
+#### 4. Endowment Managers
+- Manage crowdsourcing funds and be a part of the multisig key holder
+- Manage endowments
+- Must have PGP
+- Must be ready to identify yourself
+- Submit Linkedin profile
+
+#### 5. Marketing
+- Reach out to people to raise awareness of Unnamed Wallet
+- Find partnerships
+- PGP optional, but encouraged
+- Submit Linkedin or Github profile
+
+However, to be eligible for these roles, Unnamed Wallet is looking for these traits in you:
+
+1. Not Financially Motivated
+2. Passionate
+3. Honest
+4. Collaborative
+5. Committed
+6. Innovative
 
 If you are interested in helping the project, please contact 0xLiquidGlass through [any of the contacts listed here](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
-
-The latest progress is on the [dev_wallet](https://github.com/0xLiquidGlass/unnamed/tree/dev_wallet) branch.
 
 ### Socials
 

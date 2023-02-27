@@ -69,8 +69,9 @@ If you are interested in helping the project, please contact 0xLiquidGlass throu
 
 ### Credits
 
-1. [0xLiquidGlass](https://github.com/0xLiquidGlass) (Founder, Documentation)
+1. [0xLiquidGlass](https://github.com/0xLiquidGlass) (Documentation)
 2. [SolDev-HP](https://github.com/SolDev-HP) (Development)
+3. [d1-dblaze](https://github.com/d1-dblaze) (Development)
 
 ### Donations
 

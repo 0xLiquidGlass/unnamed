@@ -67,11 +67,6 @@ If you are interested in helping the project, please contact 0xLiquidGlass throu
 - [Discord](https://discord.gg/kePECdcXad)
 - [Reddit](https://www.reddit.com/r/unnamed_wallet/)
 
-### Credits
-
-1. [0xLiquidGlass](https://github.com/0xLiquidGlass) (Founder, Documentation)
-2. [SolDev-HP](https://github.com/SolDev-HP) (Development)
-
 ### Donations
 
 If you support this project, please feel free to donate. The proceeds will be used for the development of this project.

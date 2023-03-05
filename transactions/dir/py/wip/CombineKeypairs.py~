@@ -1,4 +1,5 @@
 from algosdk import account, mnemonic, constants
+from algosdk.v2client import algod
 import os
 
 keypairs_counted = 0

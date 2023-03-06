@@ -14,7 +14,10 @@ Note that this project is currently work in progress. Many features are not yet 
 
 ### Operating System
 
+- Debian (Dependencies Only)
 - Various Operating Systems (Python Files)
+
+More Operating Systems and distributions will be added as soon as the necessary dependencies or modifications are written for them (if needed)
 
 ### Project Related
 

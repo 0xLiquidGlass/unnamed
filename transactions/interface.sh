@@ -1,6 +1,14 @@
 #!/bin/bash
 
+<<comment
+To do:
+1. Add more choices, with documentation placed at the end when all of Python programs are done
+2. Implement "sandbox down" and "exit" when all of Python programs are done
+comment
+
 # For Debian
+
+dir/sh/dependencies/sandbox/sandbox up mainnet -v -s
 
 clear
 

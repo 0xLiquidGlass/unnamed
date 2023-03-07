@@ -1,5 +1,9 @@
 #!/bin/sh
 
+<<comment
+To do:
+comment
+
 # Algorand Python SDK
 pip install py-algorand-sdk
 
@@ -34,6 +38,12 @@ docker run hello-world
 # Comment on the next 2 lines if you do not want to boot with systemd
 sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
+
+# Install Algorand's sandbox
+git clone https://github.com/algorand/sandbox.git
+cd sandbox
+# No sudoer's activation of "docker compose up" command
+sudo ./sandbox up mainnet -v -s
 
 # Golang
 # apt repo may not be reliable to get latest version 

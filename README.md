@@ -51,7 +51,7 @@ However, to be eligible for these roles, Unnamed Wallet is looking for these tra
 5. Committed
 6. Innovative
 
-If you are interested in helping the project, please contact 0xLiquidGlass through [any of the contacts listed here](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
+If you are interested in volunteering for the project, please contact 0xLiquidGlass through [any of the contacts listed here](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
 
 ### Socials
 

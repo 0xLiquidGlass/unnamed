@@ -18,7 +18,7 @@ from CombineKeypairs import query_address, query_private_key
 from GenerateWallet import generatedAddress, generate_keypair
 from algosdk import transaction
 from AlgodUtils import algodClient
-import os, shutil, json
+import os, shutil
 
 numberOfKeypairs = [filename for filename in os.listdir("../wallet/") if filename.endswith(".txt")]\
 

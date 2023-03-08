@@ -7,58 +7,62 @@ Documentation of Algorand Python SDK:
 2. https://py-algorand-sdk.readthedocs.io/en/latest/
 
 To do:
-1. Move spent addresses to spent directory
-2. Test the program
+1. Iterate through every 16 batches in the lists "batchedTransactionInfo" and "batchedSignedTransaction"
+2. Move spent addresses to spent directory
+3. Test the program on testnet
+4. Make program handle more than 16 transactions without error
+5. Experiment on concurrent atomic transaction after sequential transaction is successful
 """
 
 from CombineKeypairs import query_address, query_private_key
-from GenerateWallet import generatedAddress, generate_keypair, keypair_generate_prompt
+from GenerateWallet import generatedAddress, generate_keypair
 from algosdk import transaction
-from algodUtils import algod_init
-from algosdk.future.transaction import *
+from AlgodUtils import algodClient
+import os, shutil, json
 
-# In case there is a need
-import os
+numberOfKeypairs = [filename for filename in os.listdir("../wallet/") if filename.endswith(".txt")]\
 
-createTransactionsPool = []
-signedTransactionsPool = []
-splitSignedTransactionsPool = []
-listPrivateKeys =[]
-numberOfKeypairs = [filename for filename in os.listdir("../wallet") if filename.endswith(".txt")]\
+def consolidate_balance():
+	# Non sensitive data
+	listTransacionInfo = []
+	batchedTransactionInfo = []
+	params = algodClient.suggested_params()	
+	generate_keypair()
+	toOwnAddress = generatedAddress
 
-def prepare_transactions_info():
-    utxosLeft = len(numberOfKeypairs)
-    for counter in utxosLeft:
-        keypair_generate_prompt()
-        # Non sensitive data (4 lines below)
-        toHomeConst = generatedAddress
-        utxoAddress = query_address()
-        balance = algod_init.account_info(utxoAddress)
-        valueMicroAlgos = balance
-        transactionsInfo = transaction.PaymentTxn(utxoAddress, params, toHomeConst, valueMicroAlgos)
-        transactionsPool.append(transactionsInfo)
-        # Sensitive data, private keys and mnemonics involved (2 lines below)
-        utxoPrivateKey = query_private_key()
-        listPrivateKeys.append(utxoPrivateKey)
+	for remainingUtxos in range(numberOfKeypairs):
+		spendingCurrentUtxo = query_address()[remainingUtxos - 1]
+		jsonTransactionInfo = transaction.PaymentTxn(spendingCurrentUtxo, params, toOwnAddress, balanceInMicroAlgos)
+		listTransactionInfo.append(jsonTransactionInfo)
 
-def atomic_transactions_prepare():
-    # Non sensitive data (3 lines below)
-    everyTransactionsGroupID = transaction.calculate_group_id([createTransactionsPool])
-    for countTransactions in createTransactionsPool:
-        countTransactions.group = everyTransactionsGroupID
-    # Sensitive data, private keys involved (3 lines below)
-    for countSignKeys in listPrivateKeys:
-        signTransactionInfo = everyTransactionsGroupID.sign(countSignKeys)
-        signedTransactionsPool.append(signTransactionsPool)
+	for batchingListTransactionInfo in range(0, len(listTransactionInfo), 16):
+		sixteenTransactions = listTransactionInfo[batchingList:batchingListTransactionInfo + 16]
+		batchedTransactionInfo.append(sixteenTransactionInfo)
+	groupId = transaction.calculate_group_id(listTransactionInfo)
 
-def atomic_transactions_execute():
-    for splitCounter in range (0, len(signedTransactionsPool), 16):
-        splitSignedTransactionsPool.append(signedTransactionsPool[splitCounter:splitCounter+16])
-    for countSplitSignedTransactions in splitSignedTransactionsPool:
-        iterateSplitSignedTransactions = splitSignedTransactionsPool[countSplitSignedTransaction]
-    	signedTransactions = splitSignedTransactionsPool
-    	TransactionID = algod_init.send_transactions(signedTransactions)
-    	confirmedTransaction = wait_for_confirmation (algod_init, TransactionID, 15)
-    	print("txID: {}".format(TransactionID), " confirmed in round: {}".format(confirmedTransaction.get("confirmed-round", 0)))   
-    
+	for individualTxId in range(len(batchedTransacionInfo)):
+		individualTxId = GroupId
+
+	# Sensitive data, private keys involved
+	listPrivateKeys = []
+	listSignedTransactions = []
+	batchedSignedTransactions = []
+
+	for numberOfPrivateKeys in range(len(numberOfKeypairs)):
+		listPrivateKey.append(query_private_key()[numberOfPrivateKeys - 1])
+
+	for transactionsToSign in range(len(listPrivateKeys)):
+		signedIndividualTransaction = batchedTransactionInfo[transactionsToSign - 1].sign(listPrivateKeys[transactionsToSign - 1])
+		listSignedTransactions.append(signedIndividualTransaction)
+
+	for batchingSignedTransactions in range(0, len(listSignedTransactions), 16):
+		sixteenSignedTransactions = listSignedTransaction [batchingSignedTransactions:batchingSignedTransactions + 16]
+    		batchedSignedTransactions.append(sixteenSignedTransactions)
+
+	for batchesOfSignedTransaction in range(len(batchedSignedTransaction)):
+		transactionId = algodClient.send_transactions(batchedSignedTransaction[batchedSignedTransaction - 1])
+		transactionConfirmed = wait_for_confirmation(algodClient, transactionId, 10)
+		print("Transaction ID: {} ".format(transactionId), "confirmed in round {}.".format(transactionConfirmed.get("confirmed-round", 0)))
+
 if __name__ == "__main__":
+	consolidate_balance()

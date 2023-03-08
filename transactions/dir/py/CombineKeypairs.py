@@ -1,16 +1,16 @@
 """
 To do:
-1. Modify and cleanup query_private_key
-2. Handle more than 2 iterations
-3. Test program
+1. Handle more than 2 iterations, can handle 2 currently
+2. Test program and simulate with balance
 """
 
-from algosdk import mnemonic
+from algosdk import mnemonic, encoding
 import os
 
-walletFile = [filename for filename in os.listdir("../wallet") if filename.endswith(".txt")]\
+walletFile = [filename for filename in os.listdir("../wallet/") if filename.endswith(".txt")]\
 
 def query_address():
+	listOfAddresses = []
 	for fileList in walletFile:
 		currentWallet = open("../wallet/"+fileList, "r")
 		searchKeywordInFile = currentWallet.readlines()
@@ -21,27 +21,31 @@ def query_address():
 				addressToList = textLines.split(" ")
 				# For testing
 				# print (addressToList[1])
-				address = addressToList[1]
-				return address
+				addressWithWhitespace = addressToList[1]
+				address = addressWithWhitespace.strip()
+				listOfAddresses.append(address)
 		currentWallet.close()
+	return listOfAddresses
 
 def query_private_key():
-	totalKeypairs = len(walletFile)
-	currentWallet = open(walletFile, "r")
-	searchKeywordInFile = currentWallet.readlines()
-	for textLines in searchKeywordInFile:
-		keywordIsSeed = "Line 3"
-		if textLines.find(keywordIsSeed) == 0:
-			# For testing
-			# print("This is a wallet")
-			seedToList = textLines.split(" ")
-			# For testing
-			# print ("Showing Seed Phrase: " + Seed_to_list[1:26])
-			seedPhrase = seedToList[1:26]
-			mnemonic.to_private_key(seedPhrase)
-			keypairsCounted += 1
-			return privateKey
-	currentWallet.close()
+	listOfPrivateKeys = []
+	for fileList in walletFile:
+		currentWallet = open("../wallet/"+fileList, "r")
+		searchKeywordInFile = currentWallet.readlines()
+		for textLines in searchKeywordInFile:
+			if textLines.find("Seed") == 0:
+				# For testing
+				# print("This is a wallet")
+				individualWords = textLines.split(" ")
+				# For testing
+				# print (individualWords[1:26])
+				seedPhrase = " ".join(individualWords[1:26])
+				privateKey = mnemonic.to_private_key(seedPhrase)
+				listOfPrivateKeys.append(privateKey)
+		currentWallet.close()
+	return listOfPrivateKeys
 
 if __name__ == "__main__":
+	print(walletFile)
 	print(query_address())
+	print(query_private_key())

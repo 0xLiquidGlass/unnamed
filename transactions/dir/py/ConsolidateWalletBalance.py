@@ -7,11 +7,12 @@ Documentation of Algorand Python SDK:
 2. https://py-algorand-sdk.readthedocs.io/en/latest/
 
 To do:
-1. Iterate through every 16 batches in the lists "batchedTransactionInfo" and "batchedSignedTransaction"
-2. Move spent addresses to spent directory
-3. Test the program on testnet
-4. Make program handle more than 16 transactions without error
-5. Experiment on concurrent atomic transaction after sequential transaction is successful
+1. Move spent addresses to spent directory
+2. Test the program on testnet
+3. Make program handle more than 16 transactions without error
+4. Experiment on concurrent atomic transaction after sequential transaction is successful
+
+Lines to take note of:
 """
 
 from CombineKeypairs import query_address, query_private_key
@@ -23,46 +24,47 @@ import os, shutil
 numberOfKeypairs = [filename for filename in os.listdir("../wallet/") if filename.endswith(".txt")]\
 
 def consolidate_balance():
-	# Non sensitive data
-	listTransacionInfo = []
-	batchedTransactionInfo = []
+	listUnsignedTx = []
+	batchedUnsignedTx = []
+	listSignedTx = []
+	batchedSignedTx = []
 	params = algodClient.suggested_params()	
 	generate_keypair()
 	toOwnAddress = generatedAddress
 
-	for remainingUtxos in range(numberOfKeypairs):
-		spendingCurrentUtxo = query_address()[remainingUtxos - 1]
-		jsonTransactionInfo = transaction.PaymentTxn(spendingCurrentUtxo, params, toOwnAddress, balanceInMicroAlgos)
-		listTransactionInfo.append(jsonTransactionInfo)
+	# For testing
+	# print(numberOfKeypairs)
 
-	for batchingListTransactionInfo in range(0, len(listTransactionInfo), 16):
-		sixteenTransactions = listTransactionInfo[batchingList:batchingListTransactionInfo + 16]
-		batchedTransactionInfo.append(sixteenTransactionInfo)
-	groupId = transaction.calculate_group_id(listTransactionInfo)
+	for remainingUtxos in range(len(numberOfKeypairs)):
+		currentUtxo = query_address()[remainingUtxos - 1]
+		currentUtxoInfo = algodClient.account_info(currentUtxo)
+		balanceInMicroAlgos = currentUtxoInfo.get('amount')
+		currentUnsignedTx = transaction.PaymentTxn(currentUtxo, params, toOwnAddress, balanceInMicroAlgos)
+		listUnsignedTx.append(currentUnsignedTx)
 
-	for individualTxId in range(len(batchedTransacionInfo)):
-		individualTxId = GroupId
+		# Next 1 line has sensitive data, private keys involved
+		signedTx = currentUnsignedTx.sign(query_private_key()[remainingUtxos - 1])
 
-	# Sensitive data, private keys involved
-	listPrivateKeys = []
-	listSignedTransactions = []
-	batchedSignedTransactions = []
+		listSignedTx.append(signedTx)
 
-	for numberOfPrivateKeys in range(len(numberOfKeypairs)):
-		listPrivateKey.append(query_private_key()[numberOfPrivateKeys - 1])
+	for batchingListTxInfo in range(0, len(listUnsignedTx), 16):
+		batchingUnsignedTx = listUnsignedTx[batchingListTxInfo:batchingListTxInfo + 16]
+		batchedUnsignedTx.append(batchingUnsignedTx)
 
-	for transactionsToSign in range(len(listPrivateKeys)):
-		signedIndividualTransaction = batchedTransactionInfo[transactionsToSign - 1].sign(listPrivateKeys[transactionsToSign - 1])
-		listSignedTransactions.append(signedIndividualTransaction)
+	for batchingListTxInfo in range(0, len(listSignedTx), 16):
+		batchingSignedTx = listSignedTx[batchingListTxInfo:batchingListTxInfo + 16]
+		batchedSignedTx.append(batchingSignedTx)
 
-	for batchingSignedTransactions in range(0, len(listSignedTransactions), 16):
-		sixteenSignedTransactions = listSignedTransaction [batchingSignedTransactions:batchingSignedTransactions + 16]
-    		batchedSignedTransactions.append(sixteenSignedTransactions)
+	for txBatches in range(len(batchedUnsignedTx)):
+		groupId = transaction.calculate_group_id(batchedUnsignedTx[txBatches - 1])
 
-	for batchesOfSignedTransaction in range(len(batchedSignedTransaction)):
-		transactionId = algodClient.send_transactions(batchedSignedTransaction[batchedSignedTransaction - 1])
-		transactionConfirmed = wait_for_confirmation(algodClient, transactionId, 10)
-		print("Transaction ID: {} ".format(transactionId), "confirmed in round {}.".format(transactionConfirmed.get("confirmed-round", 0)))
+	for countUnsignedTx in range(len(listUnsignedTx)):
+		listUnsignedTx[countUnsignedTx - 1] = groupId
+
+	for txBatch in range(len(batchedSignedTx)):
+		txId = algodClient.send_transaction(batchedSignedTx)
+		confirmedTx = wait_for_confirmation(algodClient, txId, 10)
+		print("txID: {}".format(txId), " confirmed in round: {}".format(confirmedTx.get("confirmed-round", 0)))
 
 if __name__ == "__main__":
 	consolidate_balance()

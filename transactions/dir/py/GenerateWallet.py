@@ -3,7 +3,7 @@ from algosdk import account, mnemonic
 generatedPrivateKey, generatedAddress = account.generate_account()
 
 def generate_keypair ():
-	newDocumentPath = open("../wallet/"+generatedAddress+".txt", "x")
+	newDocumentPath = open("../wallet/transaction/unspent/"+generatedAddress+".txt", "x")
 	newDocumentPath.write("Address: {}\n\n" .format(generatedAddress))
 	newDocumentPath.write("Seed: {}" .format(mnemonic.from_private_key(generatedPrivateKey)))	
 	newDocumentPath.close()

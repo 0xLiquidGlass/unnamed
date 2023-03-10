@@ -7,12 +7,12 @@ To do:
 from algosdk import mnemonic, encoding
 import os
 
-walletFile = [filename for filename in os.listdir("../wallet/") if filename.endswith(".txt")]\
+walletFile = [filename for filename in os.listdir("../wallet/transaction/unspent/") if filename.endswith(".txt")]\
 
 def query_address():
 	listOfAddresses = []
 	for fileList in walletFile:
-		currentWallet = open("../wallet/"+fileList, "r")
+		currentWallet = open("../wallet/transaction/unspent/"+fileList, "r")
 		searchKeywordInFile = currentWallet.readlines()
 		for textLines in searchKeywordInFile:
 			if textLines.find("Address") == 0:
@@ -30,7 +30,7 @@ def query_address():
 def query_private_key():
 	listOfPrivateKeys = []
 	for fileList in walletFile:
-		currentWallet = open("../wallet/"+fileList, "r")
+		currentWallet = open("../wallet/transaction/unspent/"+fileList, "r")
 		searchKeywordInFile = currentWallet.readlines()
 		for textLines in searchKeywordInFile:
 			if textLines.find("Seed") == 0:

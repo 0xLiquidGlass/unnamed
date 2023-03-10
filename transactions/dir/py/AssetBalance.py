@@ -1,7 +1,6 @@
 """
 To do:
-1. Make print() iterate once
-2. Test and modify
+1. Test and modify
 """
 
 from algosdk import account

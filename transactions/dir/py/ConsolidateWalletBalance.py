@@ -62,7 +62,7 @@ def consolidate_balance():
 		listUnsignedTx[countUnsignedTx - 1] = groupId
 
 	for txBatch in range(len(batchedSignedTx)):
-		txId = algodClient.send_transaction(batchedSignedTx)
+		txId = algodClient.send_transaction(batchedSignedTx[txBatch - 1])
 		confirmedTx = wait_for_confirmation(algodClient, txId, 10)
 		print("txID: {}".format(txId), " confirmed in round: {}".format(confirmedTx.get("confirmed-round", 0)))
 

@@ -1,8 +1,3 @@
-"""
-To do:
-1. Test and modify
-"""
-
 from algosdk import account
 from CombineKeypairs import query_address
 from AlgodUtils import algodClient

@@ -10,8 +10,6 @@ To do:
 1. Test the program on testnet
 2. Make program handle more than 16 transactions without error
 3. Experiment on concurrent atomic transaction after sequential transaction is successful
-
-Lines to take note of:
 """
 
 from CombineKeypairs import query_address, query_private_key
@@ -27,7 +25,7 @@ def consolidate_balance():
 	batchedUnsignedTx = []
 	listSignedTx = []
 	batchedSignedTx = []
-	params = algodClient.suggested_params()	
+	params = algodClient.suggested_params()
 	generate_keypair()
 	toOwnAddress = generatedAddress
 
@@ -45,6 +43,7 @@ def consolidate_balance():
 
 			# Next 1 line has sensitive data, private keys involved
 			signedTx = currentUnsignedTx.sign(query_private_key()[remainingUtxos - 1])
+			# For testing
 			# print(signedTx)
 			listSignedTx.append(signedTx)
 			listOfKeypairs[remainingUtxos - 1].close()
@@ -59,6 +58,7 @@ def consolidate_balance():
 		batchedSignedTx.append(batchingSignedTx)
 
 	for txBatch in range(len(batchedSignedTx)):
+		# For testing
 		# print(batchedSignedTx[txBatch - 1])
 		txId = algodClient.send_transactions(batchedSignedTx[txBatch - 1])
 		confirmedTx = wait_for_confirmation(algodClient, txId, 10)
@@ -70,14 +70,11 @@ def consolidate_balance():
 	for countUnsignedTx in range(len(listUnsignedTx)):
 		listUnsignedTx[countUnsignedTx - 1] = groupId
 
-<<<<<<< HEAD
-=======
 	for txBatch in range(len(batchedSignedTx)):
 		txId = algodClient.send_transaction(batchedSignedTx[txBatch - 1])
 		confirmedTx = wait_for_confirmation(algodClient, txId, 10)
 		print("txID: {}".format(txId), " confirmed in round: {}".format(confirmedTx.get("confirmed-round", 0)))
 
->>>>>>> 13ef4b31ca1d2533da292a4d0671e4a3c202525a
 if __name__ == "__main__":
 	if len(listOfKeypairs) != int(0):
 		consolidate_balance()

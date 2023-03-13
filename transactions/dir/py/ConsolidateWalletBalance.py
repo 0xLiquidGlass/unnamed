@@ -14,11 +14,12 @@ To do:
 
 from CombineKeypairs import query_address, query_private_key
 from GenerateWallet import generatedAddress, generate_keypair
+from FilePaths import unspentUtxoPath, spentUtxoPath
 from algosdk import transaction
 from AlgodUtils import algodClient
 import os, shutil
 
-listOfKeypairs = [filename for filename in os.listdir("../wallet/transaction/unspent/") if filename.endswith(".txt")]\
+listOfKeypairs = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
 
 def consolidate_balance():
 	listUnsignedTx = []
@@ -47,7 +48,7 @@ def consolidate_balance():
 			# print(signedTx)
 			listSignedTx.append(signedTx)
 			listOfKeypairs[remainingUtxos - 1].close()
-			shutil.move(listOfKeypairs[remainingUtxos - 1], "../wallet/transaction/spent/")
+			shutil.move(listOfKeypairs[remainingUtxos - 1], spentUtxoPath)
 
 	for batchingListTxInfo in range(0, len(listUnsignedTx), 16):
 		batchingUnsignedTx = listUnsignedTx[batchingListTxInfo:batchingListTxInfo + 16]

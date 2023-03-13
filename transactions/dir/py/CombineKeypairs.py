@@ -4,19 +4,20 @@ To do:
 2. Test program and simulate with balance
 """
 
+from FilePaths import unspentUtxoPath
 from algosdk import mnemonic, encoding
 import os
 
-walletFile = [filename for filename in os.listdir("../wallet/transaction/unspent/") if filename.endswith(".txt")]\
+walletFile = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
 
 def query_address():
 	listOfAddresses = []
 	for fileList in walletFile:
-		currentWallet = open("../wallet/transaction/unspent/"+fileList, "r")
+		currentWallet = open(unspentUtxoPath+fileList, "r")
 		searchKeywordInFile = currentWallet.readlines()
 		for textLines in searchKeywordInFile:
 			if textLines.find("Address") == 0:
-				# For testing 
+				# For testing
 				# print("This is a wallet")
 				addressToList = textLines.split(" ")
 				# For testing
@@ -30,7 +31,7 @@ def query_address():
 def query_private_key():
 	listOfPrivateKeys = []
 	for fileList in walletFile:
-		currentWallet = open("../wallet/transaction/unspent/"+fileList, "r")
+		currentWallet = open(unspentUtxoPath+fileList, "r")
 		searchKeywordInFile = currentWallet.readlines()
 		for textLines in searchKeywordInFile:
 			if textLines.find("Seed") == 0:

@@ -18,7 +18,7 @@ You can contribute to the development of Unnamed in many ways:
 
 ## 3. Unnamed's Code Style
 
-###a. Unix Philosophy
+### a. Unix Philosophy
 
 - "Do one thing and do it well"
 - One file, one purpose
@@ -27,7 +27,7 @@ You can contribute to the development of Unnamed in many ways:
 
 More can be found here: [https://en.wikipedia.org/wiki/Unix_philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)
 
-###b. Self-Documenting Code
+### b. Self-Documenting Code
 
 - Make use of meaningful names to write code variables, functions, classes, etc
 - Reduce friction for other developers and maintainers to understand the code
@@ -35,7 +35,7 @@ More can be found here: [https://en.wikipedia.org/wiki/Unix_philosophy](https://
 
 More can be found here: [https://en.wikipedia.org/wiki/Self-documenting_code](https://en.wikipedia.org/wiki/Self-documenting_code)
 
-###c. Current naming conventions:
+### c. Current naming conventions:
 
 ci. File names --> PascalCase
 cii. Variables --> camelCase

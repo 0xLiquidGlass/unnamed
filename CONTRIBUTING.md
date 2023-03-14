@@ -37,9 +37,11 @@ More can be found here: [https://en.wikipedia.org/wiki/Self-documenting_code](ht
 
 ### c. Current naming conventions:
 
-ci. File names --> PascalCase
-cii. Variables --> camelCase
-ciii. Functions --> lower_case_with_underscores
+- File names --> PascalCase
+
+- Variables --> camelCase
+
+- Functions --> lower_case_with_underscores
 
 Note that all of thse naming conventions are only applicable to programs in Unnamed Wallet
 

@@ -1,10 +1,10 @@
-from encryption.Encrypt import encrypt_plaintext
+from encryption.Encrypt import encrypt_plaintext, get_password_hash, obtain_encryption_key
 from FilePaths import unspentUtxoPath
 from algosdk import account, mnemonic
 
 generatedPrivateKey, generatedAddress = account.generate_account()
 
-def generate_keypair ():
+def generate_keypair():
 	with open(unspentUtxoPath+generatedAddress+".txt", "x") as newDocumentPath
 		newDocumentPath.write("Address: {}\n\n" .format(generatedAddress))
 		encryptedPrivateKey = encrypt_plaintext("Seed: {}" .format(mnemonic.from_private_key(generatedPrivateKey)))

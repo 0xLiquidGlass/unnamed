@@ -35,13 +35,15 @@ More can be found here: [https://en.wikipedia.org/wiki/Unix_philosophy](https://
 
 More can be found here: [https://en.wikipedia.org/wiki/Self-documenting_code](https://en.wikipedia.org/wiki/Self-documenting_code)
 
-### c. Current naming conventions:
+### c. Current Naming Conventions:
 
 - File names --> PascalCase
 
 - Variables --> camelCase
 
 - Functions --> lower_case_with_underscores
+
+- Directories --> lowercase
 
 Note that all of thse naming conventions are only applicable to programs in Unnamed Wallet
 
@@ -51,7 +53,7 @@ Any pull requests are welcomed as long as they have a good reason to be implemen
 
 For your pull requests to be merged to the "main" branch, remember to:
 
-a. Clone the repo using "git clone https://github.com/0xLiquidGlass/unnamed.git"from the original repo. No fork is needed.
+a. Clone the repo using "git clone https://github.com/0xLiquidGlass/unnamed.git" from the original repo. No fork is needed.
 
 b. Do a "git remote add origin https://github.com/0xLiquidGlass/unnamed.git" to add the repo
 

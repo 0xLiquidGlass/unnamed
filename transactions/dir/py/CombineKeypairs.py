@@ -4,7 +4,7 @@ To do:
 2. Test program and simulate with balance
 """
 
-from FilePaths import unspentUtxoPath
+from globals.FilePaths import unspentUtxoPath
 from algosdk import mnemonic, encoding
 import os
 

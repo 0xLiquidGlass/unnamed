@@ -1,6 +1,6 @@
 from algosdk import account
 from CombineKeypairs import query_address
-from AlgodUtils import algodClient
+from globals.AlgodUtils import algodClient
 
 def query_balance_per_address():
 	totalBalanceInMicroAlgos = 0

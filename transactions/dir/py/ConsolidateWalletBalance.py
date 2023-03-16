@@ -14,9 +14,9 @@ To do:
 
 from CombineKeypairs import query_address, query_private_key
 from GenerateWallet import generatedAddress, generate_keypair
-from FilePaths import unspentUtxoPath, spentUtxoPath
+from globals.FilePaths import unspentUtxoPath, spentUtxoPath
 from algosdk import transaction
-from AlgodUtils import algodClient
+from globals.AlgodUtils import algodClient
 import os, shutil
 
 listOfKeypairs = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\

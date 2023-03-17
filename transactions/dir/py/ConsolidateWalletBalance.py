@@ -12,11 +12,12 @@ To do:
 3. Experiment on concurrent atomic transaction after sequential transaction is successful
 """
 
+from encryption.PasswordUtils import prompt_key, stretchedKey
 from CombineKeypairs import query_address, query_private_key
 from GenerateWallet import generatedAddress, generate_keypair
 from globals.FilePaths import unspentUtxoPath, spentUtxoPath
-from algosdk import transaction
 from globals.AlgodUtils import algodClient
+from algosdk import transaction
 import os, shutil
 
 listOfKeypairs = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
@@ -27,28 +28,30 @@ def consolidate_balance():
 	listSignedTx = []
 	batchedSignedTx = []
 	params = algodClient.suggested_params()
-	generate_keypair()
 	toOwnAddress = generatedAddress
 
 	# For testing
 	# print(listOfKeypairs)
 
+	prompt_key()
+        generate_keypair(stretchedKey)
+        query_private_key(stretchedKey)
+
 	for remainingUtxos in range(len(listOfKeypairs)):
-		currentUtxo = query_address()[remainingUtxos - 1]
+		currentUtxo = query_address()[remainingUtxos]
 		currentUtxoInfo = algodClient.account_info(currentUtxo)
-		balanceInMicroAlgos = currentUtxoInfo.get('amount')
+		balanceInMicroAlgos = currentUtxoInfo.get("amount")
 
 		if balanceInMicroAlgos != int(0):
 			currentUnsignedTx = transaction.PaymentTxn(currentUtxo, params, toOwnAddress, balanceInMicroAlgos)
 			listUnsignedTx.append(currentUnsignedTx)
-
 			# Next 1 line has sensitive data, private keys involved
-			signedTx = currentUnsignedTx.sign(query_private_key()[remainingUtxos - 1])
+			signedTx = currentUnsignedTx.sign(query_private_key()[remainingUtxos)
 			# For testing
 			# print(signedTx)
 			listSignedTx.append(signedTx)
-			listOfKeypairs[remainingUtxos - 1].close()
-			shutil.move(listOfKeypairs[remainingUtxos - 1], spentUtxoPath)
+			listOfKeypairs[remainingUtxos].close()
+			shutil.move(listOfKeypairs[remainingUtxos], spentUtxoPath)
 
 	for batchingListTxInfo in range(0, len(listUnsignedTx), 16):
 		batchingUnsignedTx = listUnsignedTx[batchingListTxInfo:batchingListTxInfo + 16]
@@ -60,19 +63,19 @@ def consolidate_balance():
 
 	for txBatch in range(len(batchedSignedTx)):
 		# For testing
-		# print(batchedSignedTx[txBatch - 1])
-		txId = algodClient.send_transactions(batchedSignedTx[txBatch - 1])
+		# print(batchedSignedTx[txBatch])
+		txId = algodClient.send_transactions(batchedSignedTx[txBatch])
 		confirmedTx = wait_for_confirmation(algodClient, txId, 10)
 		print("txID: {}".format(txId), " confirmed in round: {}".format(confirmedTx.get("confirmed-round", 0)))
 
 	for txBatches in range(len(batchedUnsignedTx)):
-		groupId = transaction.calculate_group_id(batchedUnsignedTx[txBatches - 1])
+		groupId = transaction.calculate_group_id(batchedUnsignedTx[txBatches])
 
 	for countUnsignedTx in range(len(listUnsignedTx)):
-		listUnsignedTx[countUnsignedTx - 1] = groupId
+		listUnsignedTx[countUnsignedTx] = groupId
 
 	for txBatch in range(len(batchedSignedTx)):
-		txId = algodClient.send_transaction(batchedSignedTx[txBatch - 1])
+		txId = algodClient.send_transaction(batchedSignedTx[txBatch])
 		confirmedTx = wait_for_confirmation(algodClient, txId, 10)
 		print("txID: {}".format(txId), " confirmed in round: {}".format(confirmedTx.get("confirmed-round", 0)))
 
@@ -80,5 +83,5 @@ if __name__ == "__main__":
 	if len(listOfKeypairs) != int(0):
 		consolidate_balance()
 	else:
-		print("\n\nYou Have Not Generated A Keypair Yet")
-		print("\n\nPlease Create A New Keypair And Fund It")
+		print("\n\nYou have not created an UTXO yet")
+		print("\n\nPlease generate a new UTXO and fund it")

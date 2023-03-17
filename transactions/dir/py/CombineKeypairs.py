@@ -4,6 +4,8 @@ To do:
 2. Test program and simulate with balance
 """
 
+from encryption.PasswordUtils import prompt_key, stretchedKey
+from enryption.Decrypt import decrypt_ciphertext
 from globals.FilePaths import unspentUtxoPath
 from algosdk import mnemonic, encoding
 import os
@@ -28,7 +30,7 @@ def query_address():
 		currentWallet.close()
 	return listOfAddresses
 
-def query_private_key():
+def query_private_key(stretchedKey):
 	listOfPrivateKeys = []
 	for fileList in walletFile:
 		currentWallet = open(unspentUtxoPath+fileList, "r")
@@ -37,16 +39,17 @@ def query_private_key():
 			if textLines.find("Seed") == 0:
 				# For testing
 				# print("This is a wallet")
-				individualWords = textLines.split(" ")
+				encryptedSeedPhrase = textLines.split(" ")
 				# For testing
-				# print (individualWords[1:26])
-				seedPhrase = " ".join(individualWords[1:26])
-				privateKey = mnemonic.to_private_key(seedPhrase)
+				# print (individualWords[1])
+				decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase[0], stretchedKey)
+				privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
 				listOfPrivateKeys.append(privateKey)
 		currentWallet.close()
 	return listOfPrivateKeys
 
 if __name__ == "__main__":
+	prompt_key()
 	print(walletFile)
 	print(query_address())
 	print(query_private_key())

@@ -10,7 +10,7 @@ def query_balance_per_address():
 		# print(algodClient)
 		accountInfo = algodClient.account_info(individualAddress)
 		totalBalanceInMicroAlgos += accountInfo.get("amount")
-	print ("Your Balance: {:.2f} Algos" . format(totalBalanceInMicroAlgos*(10**-6)))
+	print ("\n\nYour Balance: {:.2f} Algos" . format(totalBalanceInMicroAlgos*(10**-6)))
 
 
 if __name__ == "__main__":

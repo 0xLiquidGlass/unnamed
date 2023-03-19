@@ -37,7 +37,7 @@ More can be found here: [https://en.wikipedia.org/wiki/Self-documenting_code](ht
 
 ### c. Current Naming Conventions:
 
-- File names --> PascalCase
+- File names / Exceptions --> PascalCase
 
 - Variables --> camelCase
 
@@ -53,19 +53,19 @@ Any pull requests are welcomed as long as they have a good reason to be implemen
 
 For your pull requests to be merged to the "main" branch, remember to:
 
-a. Clone the repo using "git clone https://github.com/0xLiquidGlass/unnamed.git" from the original repo. No fork is needed.
+    a. Clone the repo using "git clone https://github.com/0xLiquidGlass/unnamed.git" from the original repo. No fork is needed.
 
-b. Do a "git remote add origin https://github.com/0xLiquidGlass/unnamed.git" to add the repo
+    b. Do a "git remote add origin https://github.com/0xLiquidGlass/unnamed.git" to add the repo
 
-c. Do a "git checkout" with the option "-b" with the name of your new branch to create the new branch
+    c. Do a "git checkout" with the option "-b" with the name of your new branch to create the new branch
 
-d. Go to the directory where you want to commit your changes or additions and do a "git add <files or directory>"
+    d. Go to the directory where you want to commit your changes or additions and do a "git add <files or directory>"
 
-e. Do a "git commit" with your PGP key signature using "-S" (capital S) and add a brief message containing using "-m" what the merge is about and if possible, state briefly what are the changes or additions
+    e. Do a "git commit" with your PGP key signature using "-S" (capital S) and add a brief message containing using "-m" what the merge is about and if possible, state briefly what are the changes or additions
 
-f. "git push origin -u <branch name>" your new branch to the original repo
+    f. "git push origin -u <branch name>" your new branch to the original repo
 
-g. Go to the repo's branch that you pushed to and click "Create pull request" when you are ready to do a pull request
+    g. Go to the repo's branch that you pushed to and click "Create pull request" when you are ready to do a pull request
 
 [Here](https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key) is how you can tell Github about your PGP signing key
 

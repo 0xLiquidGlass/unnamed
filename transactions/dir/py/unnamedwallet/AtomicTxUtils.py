@@ -15,7 +15,7 @@ listBatchedSignedTx = []
 def unsigned_tx_type_prepare(txType, receivingAddress, sendingMicroAlgos):
         if txType == "internal":
                 prepare_unsigned_tx(receivingAddress, "all")
-        if txType == "external":
+        elif txType == "external":
                 prepare_unsigned_tx(receivingAddress, sendingMicroAlgos)
 
 def prepare_unsigned_tx(receivingAddress, sendingMicroAlgos):
@@ -24,12 +24,8 @@ def prepare_unsigned_tx(receivingAddress, sendingMicroAlgos):
                 utxoInfo = algodClient.account_info(currentUtxo)
                 utxoBalance = utxoInfo.get("amount")
                 try:
-                        check_utxo_positive_balance(utxoBalance)     
-                        if sendingMicroAlgos == "all":
-                                prepare_regular_tx(currentUtxo, receivingAddress, utxoBalance)
-                        else:
-                                prepare_tx_with_change(sendingMicroAlgos, currentUtxo, receivingAddress, utxoBalance)
-                                sendingMicroAlgos = sendingMicroAlgos - utxoBalance
+                        check_utxo_positive_balance(utxoBalance)
+                        regular_change_unsigned_tx(sendingMicroAlgos, currentUtxo, receivingAddress, utxoBalance)
                 except UtxoZeroBalance:
                         pass
                 except UnsafeUtxoDust:
@@ -38,11 +34,18 @@ def prepare_unsigned_tx(receivingAddress, sendingMicroAlgos):
                 except FinalTxWithChange:
                         break
 
+def regular_change_unsigned_tx(sendingMicroAlgos, currentUtxo, receivingAddress, utxoBalance):
+        if sendingMicroAlgos == "all":
+                prepare_regular_tx(currentUtxo, receivingAddress, utxoBalance)
+        else:
+                prepare_tx_with_change(sendingMicroAlgos, currentUtxo, receivingAddress, utxoBalance)
+                sendingMicroAlgos = sendingMicroAlgos - utxoBalance
+
 def prepare_tx_with_change(sendingMicroAlgos, currentUtxo, utxoBalance, receivingAddress, utxoBalance):
         if sendingMicroAlgos > utxoBalance:
                 prepare_regular_tx(currentUtxo, utxoBalance, receivingAddress, utxoBalance)
         else:
-                prepare_change_tx(sendingMicroAlgos, currentUtxo, utxoBalance, receivingAddress, utxoBalance)
+                prepare_change_tx(sendingMicroAlgos, currentUtxo, receivingAddress, utxoBalance)
 
 def prepare_regular_tx(currentUtxo, receivingAddress, utxoBalance):
         unsignedTx = transaction.PaymentTxn(currentUtxo, params, receivingAddress, utxoBalance)
@@ -70,13 +73,33 @@ def check_utxo_no_dust(utxoBalance):
         else:
                 raise UnsafeUtxoDust ("\n\nThis UTXO contains dust. Recommended to not use this UTXO")
 
-def prepare_sign_unsigned_tx(stretchedKey):
+def prepare_sign_unsigned_tx(txType, stretchedKey):
         # Sensitive data, private keys involved
         decryptPrivateKey = query_private_key(stretchedKey)
-        for currentUnsignedTx in len(listUnsignedTx):
-                privateKey = query_private_key()[currentUnsignedTx]
-                signedTx = listUnsignedTx[currentUnsignedTx].sign(privateKey)
-                listSignedTx.append(signedTx)
+        for indexCurrentUnsignedTx in len(listUnsignedTx):
+                if txType == "internal":
+                        prepare_regular_signing(indexCurrentUnsignedTx)
+                elif txType == "external":
+                        regular_change_signing_switch(indexCurrentUnsignedTx)
+
+def regular_change_signing_switch(indexCurrentUnsignedTx):
+        if indexCurrentUnsignedTx > int(2):
+                prepare_regular_signing(indexCurrentUnsignedTx)
+        elif indexCurrentUnsignedTx <= int(2):
+                prepare_signing_with_change(indexCurrentUnsignedTx)
+
+def prepare_regular_signing(indexCurrentUnsignedTx):
+        # Sensitive date, private keys involved
+        decryptedPrivateKey = query_private_key()[indexCurrentUnsignedTx]
+        signedTx = listUnsignedTx[indexCurrentUnsignedTx].sign(decryptedPrivateKey)
+        listSignedTx.append(signedTx)
+
+def prepare_signing_with_change(indexCurrentUnsignedTx):
+        # Sensitive data, private keys involved
+        prepare_regular_signing(indexCurrentUnsignedTx)
+        decryptedPrivateKey = query_private_key()[indexCurrentUnsignedTx]
+        signedTx = listUnsignedTx[indexCurrentUnsignedTx + 1].sign(decryptedPrivateKey)
+        listSignedTx.append(signedTx)
 
 def batch_unsigned_tx():
         for numberOfUnsignedTx in range(0, len(listUnsignedTx), 16):
@@ -107,4 +130,3 @@ def send_transaction_group():
         except algosdk.error.AlgodHTTPError:
                 print ("\n\nSandbox has not started yet. Quit this app and restart")
                 exit(1)
-

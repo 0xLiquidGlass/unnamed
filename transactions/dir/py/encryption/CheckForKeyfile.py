@@ -1,7 +1,9 @@
 from ..FilePaths import keyfilePath
+from os import path.exists
 
 def check_for_keyfile():
-        if keyfilePath == "":
+
+        if path.exists(keyfilePath) == False:
                 return ""
         else:
                 with open(keyfilePath, "r") as keyfileData:

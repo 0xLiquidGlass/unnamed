@@ -2,7 +2,7 @@
 
 # For Debian
 
-./dir/sh/dependencies/sandbox/sandbox up mainnet -v -s
+sudo ./dir/sh/dependencies/sandbox/sandbox up mainnet -v -s
 
 clear
 
@@ -10,7 +10,12 @@ echo -e "Welcome To Unnamed Wallet\n\n"
 
 while true
 do
-	echo -e "1 --> Setup\n\n2 --> Generate a new wallet\n\n3 --> Check Algo balance\n\n4 --> Consolidate UTXOs\n\n5 --> Documentation\n\n6 --> Quit\n"
+	echo -e "1 --> Setup"
+	echo -e "\n\n2 --> Generate a new wallet"
+	echo -e "\n\n3 --> Check Algo balance"
+	echo -e "\n\n4 --> Consolidate UTXOs"
+	echo -e "\n\n5 --> Documentation"
+	echo -e "\n\n6 --> Quit\n"
 
 	read -p "Your choice: " choice
 
@@ -25,34 +30,34 @@ do
 
         if [ "$choice" = "1" ]; then
                 clear
-		read -p "Installing dependencies\n\nPress enter to continue"
+		read -p "Installing dependencies. Press enter to continue"
 		cd ./dir/sh/dependencies/
-                ./debian-packages.sh
-		read -p "Done. Press enter to continue" nil
+		source DebianPackages.sh
+		read -p "Setup done. Press enter to continue" nil
 		cd ../../../
 		clear
 
         elif [ "$choice" = "2" ]; then
                 clear
-		cd ./dir/py/
+		cd ./dir/py/unnamedwallet/
 		python3 GenerateWallet.py
 		read -p "Press enter to continue"
-		cd ../../
+		cd ../../../
 		clear
 
         elif [ "$choice" = "3" ]; then
                 clear
-		cd ./dir/py/
+		cd ./dir/py/unnamedwallet/
                 python3 AssetBalance.py
 		read -p "Press enter to go back" nil
-                cd ../../
+                cd ../../../
                 clear
 
         elif [ "$choice" = "4" ]; then
                 clear
-		cd ./dir/py/
+		cd ./dir/py//unnamedwallet/
                 python3 ConsolidateWalletBalance.py
-		cd ../../
+		cd ../../../
 		clear
 
         elif [ "$choice" = "5" ]; then
@@ -63,7 +68,7 @@ do
 
         elif [ "$choice" = "6" ]; then
                 clear
-		./dir/sh/dependencies/sandbox/sandbox down
+		sudo ./dir/sh/dependencies/sandbox/sandbox down
 		clear
                 exit 0
 

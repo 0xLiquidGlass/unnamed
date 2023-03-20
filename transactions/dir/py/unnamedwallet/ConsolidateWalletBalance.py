@@ -16,9 +16,9 @@ def consolidate_balance():
 	prompt_key()
         generate_keypair(stretchedKey)
         receivingAddress = generatedAddress
-        AtomicTx.prepare_tx_type("internal", receivingAddress, None)
+        AtomicTx.unsigned_tx_type_prepare("internal", receivingAddress, None)
         query_private_key(stretchedKey)
-        AtomicTx.prepare_sign_unsigned_tx(stretchedKey)
+        AtomicTx.prepare_sign_unsigned_tx("internal", stretchedKey)
         AtomicTx.batch_unsigned_tx()
         AtomicTx.calculate_groupid()
         AtomicTx.batch_signed_tx()

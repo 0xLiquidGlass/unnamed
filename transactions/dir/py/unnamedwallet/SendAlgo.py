@@ -13,7 +13,7 @@ def prepare_send_info():
                 validate_address(receivingAddress)
         except NotValidAddress:
                 prepare_send_info()
-        
+
         while True:
                 print(totalBalance)
                 sendingAlgos = int(input("\n\nHow many Algos to send: "))
@@ -28,7 +28,7 @@ def send_to_receiver(receivingAddress, sendingMicroAlgos):
         prompt_key()
         AtomicTx.unsigned_tx_type_prepare("external", receivingAddress, sendingMicroAlgos)
         query_private_key(stretched_key)
-        AtomicTx.prepare_sign_unsigned_tx(stretchedKey)
+        AtomicTx.prepare_sign_unsigned_tx("external", stretchedKey)
         AtomicTx.batch_unsigned_tx()
         AtomicTx.calculate_groupid()
         AtomicTx.batch_signed_tx()

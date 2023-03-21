@@ -11,11 +11,11 @@ echo -e "Welcome To Unnamed Wallet\n\n"
 while true
 do
 	echo -e "1 --> Setup"
-	echo -e "\n2 --> Generate a new wallet"
-	echo -e "\n3 --> Check Algo balance"
-	echo -e "\n4 --> Consolidate UTXOs"
-	echo -e "\n5 --> Documentation"
-	echo -e "\n6 --> Quit\n"
+	echo -e "\n\n2 --> Generate a new wallet"
+	echo -e "\n\n3 --> Check Algo balance"
+	echo -e "\n\n4 --> Consolidate UTXOs"
+	echo -e "\n\n5 --> Documentation"
+	echo -e "\n\n6 --> Quit\n"
 
 	read -p "Your choice: " choice
 

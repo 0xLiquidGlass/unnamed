@@ -6,7 +6,7 @@ from algosdk import account, mnemonic
 generatedPrivateKey, generatedAddress = account.generate_account()
 
 def generate_keypair(stretchedKey):
-	with open(unspentUtxoPath+generatedAddress+".txt", "x") as newDocumentPath
+	with open(unspentUtxoPath+generatedAddress+".txt", "x") as newDocumentPath:
 		newDocumentPath.write("Address: {}\n\n" .format(generatedAddress))
 		plainSeedPhrase = ("Seed: {}" .format(mnemonic.from_private_key(generatedPrivateKey)))
 		encryptedSeedPhrase = encrypt_plaintext(plainSeedPhrase, stretchedKey)
@@ -22,8 +22,8 @@ if __name__ == "__main__":
 			numberOfKeypairs = int(input("\n\nNumber of addresses to generate: "))
 			for generatingKeypairs in range(numberOfKeypairs):
 				generate_keypair(stretchedKey)
-			break
-		except:
-			print ("\n\nPlease try again")
+				break
 		except OverflowError:
 			print ("\n\nSeriously???")
+		except:
+			print ("\n\nPlease try again")

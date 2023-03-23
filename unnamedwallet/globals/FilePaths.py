@@ -1,4 +1,4 @@
-unspentUtxoPath = "./wallet/transaction/unspent/"
-spentUtxoPath = "./wallet/transaction/spent/"
-unsafeUtxoPath = "./wallet/transaction/unsafe/"
+unspentUtxoPath = "wallet/transaction/unspent/"
+spentUtxoPath = "wallet/transaction/spent/"
+unsafeUtxoPath = "wallet/transaction/unsafe/"
 keyfilePath = ""

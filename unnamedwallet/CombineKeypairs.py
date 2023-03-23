@@ -29,23 +29,23 @@ def query_address():
 	return listOfAddresses
 
 def query_private_key(stretchedKey):
-	listOfPrivateKeys = []
-	for fileList in walletFile:
-		with open(unspentUtxoPath+fileList, "r") as currentWallet:
-		        searchKeywordInFile = currentWallet.readlines()
-		        for textLines in searchKeywordInFile:
-			        if textLines.find("Seed") == 0:
-				        # For testing
-				        # print("This is a wallet")
-				        encryptedSeedPhrase = textLines.split(" ")
-				        # For testing
-				        # print (individualWords[1])
-				        decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase[0], stretchedKey)
-				        privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
-				        listOfPrivateKeys.append(privateKey)
-	return listOfPrivateKeys
+        listOfPrivateKeys = []
+        for fileList in walletFile:
+                with open(unspentUtxoPath+fileList, "r") as currentWallet:
+                        searchKeywordInFile = currentWallet.readlines()
+                        for textLines in searchKeywordInFile:
+                                if textLines.find("Seed: ") == 0:
+                                        # For testing
+                                        # print("This is a wallet")
+                                        encryptedSeedPhrase = textLines.split(": ")
+                                        # For testing
+                                        print (encryptedSeedPhrase[1])
+                                        decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase[1], stretchedKey)
+                                        privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
+                                        listOfPrivateKeys.append(privateKey)
+                                        return listOfPrivateKeys
 
 if __name__ == "__main__":
-	print(walletFile)
-	print(query_address())
-	print(query_private_key(get_key()))
+        print(walletFile)
+        print(query_address())
+        print(query_private_key(get_key()))

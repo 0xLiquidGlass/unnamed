@@ -6,5 +6,6 @@ def encrypt_plaintext(stringPlaintextData, stretchedKey):
         nonce = utils.random(secret.SecretBox.NONCE_SIZE)
         bytePlaintextData = stringPlaintextData.encode(encoding)
         byteEncryptedData = box.encrypt(bytePlaintextData, nonce)
-        stringEncryptedData = str(byteEncryptedData)
-        return stringEncryptedData
+        # For testing
+        # print(byteEncryptedData)
+        return byteEncryptedData

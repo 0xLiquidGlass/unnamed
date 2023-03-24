@@ -4,7 +4,6 @@ from nacl import secret, utils, pwhash
 from getpass import getpass
 
 def get_key():
-        finalKey = None
         password = getpass(prompt = "\n\nPassword: ")
         input("\n\nInsert your external drive containing the keyfile and mount it\n\nPress enter to continue")
         key = password + check_for_keyfile()

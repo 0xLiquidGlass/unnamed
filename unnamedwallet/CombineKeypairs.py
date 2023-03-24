@@ -39,13 +39,15 @@ def query_private_key(stretchedKey):
                                         # print("This is a wallet")
                                         encryptedSeedPhrase = textLines.split(": ")
                                         # For testing
-                                        print (encryptedSeedPhrase[1])
-                                        decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase[1], stretchedKey)
-                                        privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
-                                        listOfPrivateKeys.append(privateKey)
-                                        return listOfPrivateKeys
+                                        # print (encryptedSeedPhrase[1])
+                        decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase[1], stretchedKey)
+                        privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
+                        listOfPrivateKeys.append(privateKey)
+        return listOfPrivateKeys
 
 if __name__ == "__main__":
         print(walletFile)
         print(query_address())
-        print(query_private_key(get_key()))
+        stretchedKey = get_key()
+        print(stretchedKey)
+        print(query_private_key(stretchedKey))

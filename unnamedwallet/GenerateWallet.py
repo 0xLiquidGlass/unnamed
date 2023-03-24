@@ -15,6 +15,7 @@ def generate_keypair(stretchedKey):
 
 if __name__ == "__main__":
         stretchedKey = get_key()
+        print(stretchedKey)
         while True:
                 try:
                         numberOfKeypairs = int(input("\n\nNumber of addresses to generate: "))
@@ -29,7 +30,7 @@ if __name__ == "__main__":
                 except KeyboardInterrupt:
                         exit(0)
                 except FileNotFoundError:
-                        print ("Your wallets directory is not created properly. Run setup and try again")
+                        print ("\n\nYour wallets directory is not created properly. Run setup and try again")
                         exit (1)
                 # except:
                         # print ("\n\nPlease try again")

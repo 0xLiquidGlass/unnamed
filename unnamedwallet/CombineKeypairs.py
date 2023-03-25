@@ -3,7 +3,7 @@ To do:
 1. Handle more than 2 iterations, can handle 2 currently
 2. Test program and simulate with balance
 """
-from PasswordUtils import get_key
+from PasswordUtils import get_key, stretch_key
 from Decrypt import decrypt_ciphertext
 from globals.FilePaths import unspentUtxoPath
 from algosdk import mnemonic, encoding
@@ -14,12 +14,10 @@ walletFile = [filename for filename in os.listdir(unspentUtxoPath) if filename.e
 def query_address():
 	listOfAddresses = []
 	for fileList in walletFile:
-		with open(unspentUtxoPath+fileList, "r") as currentWallet:
+		with open(unspentUtxoPath + fileList, "r") as currentWallet:
 		        searchKeywordInFile = currentWallet.readlines()
 		        for textLines in searchKeywordInFile:
 			        if textLines.find("Address") == 0:
-				        # For testing
-				        # print("This is a wallet")
 				        addressToList = textLines.split(" ")
 				        # For testing
 				        # print (addressToList[1])
@@ -28,26 +26,30 @@ def query_address():
 				        listOfAddresses.append(address)
 	return listOfAddresses
 
-def query_private_key(stretchedKey):
-        listOfPrivateKeys = []
+def query_private_key(obtainedKey):
+        # listOfPrivateKeys = []
         for fileList in walletFile:
-                with open(unspentUtxoPath+fileList, "r") as currentWallet:
+                with open(unspentUtxoPath + fileList, "r") as currentWallet:
                         searchKeywordInFile = currentWallet.readlines()
                         for textLines in searchKeywordInFile:
                                 if textLines.find("Seed: ") == 0:
+                                        findEncryptedSeedPhrase = textLines.split(": ")
+                                        obtainedEncryptedSeedPhrase =  findEncryptedSeedPhrase[1]
                                         # For testing
-                                        # print("This is a wallet")
-                                        encryptedSeedPhrase = textLines.split(": ")
+                                        # print (obtainedEncryptedSeedPhrase)
+                                if textLines.find("Salt: ") == 0:
+                                        findSalt = textLines.split(": ")
+                                        obtainedSalt = findSalt[1]
                                         # For testing
-                                        # print (encryptedSeedPhrase[1])
-                        decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase[1], stretchedKey)
-                        privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
-                        listOfPrivateKeys.append(privateKey)
+                                        # print(obtainedSalt)
+                                stretchedKey = stretch_key(obtainedKey, obtainedSalt)
+                                decryptedSeedPhrase = decrypt_ciphertext(obtainedEncryptedSeedPhrase, stretchedKey)
+                                privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
+                                listOfPrivateKeys.append(privateKey)
         return listOfPrivateKeys
 
 if __name__ == "__main__":
         print(walletFile)
         print(query_address())
-        stretchedKey = get_key()
-        print(stretchedKey)
-        print(query_private_key(stretchedKey))
+        obtainedKey = get_key()
+        print(query_private_key(obtainedKey))

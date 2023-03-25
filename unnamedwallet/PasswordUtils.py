@@ -8,12 +8,20 @@ def get_key():
         input("\n\nInsert your external drive containing the keyfile and mount it\n\nPress enter to continue")
         key = password + check_for_keyfile()
         encodedKey = key.encode(encoding)
+        return encodedKey
+
+def generate_kdf_salt():
+        generatedSalt = utils.random(pwhash.argon2i.SALTBYTES)
+        return generatedSalt
+
+def stretch_key(encodedKey, salt):
         kdf = pwhash.argon2i.kdf
-        salt = utils.random(pwhash.argon2i.SALTBYTES)
         operations = pwhash.argon2i.OPSLIMIT_SENSITIVE
         memory = pwhash.argon2i.MEMLIMIT_SENSITIVE
         kdfDerivedKey = kdf(secret.SecretBox.KEY_SIZE, encodedKey, salt, opslimit = operations, memlimit = memory)
         return kdfDerivedKey
 
 if __name__ == "__main__":
-	print (get_key())
+        obtainedKey = get_key()
+        generatedSalt = initialize_kdf_salt()
+        print(strech_key(obtainedKey, generatedSalt))

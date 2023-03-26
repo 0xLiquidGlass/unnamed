@@ -1,5 +1,9 @@
-from ..globals.FilePaths import keyfilePath
-from ..globals.Encoding import encoding
+"""
+Written by Liquid Glass
+"""
+
+from globals.FilePaths import keyfilePath
+from globals.Encoding import textEncodingFormat
 from os import urandom, path.exists
 
 def make_keyfile():
@@ -24,7 +28,7 @@ def write_keyfile_path(inputKeyfilePath):
 def write_keyfile_data(keyfilePath):
         with open (keyfilePath, "w") as writeToKeyfile:
                 binaryUrandomData = urandom(64)
-                stringUrandomData = binaryUrandomData.decode(encoding)
+                stringUrandomData = binaryUrandomData.decode(textEncodingFormat)
                 writeToKeyfile.write(stringUrandomData)
                 print("\n\nPlease keep your keyfile offline when not in use")
                 print("\n\nAnyone who has your keyfile can weaken your wallet's security")

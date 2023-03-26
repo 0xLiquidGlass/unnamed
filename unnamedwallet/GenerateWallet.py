@@ -1,7 +1,20 @@
+"""
+Written by Liquid Glass
+
+Useable functions when imported:
+
+1. generate_keypair(generatedSalt, stretchedKey)
+
+Where generatedSalt is a salt that is newly generated for every keypair and
+stretchedKey (which contains the key that has gone through key stretching) 
+will be different each time due to a unique salt that is used during the
+key stretching process
+"""
+
 from PasswordUtils import get_key, generate_kdf_salt, stretch_key
 from Encrypt import encrypt_plaintext
 from globals.FilePaths import unspentUtxoPath
-from globals.Encoding import encoding
+from globals.Encoding import naclEncodingFormat
 from algosdk import account, mnemonic
 
 def generate_keypair(generatedSalt, strechedKey):
@@ -12,17 +25,17 @@ def generate_keypair(generatedSalt, strechedKey):
                          print("\n\nAddress: {}" .format(generatedAddress))
                 plainSeedPhrase = mnemonic.from_private_key(generatedPrivateKey)
                 encryptedSeedPhrase = encrypt_plaintext(plainSeedPhrase, stretchedKey)
-                newDocumentPath.write("Seed: {}\n\n".format(encryptedSeedPhrase))
-                newDocumentPath.write("Salt: {}".format(generatedSalt))
+                newDocumentPath.write("Seed: {}\n\n".format(encryptedSeedPhrase.decode(naclEncodingFormat)))
+                newDocumentPath.write("Salt: {}".format(generatedSalt.decode(naclEncodingFormat)))
 
 if __name__ == "__main__":
         obtainedKey = get_key()
-        generatedSalt = generate_kdf_salt()
-        stretchedKey = stretch_key(obtainedKey, generatedSalt)
         while True:
                 try:
                         numberOfKeypairs = int(input("\n\nNumber of addresses to generate: "))
                         for generatingKeypairs in range(numberOfKeypairs):
+                                generatedSalt = generate_kdf_salt()
+                                stretchedKey = stretch_key(obtainedKey, generatedSalt)
                                 generate_keypair(generatedSalt, stretchedKey)
                         print("\n\nPlease Keep The Newly Generated Keypair Safe!\n\nAnyone Who Has Your Seed CAN Spend Your Algos!\n\n")
                         break

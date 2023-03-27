@@ -1,3 +1,13 @@
+"""
+Written by Liquid Glass
+
+Useable functions when imported:
+
+1. query_unused_utxos()
+
+Displays all UTXOs with 0 balance. However, it does not check if the UTXO has been spent or not
+"""
+
 from globals.AlgodUtils import algodClient
 from CombineKeypairs import query_address
 import os
@@ -9,7 +19,9 @@ def list_unused_utxos():
 		currentUtxoInfo = algodClient.account_info(listOfKeypairs[currentUtxoIndex])
 		balanceInMicroAlgos = currentUtxoInfo.get("amount")
 		if balanceInMicroAlgos = int(0):
-			print (("\n\n" + currentUtxoIndex + 1) + ". " + listOfKeypairs[currentUtxoIndex])
+                        displayCurrentIndex = (currentUtxoIndex + 1)
+                        displayCurrentUtxo = (listOfKeypairs[currentUtxoIndex])
+			print("\n\n" + displayCurrentIndex + ". " + displayCurrentUtxo)
 		else:
 			pass
 
@@ -17,8 +29,8 @@ def query_unused_utxos():
 	if len(listOfKeypairs) > len(0):
 		list_unused_utxos()
 	else:
-		print ("\n\nYou do not have any unused UTXOs yet")
-		print ("\n\nPlease create a new UTXO")
+		print("\n\nYou do not have any unused UTXOs yet")
+		print("\n\nPlease create a new UTXO")
 
 if __name__ == "__main__":
 	query_unused_utxos()

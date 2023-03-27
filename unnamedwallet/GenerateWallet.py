@@ -39,12 +39,14 @@ if __name__ == "__main__":
                                 generate_keypair(generatedSalt, stretchedKey)
                         print("\n\nPlease Keep The Newly Generated Keypair Safe!\n\nAnyone Who Has Your Seed CAN Spend Your Algos!\n\n")
                         break
+                except ValueError:
+                        print("\n\nNot the correct value. Please try again")
                 except OverflowError:
-                        print ("\n\nSeriously???")
+                        print("\n\nSeriously???")
                 except KeyboardInterrupt:
                         exit(0)
                 except FileNotFoundError:
-                        print ("\n\nYour wallets directory is not created properly. Run setup and try again")
+                        print("\n\nYour wallets directory is not created properly. Run setup and try again")
                         exit (1)
-                # except:
-                        # print ("\n\nPlease try again")
+                except:
+                        print("\n\nPlease try again")

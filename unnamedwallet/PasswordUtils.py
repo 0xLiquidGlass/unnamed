@@ -27,10 +27,10 @@ from nacl import secret, utils, pwhash
 from getpass import getpass
 
 def get_key():
-        password = getpass(prompt = "\n\nPassword: ")
+        textPassword = getpass(prompt = "\n\nPassword: ")
+        encodedPassword = textPassword.encode(textEncodingFormat)
         input("\n\nInsert your external drive containing the keyfile and mount it\n\nPress enter to continue")
-        key = password + check_for_keyfile()
-        encodedKey = key.encode(textEncodingFormat)
+        encodedKey = encodedPassword + check_for_keyfile()
         return encodedKey
 
 def generate_kdf_salt():

@@ -14,7 +14,6 @@ key stretching process
 from PasswordUtils import get_key, generate_kdf_salt, stretch_key
 from Encrypt import encrypt_plaintext
 from globals.FilePaths import unspentUtxoPath
-from globals.Encoding import naclEncodingFormat
 from algosdk import account, mnemonic
 
 def generate_keypair(generatedSalt, strechedKey):
@@ -25,8 +24,12 @@ def generate_keypair(generatedSalt, strechedKey):
                          print("\n\nAddress: {}" .format(generatedAddress))
                 plainSeedPhrase = mnemonic.from_private_key(generatedPrivateKey)
                 encryptedSeedPhrase = encrypt_plaintext(plainSeedPhrase, stretchedKey)
-                newDocumentPath.write("Seed: {}\n\n".format(encryptedSeedPhrase.decode(naclEncodingFormat)))
-                newDocumentPath.write("Salt: {}".format(generatedSalt.decode(naclEncodingFormat)))
+                # For testing
+                # print(encryptedSeedPhrase)
+                # For testing
+                # print(generatedSalt)
+                newDocumentPath.write("Seed: {}\n\n".format(encryptedSeedPhrase))
+                newDocumentPath.write("Salt: {}".format(generatedSalt))
 
 if __name__ == "__main__":
         obtainedKey = get_key()
@@ -46,7 +49,7 @@ if __name__ == "__main__":
                 except KeyboardInterrupt:
                         exit(0)
                 except FileNotFoundError:
-                        print("\n\nYour wallets directory is not created properly. Run setup and try again")
+                        print("\n\nYour wallet/ directory is not created properly. Run setup and try again")
                         exit (1)
                 except:
                         print("\n\nPlease try again")

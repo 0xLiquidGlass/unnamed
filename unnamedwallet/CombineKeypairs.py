@@ -10,40 +10,40 @@ Where obtainedKey is the password that can be obtained via PasswordUtils using g
 from PasswordUtils import get_key, stretch_key
 from Decrypt import decrypt_ciphertext
 from globals.FilePaths import unspentUtxoPath
-from globals.Encoding import naclEncodingFormat
-from algosdk import mnemonic, encoding
+from algosdk import mnemonic
 import os
 
 walletFile = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
 
 def query_address():
          listOfAddresses = []
-         listOfAddresses.append(open_and_read_wallet("address"))
+         for fileList in walletFile:
+                 listOfAddresses.append(open_and_read_wallet("address", fileList))
          return listOfAddresses
 
 def query_private_key(obtainedKey):
         listOfPrivateKeys = []
-        encryptedSeedPhrase = open_and_read_wallet("seed_phrase")
-        # For testing
-        # print(encryptedSeedPhrase)
-        individualSalt = open_and_read_wallet("salt")
-        # For testing
-        # print(individualSalt)
-        stretchedKey = stretch_key(obtainedKey, individualSalt)
-        decryptedSeedPhrase =  decrypt_ciphertext(encryptedSeedPhrase, stretchedKey)
-        # For testing
-        # print(decryptedSeedPhrase)
-        privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
-        listOfPrivateKeys.append(privateKey)
+        for fileList in walletFile:
+                encryptedSeedPhrase = open_and_read_wallet("seed_phrase", fileList)
+                # For testing
+                # print(encryptedSeedPhrase)
+                individualSalt = open_and_read_wallet("salt", fileList)
+                # For testing
+                # print(individualSalt)
+                stretchedKey = stretch_key(obtainedKey, individualSalt)
+                decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase, stretchedKey)
+                # For testing
+                # print(decryptedSeedPhrase)
+                privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
+                listOfPrivateKeys.append(privateKey)
         return listOfPrivateKeys
 
-def open_and_read_wallet(getType):
-        for fileList in walletFile:
-                with open(unspentUtxoPath + fileList, "r") as currentWallet:
-                        searchKeywordInFile = currentWallet.readlines()
-                        # For testing
-                        # print(searchKeywordInFile)
-                        return find_and_obtain_type(getType, searchKeywordInFile)
+def open_and_read_wallet(getType, fileList):
+        with open(unspentUtxoPath + fileList, "r") as currentWallet:
+                searchKeywordInFile = currentWallet.readlines()
+                # For testing
+                # print(searchKeywordInFile)
+                return find_and_obtain_type(getType, searchKeywordInFile)
 
 def find_and_obtain_type(getType, searchKeywordInFile):
         if getType == "address":
@@ -70,8 +70,8 @@ def obtain_encrypted_seed_phrase(searchKeywordInFile):
                         findEncryptedSeedPhrase = textLines.split(": ")
                         obtainedEncryptedSeedPhrase = findEncryptedSeedPhrase[1].strip()
                         # For testing
-                        # print(obtainedEncryptedSeedPhrase)
-                        return obtainedEncryptedSeedPhrase.encode(naclEncodingFormat)
+                        #print(obtainedEncryptedSeedPhrase)
+                        return obtainedEncryptedSeedPhrase
 
 def obtain_salt(searchKeywordInFile):
         for textLines in searchKeywordInFile:
@@ -80,7 +80,7 @@ def obtain_salt(searchKeywordInFile):
                         obtainedSalt = findSalt[1].strip()
                         # For testing
                         # print(obtainedSalt)
-                        return obtainedSalt.encode(naclEncodingFormat)
+                        return obtainedSalt
 
 if __name__ == "__main__":
         print(walletFile)

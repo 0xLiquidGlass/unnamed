@@ -12,6 +12,7 @@ will be passed
 """
 
 from globals.Encoding import textEncodingFormat
+from base64 import b64decode
 from os import path
 
 def check_for_keyfile():
@@ -42,8 +43,9 @@ def read_keyfile_data(anyKeyfilePath):
                         return pass_empty_byte()
                 else:
                         with open(anyKeyfilePath, "r") as keyfileData:
-                                readKeyfileData = keyfileData.read(128)
-                                return readKeyfileData
+                                readKeyfileAscii = keyfileData.read(128)
+                                keyfileBytes = b64decode(readKeyfileAscii)
+                                return keyfileBytes
         except TypeError:
                 return pass_empty_byte()
 

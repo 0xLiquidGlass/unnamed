@@ -13,23 +13,29 @@ key stretching process
 
 from PasswordUtils import get_key, generate_kdf_salt, stretch_key
 from Encrypt import encrypt_plaintext
+from globals.Encoding import textEncodingFormat
 from globals.FilePaths import unspentUtxoPath
 from algosdk import account, mnemonic
+from base64 import b64encode
 
 def generate_keypair(generatedSalt, strechedKey):
         generatedPrivateKey, generatedAddress = account.generate_account()
         with open(unspentUtxoPath+generatedAddress+".txt", "x") as newDocumentPath:
                 newDocumentPath.write("Address: {}\n\n" .format(generatedAddress))
                 if __name__ == "__main__":
-                         print("\n\nAddress: {}" .format(generatedAddress))
+                         print("\n\nAddress: {}\n\n" .format(generatedAddress))
                 plainSeedPhrase = mnemonic.from_private_key(generatedPrivateKey)
                 encryptedSeedPhrase = encrypt_plaintext(plainSeedPhrase, stretchedKey)
                 # For testing
                 # print(encryptedSeedPhrase)
                 # For testing
                 # print(generatedSalt)
-                newDocumentPath.write("Seed: {}\n\n".format(encryptedSeedPhrase))
-                newDocumentPath.write("Salt: {}".format(generatedSalt))
+                b64encodedEncryptedSeedPhrase = b64encode(encryptedSeedPhrase)
+                b64encodedGeneratedSalt = b64encode(generatedSalt)
+                stringEncryptedSeedPhrase = b64encodedEncryptedSeedPhrase.decode(textEncodingFormat)
+                stringGeneratedSalt = b64encodedGeneratedSalt.decode(textEncodingFormat)
+                newDocumentPath.write("Seed: {}\n\n".format(stringEncryptedSeedPhrase))
+                newDocumentPath.write("Salt: {}".format(stringGeneratedSalt))
 
 if __name__ == "__main__":
         obtainedKey = get_key()
@@ -51,5 +57,3 @@ if __name__ == "__main__":
                 except FileNotFoundError:
                         print("\n\nYour wallet/ directory is not created properly. Run setup and try again")
                         exit (1)
-                except:
-                        print("\n\nPlease try again")

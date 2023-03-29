@@ -1,0 +1,1 @@
+from globals.Encoding import textEncodingFormat, byteLiteralEncodingFormat

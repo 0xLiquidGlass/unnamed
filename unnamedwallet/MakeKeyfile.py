@@ -14,7 +14,9 @@ to be used as a keyfile. Will exit if the user says no but will carry on with ov
 if yes
 """
 
+from globals.Encoding import textEncodingFormat
 from os import path, urandom
+from base64 import b64encode
 
 def make_keyfile():
         try:
@@ -56,8 +58,10 @@ def bookmark_keyfile_path(inputKeyfilePath):
 def generate_keyfile_urandom_data(anyKeyfilePath):
         try:
                 with open(anyKeyfilePath, "w") as createNewKeyfile:
-                        urandomData = urandom(64)
-                        createNewKeyfile.write(urandomData)
+                        urandomBytes = urandom(64)
+                        urandomAscii = b64encode(urandomBytes)
+                        urandomString = urandomAscii.decode(textEncodingFormat)
+                        createNewKeyfile.write(urandomString)
                 print("\n\nThe file has been written with keyfile data")
         except FileNotFoundError:
                 print("\n\nThe path could not be found. Please try again")

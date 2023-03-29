@@ -11,6 +11,7 @@ from PasswordUtils import get_key, stretch_key
 from Decrypt import decrypt_ciphertext
 from globals.FilePaths import unspentUtxoPath
 from algosdk import mnemonic
+from base64 import b64decode
 import os
 
 walletFile = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
@@ -25,11 +26,7 @@ def query_private_key(obtainedKey):
         listOfPrivateKeys = []
         for fileList in walletFile:
                 encryptedSeedPhrase = open_and_read_wallet("seed_phrase", fileList)
-                # For testing
-                # print(encryptedSeedPhrase)
                 individualSalt = open_and_read_wallet("salt", fileList)
-                # For testing
-                # print(individualSalt)
                 stretchedKey = stretch_key(obtainedKey, individualSalt)
                 decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase, stretchedKey)
                 # For testing
@@ -68,16 +65,18 @@ def obtain_encrypted_seed_phrase(searchKeywordInFile):
         for textLines in searchKeywordInFile:
                 if textLines.find("Seed: ") == 0:
                         findEncryptedSeedPhrase = textLines.split(": ")
-                        obtainedEncryptedSeedPhrase = findEncryptedSeedPhrase[1].strip()
+                        asciiObtainedEncryptedSeedPhrase = findEncryptedSeedPhrase[1].strip()
+                        obtainedEncryptedSeedPhrase = b64decode(asciiObtainedEncryptedSeedPhrase)
                         # For testing
-                        #print(obtainedEncryptedSeedPhrase)
+                        # print(obtainedEncryptedSeedPhrase)
                         return obtainedEncryptedSeedPhrase
 
 def obtain_salt(searchKeywordInFile):
         for textLines in searchKeywordInFile:
                 if textLines.find("Salt: ") == 0:
                         findSalt = textLines.split(": ")
-                        obtainedSalt = findSalt[1].strip()
+                        asciiObtainedSalt = findSalt[1].strip()
+                        obtainedSalt = b64decode(asciiObtainedSalt)
                         # For testing
                         # print(obtainedSalt)
                         return obtainedSalt

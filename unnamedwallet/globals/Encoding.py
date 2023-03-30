@@ -1,1 +1,0 @@
-textEncodingFormat = "utf-8"

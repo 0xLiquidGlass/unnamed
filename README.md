@@ -1,6 +1,6 @@
 # Unnamed - An Algorand Wallet That Mimics UTXO
 
-### Introduction
+## Introduction
 
 Unnamed wallet is built with mainly privacy, and security in mind. The project was originally thought of as a solution to combat successful attempts on phishing attacks by leveraging Public Key Cryptography, which all cryptocurrency wallet uses.
 
@@ -8,57 +8,91 @@ Unnamed wallet mimics Unspent Transaction Outputs, or UTXO for short. This is th
 
 Note that this project is currently work in progress. Many features are not yet developed.
 
-### What Is It Built On?
+## Why should you use Unnamed Wallet?
+
+[These privacy and security features](https://github.com/0xLiquidGlass/unnamed/blob/labs-liquidglass/unnamedwallet/src/README.md) in Unnamed Wallet ensures that you have financial privacy and your funds are always safe with you
+
+## What Is It Built On?
 
 [Algorand Python SDK](https://github.com/algorand/py-algorand-sdk)
 
-### Operating System
+## Operating System
 
 - Debian (Dependencies Only)
 - Various Operating Systems (Python Files)
 
 More Operating Systems and distributions will be added as soon as the necessary dependencies or modifications are written for them (if needed)
 
-### Project Related
+[Requirements](###requiements) will explain the requiements on what to install manually to ensure Unnamed Wallet works for you even if your Operating System or distribution is not supported for the installation process
+
+## Requirements
+
+- ["wallet/" directory](###making-wallet--directories)
+- [Golang](https://go.dev/doc/install)
+- python3 (or [Python on Windows](https://www.python.org/downloads/))
+- [Algorand Python SDK] via `pip3 install py-algorand-sdk`
+- [Docker](https://docs.docker.com/engine/install/)
+- [Node sandbox for Algorand](https://github.com/algorand/sandbox)
+
+Note: Docker and docker-compose must be installed
+
+## Making wallet/ directories
+
+### 1. Transactions path
+
+The following code will make the paths for the handling of keypairs for regular transactions:
+
+```
+mkdir wallet/ \
+      wallet/transaction/ \
+      wallet/transaction/spent/ \
+      wallet/transaction/unspent/ \
+      wallet/transaction/unsafe/ \
+```
+
+Note that that is for Unix-like Operating Systems only. For Windows, the command would be:
+
+```
+mkdir wallet
+mkdir wallet\transaction
+mkdir wallet\transaction\spent
+mkdir wallet\transaction\unspent
+mkdir wallet\transaction\unsafe
+```
+
+Paste the code above into the command prompt
+
+## Project Related
 
 The project is currently looking for volunteers to help contribute to Unnamed Wallet. Here are some of the roles that you can apply for:
 
-#### 1. Social Network Moderators
+### 1. Social Network Moderators
 - Maintain order for various social networks
 - Interact with the Unnamed Wallet community
 - PGP optional, but encouraged
 - Submit Linkedin or Github profile
 
-#### 2. Endowment Managers
+### 2. Endowment Managers
 - Manage crowdsourcing funds and be a part of the multisig key holder
 - Manage endowments
 - Must have PGP
 - Must be ready to identify yourself
 - Submit Linkedin profile
 
-#### 3. Marketing
+### 3. Marketing
 - Reach out to people to raise awareness of Unnamed Wallet
 - Find partnerships
 - PGP optional, but encouraged
 - Submit Linkedin or Github profile
 
-However, to be eligible for these roles, Unnamed Wallet is looking for these traits in you:
-
-1. Not Financially Motivated
-2. Passionate
-3. Honest
-4. Collaborative
-5. Committed
-6. Innovative
-
 If you are interested in volunteering for the project, please contact 0xLiquidGlass through [any of the contacts listed here](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
 
-### Socials
+## Socials
 
 - [Discord](https://discord.gg/kePECdcXad)
 - [Reddit](https://www.reddit.com/r/unnamed_wallet/)
 
-### Donations
+## Donations
 
 If you support this project, please feel free to donate. The proceeds will be used for the development of this project.
 

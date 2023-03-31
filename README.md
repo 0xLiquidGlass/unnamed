@@ -23,11 +23,11 @@ Note that this project is currently work in progress. Many features are not yet 
 
 More Operating Systems and distributions will be added as soon as the necessary dependencies or modifications are written for them (if needed)
 
-[Requirements](###requiements) will explain the requiements on what to install manually to ensure Unnamed Wallet works for you even if your Operating System or distribution is not supported for the installation process
+[Requirements](https://github.com/0xLiquidGlass/unnamed/tree/labs-liquidglass#requirements) will explain the requiements on what to install manually to ensure Unnamed Wallet works for you even if your Operating System or distribution is not supported for the installation process
 
 ## Requirements
 
-- ["wallet/" directory](###making-wallet--directories)
+- ["wallet/" directory](https://github.com/0xLiquidGlass/unnamed/tree/labs-liquidglass#making-wallet-directories)
 - [Golang](https://go.dev/doc/install)
 - python3 (or [Python on Windows](https://www.python.org/downloads/))
 - [Algorand Python SDK] via `pip3 install py-algorand-sdk`

@@ -2,24 +2,35 @@
 
 # For Debian
 
-sudo ./dir/sh/dependencies/sandbox/sandbox up mainnet -v -s
+sudo ./src/dependencies/sandbox/sandbox up testnet -v -s
 
 clear
 
-echo "Welcome To Unnamed Wallet\n"
+echo "Welcome To Unnamed Wallet"
+echo
 
 simple_mode () {
 	while true
 	do
-		echo "\n1 --> Setup"
-		echo "\n2 --> Make a keyfile"
-		echo "\n3 --> Generate a new wallet"
-		echo "\n4 --> Check Algo balance"
-		echo "\n5 --> Consolidate UTXOs"
-		echo "\n6 --> Send Algos to others"
-		echo "\n7 --> More options"
-		echo "\n8 --> Quit\n"
+		echo
+		echo "1 --> Setup"
+		echo
+		echo "2 --> Make a keyfile"
+		echo
+		echo "3 --> Generate a new wallet"
+		echo
+		echo "4 --> Check Algo balance"
+		echo
+		echo "5 --> Consolidate UTXOs"
+		echo
+		echo "6 --> Send Algos to others"
+		echo
+		echo "7 --> More options"
+		echo
+		echo "8 --> Quit"
+		echo
 
+		echo
 		read -p "Your choice: " choice
 
 		if [ "$choice" = "1" ]; then
@@ -82,17 +93,25 @@ simple_mode () {
 		else
 			clear
 			echo "Please try again"
+			echo
 		fi
 	done
 }
 
 more_options () {
+	echo "More options"
+	echo
 	while true
 	do
-		echo "\n1 --> Check if an address is valid"
-		echo "\n2 --> Show previously generated unused address"
-		echo "\n3 --> To go back\n"
+		echo
+		echo "1 --> Check if an address is valid"
+		echo
+		echo "2 --> Show previously generated unused address"
+		echo
+		echo "3 --> To go back"
+		echo
 
+		echo
 		read -p "Your choice: " moreChoice
 
 		if [ "$moreChoice" = "1" ]; then
@@ -115,6 +134,7 @@ more_options () {
 		else
 			clear
 			echo "Please try again"
+			echo
 		fi
 	done
 }

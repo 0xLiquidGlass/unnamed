@@ -1,11 +1,14 @@
 from ValidateAddress import validate_address
 from AssetBalance import query_balance_per_address
-from encryption.PasswordUtils import prompt_key, stretchedKey
+from PasswordUtils import get_key, generate_kdf_salt, stretch_key
 from CombineKeypairs import query_address, query_private_key
-from GenerateWallet import generate_keypair, generatedAddress
+from GenerateWallet import generate_keypair
 import AtomicTxUtils as AtomicTx
 
-totalBalance = query_balance_per_address()*(10**6)
+class NotValidAddress(Exception):
+        pass
+
+totalBalance = query_balance_per_address()*(10**-6)
 
 def prepare_send_info():
         try:

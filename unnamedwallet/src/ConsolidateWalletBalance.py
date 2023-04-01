@@ -1,28 +1,67 @@
 """
-Documentation of atomic transaction:
-https://developer.algorand.org/docs/get-details/atomic_transfers/
-
-Documentation of Algorand Python SDK:
-1. https://developer.algorand.org/docs/sdks/python/
-2. https://py-algorand-sdk.readthedocs.io/en/latest/
+Written by Liquid Glass
 """
 
-from encryption.PasswordUtils import prompt_key, stretchedKey
+from PasswordUtils import get_key, generate_kdf_salt, stretch_key
+from globals.FilePaths import unspentUtxoPath, spentUtxoPath, unsafeUtxoPath
 from CombineKeypairs import query_address, query_private_key
-from GenerateWallet import generatedAddress, generate_keypair
+from GenerateWallet import generate_keypair
+from globals.AlgodUtils import algodClient
 import AtomicTxUtils as AtomicTx
+import AtomicTxErrors as BalanceCheck
+import os, shutil
 
-def consolidate_balance():
-	prompt_key()
-        generate_keypair(stretchedKey)
-        receivingAddress = generatedAddress
-        AtomicTx.unsigned_tx_type_prepare("internal", receivingAddress, None)
-        query_private_key(stretchedKey)
-        AtomicTx.prepare_sign_unsigned_tx("internal", stretchedKey)
-        AtomicTx.batch_unsigned_tx()
-        AtomicTx.calculate_groupid()
-        AtomicTx.batch_signed_tx()
-        AtomicTx.send_transaction_group()
+class UtxoZeroBalance(Exception):
+        pass
+
+class UtxoUnsafeDust(Exception):
+        pass
+
+listOfKeypairs = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
+
+def consolidate_wallet_balance():
+        obtainedKey = get_key()
+
+        listOfUtxos = query_address()
+        listOfPrivateKeys = query_private_key(obtainedKey)
+
+        generatedSalt = generate_kdf_salt()
+        newStretchedKey = stretch_key(obtainedKey, generatedSalt)
+        receivingAddress = generate_keypair(generatedSalt, newStretchedKey)
+
+        for currentUtxoIndex in range(len(listOfUtxos)):
+                try:
+                        currentUtxo = listOfUtxos[currentUtxoIndex]
+                        accountInfo = algodClient.account_info(currentUtxo)
+                        txFee = int(1000)
+                        keepAccountAliveAmount = int(100000)
+                        utxoBalance = (int(accountInfo.get("amount")) - (txFee + keepAccountAliveAmount))
+
+                        BalanceCheck.check_valid_utxo(currentUtxo)
+
+                        AtomicTx.initiate_unsigned_tx(currentUtxo, receivingAddress, utxoBalance)
+
+                except BalanceCheck.UtxoZeroBalance:
+                        continue
+
+                except BalanceCheck.UtxoUnsafeDust:
+                        currentKeypair = listOfKeypairs[currentUtxoIndex]
+                        shutil.move((unspentUtxoPath + currentKeypair), unsafeUtxoPath)
+                        print("The unsafe UTXO has been moved")
+
+        AtomicTx.batch_every_unsigned_tx()
+
+        AtomicTx.calculate_group_id()
+
+        AtomicTx.sign_these_unsigned_txs(listOfPrivateKeys)
+
+        AtomicTx.batch_every_signed_tx()
+
+        AtomicTx.broadcast_atomic_txs()        
 
 if __name__ == "__main__":
-        consolidate_balance()
+        try:
+                consolidate_wallet_balance()
+
+        except KeyboardInterrupt:
+                exit(0)

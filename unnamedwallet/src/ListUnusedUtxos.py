@@ -20,10 +20,11 @@ def list_unused_utxos():
                 currentAddress = (query_address()[currentUtxoIndex])
                 currentUtxoInfo = algodClient.account_info(currentAddress)
                 balanceInMicroAlgos = currentUtxoInfo.get("amount")
+                # For testing
+                # print(balanceInMicroAlgos)
                 if balanceInMicroAlgos == int(0):
-                        displayCurrentIndex = (currentUtxoIndex + 1)
                         displayCurrentUtxo = (currentAddress)
-                        print("\n\n{}. {}\n\n".format(displayCurrentIndex, displayCurrentUtxo))
+                        print("\n{}\n".format(displayCurrentUtxo))
                 else:
                         pass
 

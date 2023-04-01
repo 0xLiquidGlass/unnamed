@@ -1,5 +1,10 @@
 from algosdk.v2client import algod
 
-algodAddress = "http://localhost:4001"
-algodToken = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-algodClient = algod.AlgodClient(algodToken, algodAddress)
+algodAddress = "https://testnet-algorand.api.purestake.io/ps2"
+algodToken =
+
+headers = {
+   "X-API-Key": algodToken,
+}
+
+algodClient = algod.AlgodClient(algodToken, algodAddress, headers)

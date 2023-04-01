@@ -9,6 +9,9 @@ Where generatedSalt is a salt that is newly generated for every keypair and
 stretchedKey (which contains the key that has gone through key stretching) 
 will be different each time due to a unique salt that is used during the
 key stretching process
+
+Retruns generated address when generate_keypair(generatedSalt, stretchedKey)
+is called and used as output
 """
 
 from PasswordUtils import get_key, generate_kdf_salt, stretch_key
@@ -18,7 +21,7 @@ from globals.FilePaths import unspentUtxoPath
 from algosdk import account, mnemonic
 from base64 import b64encode
 
-def generate_keypair(generatedSalt, strechedKey):
+def generate_keypair(generatedSalt, stretchedKey):
         generatedPrivateKey, generatedAddress = account.generate_account()
         with open(unspentUtxoPath+generatedAddress+".txt", "x") as newDocumentPath:
                 newDocumentPath.write("Address: {}\n\n" .format(generatedAddress))
@@ -36,6 +39,7 @@ def generate_keypair(generatedSalt, strechedKey):
                 stringGeneratedSalt = b64encodedGeneratedSalt.decode(textEncodingFormat)
                 newDocumentPath.write("Seed: {}\n\n".format(stringEncryptedSeedPhrase))
                 newDocumentPath.write("Salt: {}".format(stringGeneratedSalt))
+                return generatedAddress
 
 if __name__ == "__main__":
         obtainedKey = get_key()

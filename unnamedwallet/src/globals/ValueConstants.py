@@ -2,4 +2,4 @@
 Written by Liquid Glass
 """
 
-textEncodingFormat = "utf-8"
+txFeeConst = int(1000)

@@ -31,6 +31,7 @@ More Operating Systems and distributions will be added as soon as the necessary 
 - [Golang](https://go.dev/doc/install)
 - python3 (or [Python on Windows](https://www.python.org/downloads/))
 - [Algorand Python SDK](https://github.com/algorand/py-algorand-sdk) via `pip3 install py-algorand-sdk`
+-[pynacl](https://pynacl.readthedocs.io/en/latest/) via `pip install pynacl'
 - [Docker](https://docs.docker.com/engine/install/)
 - [Node sandbox for Algorand](https://github.com/algorand/sandbox)
 

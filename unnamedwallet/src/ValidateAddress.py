@@ -12,27 +12,24 @@ message
 
 from algosdk import encoding
 
-class NotValidAddress(Exception):
-        pass
-
 def validate_address(address):
         try:
                 if address != "":
                         decodeAddress = encoding.decode_address(address)
                 else:
-                        raise NotValidAddress
+                        return int(1)
         except:
-                raise NotValidAddress
+                return int(1)
 
 if __name__ == "__main__":
         while True:
                 try:
                         receivingAddress = str(input("\n\nAddress to check: "))
-                        validate_address(receivingAddress)
-                        print("\n\nThis is a valid address")
-                        break
-                except NotValidAddress:
-                        print ("\n\nThis is not a vaid address")
+                        returnedCode = validate_address(receivingAddress)
+                        if returnedCode == int(0):
+                                print("\n\nThis is a valid address")
+                        elif returnedCode == int(1):
+                                print ("\n\nThis is not a vaid address")
                 except KeyboardInterrupt:
                         print("\n\nExiting\n\n")
                         exit(0)

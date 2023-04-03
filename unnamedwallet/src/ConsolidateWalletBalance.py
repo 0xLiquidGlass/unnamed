@@ -13,15 +13,16 @@ but the transaction will be broadcasted in batches of 16 individual transactions
 """
 
 from PasswordUtils import get_key, generate_kdf_salt, stretch_key
-from globals.FilePaths import unspentUtxoPath, spentUtxoPath, unsafeUtxoPath
+from globals.FilePaths import unspentUtxoPath
 from globals.ValueConstants import txFeeConst
 from CombineKeypairs import query_address, query_private_key
 from GenerateWallet import generate_keypair
 from globals.AlgodUtils import algodClient
+import WalletMovementUtils as WalletMovement
 import NormalTxUtils as NormalTx
 import AtomicTxUtils as AtomicTx
 import AtomicTxErrors as BalanceCheck
-import os, shutil
+import os
 
 listOfKeypairs = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
 
@@ -29,6 +30,8 @@ listMovedKeypairs = []
 
 # Sensitive data, private keys involved
 listRelevantPrivateKeys = []
+
+countFrom = 0
 
 def consolidate_wallet_balance():
         obtainedKey = get_key()
@@ -42,7 +45,10 @@ def consolidate_wallet_balance():
         newStretchedKey = stretch_key(obtainedKey, generatedSalt)
         receivingAddress = generate_keypair(generatedSalt, newStretchedKey)
 
-        for currentUtxoIndex in range(len(listOfUtxos)):
+        countUpTo = len(listOfUtxos)
+        countIncrement = int(1)
+
+        for currentUtxoIndex in range(countFrom, countUpTo, countIncrement):
                 currentUtxo = listOfUtxos[currentUtxoIndex]
                 accountInfo = algodClient.account_info(currentUtxo)
                 txFee = txFeeConst
@@ -51,25 +57,25 @@ def consolidate_wallet_balance():
                 localErrorCodeReturned = BalanceCheck.check_valid_utxo(currentUtxo)
 
                 if localErrorCodeReturned == int(0):
-                        AtomicTx.initiate_unsigned_tx(currentUtxo, receivingAddress, utxoBalance)
+                        AtomicTx.initiate_unsigned_tx(currentUtxo, receivingAddress, utxoBalance
+                                                      , receivingAddress)
                         preparedNormalTx = NormalTx.initiate_unsigned_normal_tx(currentUtxo
                                                                                 , receivingAddress
-                                                                                , utxoBalance)
+                                                                                , utxoBalance
+                                                                                , receivingAddress)
 
                         # Sensitive data, private keys involved
                         currentPrivateKey = listOfPrivateKeys[currentUtxoIndex]
                         listRelevantPrivateKeys.append(currentPrivateKey)
 
-                        movedUtxo = move_utxo_to_spent_dir(currentUtxoIndex)
+                        movedUtxo = WalletMovement.move_utxo_to_spent_dir(currentUtxoIndex)
                         listMovedKeypairs.append(movedUtxo)
 
                 elif localErrorCodeReturned == int(1):
                         continue
 
                 elif localErrorCodeReturned == int(2):
-                        currentKeypair = listOfKeypairs[currentUtxoIndex]
-                        shutil.move((unspentUtxoPath + currentKeypair), unsafeUtxoPath)
-                        print("\nThe unsafe UTXO has been moved")
+                        WalletMovement.move_utxo_to_unsafe_dir(currentUtxoIndex)
 
         if len(listMovedKeypairs) == int(1):
                 # For testing
@@ -79,7 +85,8 @@ def consolidate_wallet_balance():
 
                 correspondingPrivateKey = listRelevantPrivateKeys[0]
 
-                signedNormalTx = NormalTx.sign_unsigned_normal_tx(preparedNormalTx, correspondingPrivateKey)
+                signedNormalTx = NormalTx.sign_unsigned_normal_tx(preparedNormalTx
+                                                                  , correspondingPrivateKey)
 
                 NormalTx.broadcast_signed_normal_tx(signedNormalTx)
 
@@ -99,23 +106,12 @@ def consolidate_wallet_balance():
 
                 AtomicTx.broadcast_atomic_txs()
 
-def move_utxo_to_spent_dir(currentUtxoIndex):
-        currentKeypair = listOfKeypairs[currentUtxoIndex]
-        shutil.move((unspentUtxoPath + currentKeypair), spentUtxoPath)
-        # For testing
-        # print("\n{} has been moved" .format(currentKeypair))
+def revert_moved_utxo():
+        WalletMovement.unmove_spent_utxos(listMovedKeypairs)
 
-def unmove_spent_utxos():
-        for currentKeypair in listMovedKeypairs:
-                shutil.move((spentUtxoPath + currentKeypair), unspentUtxoPath)
-        # For testing
-        # print("\n{} has been reverted back to unspent" .format(currentKeypair))
-
-def initiate_revert_moved_utxo():
-        unmove_spent_utxos()
         print("\n\nThe process has been interrupted")
         print("\nMoving all spent UTXOs back to unspent")
-        exit(0)
+        exit(1)
 
 if __name__ == "__main__":
         try:
@@ -128,4 +124,4 @@ if __name__ == "__main__":
                         consolidate_wallet_balance()
 
         except:
-                initiate_revert_moved_utxo()
+                revert_moved_utxo()

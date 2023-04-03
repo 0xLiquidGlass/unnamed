@@ -49,11 +49,11 @@ listBatchedUnsignedTx = []
 listSignedTx = []
 listBatchedSignedTx = []
 
-countFrom = 0
+countFrom = int(0)
 
-def initiate_unsigned_tx(currentUtxo, receivingAddress, sendAmount):
-        preparedTx = transaction.PaymentTxn(currentUtxo, params, receivingAddress
-                                            , sendAmount, receivingAddress)
+def initiate_unsigned_tx(currentUtxo, receivingAddress, sendAmount, closeToAddress):
+        preparedTx = transaction.PaymentTxn(currentUtxo, params, receivingAddress, sendAmount
+                                            , closeToAddress)
         # For testing
         # print(preparedTx)
         listUnsignedTx.append(preparedTx)

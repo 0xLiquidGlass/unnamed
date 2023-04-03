@@ -31,9 +31,9 @@ from algosdk import transaction
 
 params = algodClient.suggested_params()
 
-def initiate_unsigned_normal_tx(currentUtxo, receivingAddress, sendAmount):
+def initiate_unsigned_normal_tx(currentUtxo, receivingAddress, sendAmount, closeToAddress):
         unsignedTx = transaction.PaymentTxn(currentUtxo, params, receivingAddress
-                                            , sendAmount, receivingAddress)
+                                            , sendAmount, closeToAddress)
         return unsignedTx
 
 def sign_unsigned_normal_tx(thisUnsignedTx, correspondingPrivateKey):

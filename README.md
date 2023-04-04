@@ -6,8 +6,6 @@ Unnamed wallet is built with mainly privacy, and security in mind. The project w
 
 Unnamed wallet mimics Unspent Transaction Outputs, or UTXO for short. This is the model used by Bitcoin to solve the double spending problem by not reusing the same address twice after the address has been spent. The wallet will use the properties of privacy and security present in UTXO without using the Algorand blockchain to ensure that Algorand users can benefit from the properties that the UTXO model can provide even though Algorand is using the account model. You can find out more about the difference between the UTXO model and Account model [here](https://www.youtube.com/watch?v=HT6_j_ZyAms).
 
-Note that this project is currently work in progress. Many features are not yet developed.
-
 ## Why should you use Unnamed Wallet?
 
 [These privacy and security features](https://github.com/0xLiquidGlass/unnamed/blob/labs-liquidglass/unnamedwallet/src/README.md) in Unnamed Wallet ensures that you have financial privacy and your funds are always safe with you
@@ -18,10 +16,9 @@ Note that this project is currently work in progress. Many features are not yet 
 
 ## Operating System
 
-- Debian (Dependencies Only)
-- Various Operating Systems (Python Files)
+- Linux (Debian, Fedora)
 
-More Operating Systems and distributions will be added as soon as the necessary dependencies or modifications are written for them (if needed)
+More Operating Systems and distributions will be added as soon as the necessary dependencies or modifications are written for them
 
 [Requirements](https://github.com/0xLiquidGlass/unnamed/tree/labs-liquidglass#requirements) will explain the requiements on what to install manually to ensure Unnamed Wallet works for you even if your Operating System or distribution is not supported for the installation process
 
@@ -30,9 +27,7 @@ More Operating Systems and distributions will be added as soon as the necessary 
 - ["wallet/" directory](https://github.com/0xLiquidGlass/unnamed/tree/labs-liquidglass#making-wallet-directories)
 - python3 (or [Python on Windows](https://www.python.org/downloads/))
 - [Algorand Python SDK](https://github.com/algorand/py-algorand-sdk) via `pip3 install py-algorand-sdk`
-- [pynacl](https://pynacl.readthedocs.io/en/latest/) via `pip install pynacl`
-
-Note: Docker and docker-compose must be installed
+- [pynacl](https://pynacl.readthedocs.io/en/latest/) via `pip install pynacl'
 
 ## Making wallet/ directories
 

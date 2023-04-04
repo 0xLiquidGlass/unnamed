@@ -28,12 +28,9 @@ More Operating Systems and distributions will be added as soon as the necessary 
 ## Requirements
 
 - ["wallet/" directory](https://github.com/0xLiquidGlass/unnamed/tree/labs-liquidglass#making-wallet-directories)
-- [Golang](https://go.dev/doc/install)
 - python3 (or [Python on Windows](https://www.python.org/downloads/))
 - [Algorand Python SDK](https://github.com/algorand/py-algorand-sdk) via `pip3 install py-algorand-sdk`
--[pynacl](https://pynacl.readthedocs.io/en/latest/) via `pip install pynacl'
-- [Docker](https://docs.docker.com/engine/install/)
-- [Node sandbox for Algorand](https://github.com/algorand/sandbox)
+- [pynacl](https://pynacl.readthedocs.io/en/latest/) via `pip install pynacl'
 
 Note: Docker and docker-compose must be installed
 
@@ -95,7 +92,7 @@ If you are interested in volunteering for the project, please contact 0xLiquidGl
 
 ## Donations
 
-If you support this project, please feel free to donate. The proceeds will be used for the development of this project.
+If you support this project, please donate. The proceeds will be used for the development of this project.
 
 ``` 
   Algorand: 7VMA5N3QN6EN4DZ5WE4FZB4YTYDLPVELJNPX3GANZ7DMR4DL7YVXKO7WCM

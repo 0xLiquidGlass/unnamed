@@ -34,7 +34,7 @@
 
 - Humans are very bad at entropy, which simply means making a random password that is secure and on top of that, we are not very good at remembering long, complex passwords
 
-- Keyfiles gives you the ability to have long, complex passwords without having to remember them. An external drive like a USB drive or a hard disk can get you started
+- Keyfiles gives you the ability to have long, complex passwords without having to remember them. An external storage device like a USB drive or a hard disk can get you started
 
 - Keyfiles is used in apps like [Keepass](https://keepass.info/help/base/keys.html#keyfiles) and [Veracrypt](https://veracrypt.eu/en/Keyfiles.html)
 

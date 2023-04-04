@@ -24,7 +24,7 @@ from the spent/ directory (e.g. due to interruptions like ctl + c, etc)
 Note: Requires a list of keypairs that has been moved to spent/ directory during runtime
 """
 
-from FilePaths import unspentUtxoPath, spentUtxoPath, unsafeUtxoPath
+from globals.FilePaths import unspentUtxoPath, spentUtxoPath, unsafeUtxoPath
 import os, shutil
 
 listOfKeypairs = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\

@@ -1,5 +1,24 @@
 """
 Written by Liquid Glass
+
+Useable functions when imported:
+
+1. prompt_send_algos()
+
+This function allows you to manually input the amount you want to spend and the
+the address that will receive the specified amount of Algos. An interface for
+prepare_send_algos(sendAmountMicroAlgos, receivingAddress)
+
+2. prepare_send_algos(sendAmountMicroAlgos, receivingAddress)
+
+This function will check every individual address in the unspent/ directory for
+a valid balance (i.e. a positive balance and no dust balance), whether to send the
+full balance to the recipient or partially (where the final balance which will
+fulfil the specified amount to send with the leftovers, also known as change, will
+go to a change address which is a newly generated address that you own)
+
+Only needs the send amount (in microAlgos) and the receiving address
+which the sent amount will go to to be passed to this function
 """
 
 from PasswordUtils import get_key, generate_kdf_salt, stretch_key
@@ -74,7 +93,7 @@ def prepare_send_algos(sendAmountMicroAlgos, receivingAddress):
         amountLeft = sendAmountMicroAlgos
         amountToSend = sendAmountMicroAlgos
 
-        obtainedKey = getKey()
+        obtainedKey = get_key()
 
         listOfUtxos = query_address()
 
@@ -92,16 +111,15 @@ def prepare_send_algos(sendAmountMicroAlgos, receivingAddress):
                 localErrorCodeReturned = BalanceCheck.check_valid_utxo(currentUtxo)
 
                 if localErrorCodeReturned == int(0):
-                        changeSwitch = check_utxo_for_change_tx(amountLeft, amountToSend)
+                        changeSwitch = check_utxo_for_change_tx(amountLeft, currentBalance)
 
                         unsignedNormalTx = tx_with_no_change(changeSwitch, currentUtxo
-                                                             , receivingAddress, currentBalance
-                                                             , receivingAddress)
+                                                             , receivingAddress, currentBalance)
 
-                        tx_with_change(changeSwitch, currentUtxo, receivingAddress
-                                       , amountLeft, currentBalance, receivingAddress)
+                        tx_with_change(changeSwitch, obtainedKey, currentUtxo, receivingAddress
+                                       , amountLeft, currentBalance)
 
-                        amountLeft = amountLeft - utxoBalance
+                        amountLeft = amountLeft - currentBalance
 
                         prepare_private_keys(changeSwitch, currentUtxoIndex, listOfPrivateKeys)
 
@@ -111,19 +129,23 @@ def prepare_send_algos(sendAmountMicroAlgos, receivingAddress):
                 elif localErrorCodeReturned == int(2):
                         WalletMovement.move_utxo_to_unsafe_dir(currentUtxoIndex)
 
-                if amountLeft == float(0):
+                if amountLeft <= float(0):
                         break
 
         execute_send_algos(unsignedNormalTx)
 
-def check_utxo_for_change_tx(amountLeft, amountToSend):
-        if amountLeft >= amountToSend:
+def check_utxo_for_change_tx(amountLeft, currentBalance):
+        if amountLeft >= currentBalance:
+                # For testing
+                # print("No change")
                 return int(0)
 
         else:
+                # For testing
+                # print("Change")
                 return int(1)
 
-def tx_with_no_change(changeSwitch, currentUtxo, receivingAddress, currrentBalance, receivingAddress):
+def tx_with_no_change(changeSwitch, currentUtxo, receivingAddress, currentBalance):
         if changeSwitch == int(0):
               AtomicTx.initiate_unsigned_tx(currentUtxo, receivingAddress, currentBalance
                                             , receivingAddress)
@@ -133,16 +155,24 @@ def tx_with_no_change(changeSwitch, currentUtxo, receivingAddress, currrentBalan
 
               return unsignedNormalTx
 
-def tx_with_change(changeSwitch, currentUtxo, receivingAddress
-                   , amountLeft, currrentBalance, receivingAddress):
+def tx_with_change(changeSwitch, obtainedKey, currentUtxo
+                   , receivingAddress, amountLeft, currentBalance):
         if changeSwitch == int(1):
-                sendAmount = amountLeft
-                changeAmount = currentBalance - sendAmount
+                receivingAmount = amountLeft
 
-                AtomicTx.initiate_unsigned_tx(currentUtxo, receivingAddress, sendAmount, None)
+                generatedSalt = generate_kdf_salt()
 
-                AtomicTx.initiate_unsigned_tx(currentUtxo, receivingAddress, changeAmount
-                                              , receivingAddress)
+                stretchedKey = stretch_key(obtainedKey, generatedSalt)
+
+                changeAddress = generate_keypair(generatedSalt, stretchedKey)
+
+                changeAmount = currentBalance - receivingAmount - txFee
+
+                AtomicTx.initiate_unsigned_tx(currentUtxo, receivingAddress, receivingAmount
+                                              , None)
+
+                AtomicTx.initiate_unsigned_tx(currentUtxo, changeAddress, changeAmount
+                                              , changeAddress)
 
 def prepare_private_keys(changeSwitch, currentUtxoIndex, listOfPrivateKeys):
         currentPrivateKey = listOfPrivateKeys[currentUtxoIndex]
@@ -193,9 +223,9 @@ if __name__ == "__main__":
         try:
                 if len(listOfKeypairs) == int(0):
                         print("\nYou do not have any UTXOs yet")
-                        print("\nMake a new UTXO and fund it before consolidating your UTXO")
+                        print("\nMake a new UTXO and fund it before spending")
                         exit(0)
-
+                        
                 else:
                         prompt_send_algos()
 

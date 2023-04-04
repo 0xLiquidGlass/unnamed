@@ -84,5 +84,8 @@ def obtain_salt(searchKeywordInFile):
 if __name__ == "__main__":
         print(walletFile)
         print(query_address())
-        obtainedKey = get_key()
-        print(query_private_key(obtainedKey))
+
+        # Do not uncomment the 2 lines below unless needed
+
+        # obtainedKey = get_key()
+        # print(query_private_key(obtainedKey))

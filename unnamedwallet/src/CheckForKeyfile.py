@@ -36,6 +36,7 @@ def manual_input_keyfile_path():
         print("\n\nPlease INSERT and MOUNT your external drive for your keyfile")
         print("\n\nIf you do not have a keyfile, press enter")
         inputKeyfilePath = str(input("\n\nKeyfile path: "))
+        return inputKeyfilePath
 
 def read_keyfile_data(anyKeyfilePath):
         try:

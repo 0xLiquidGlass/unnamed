@@ -30,7 +30,7 @@ More Operating Systems and distributions will be added as soon as the necessary 
 - ["wallet/" directory](https://github.com/0xLiquidGlass/unnamed/tree/labs-liquidglass#making-wallet-directories)
 - python3 (or [Python on Windows](https://www.python.org/downloads/))
 - [Algorand Python SDK](https://github.com/algorand/py-algorand-sdk) via `pip3 install py-algorand-sdk`
-- [pynacl](https://pynacl.readthedocs.io/en/latest/) via `pip install pynacl'
+- [pynacl](https://pynacl.readthedocs.io/en/latest/) via `pip install pynacl`
 
 Note: Docker and docker-compose must be installed
 

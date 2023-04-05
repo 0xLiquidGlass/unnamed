@@ -16,6 +16,7 @@ def validate_address(address):
         try:
                 if address != "":
                         decodeAddress = encoding.decode_address(address)
+                        return int(0)
                 else:
                         return int(1)
         except:
@@ -28,6 +29,7 @@ if __name__ == "__main__":
                         returnedCode = validate_address(receivingAddress)
                         if returnedCode == int(0):
                                 print("\n\nThis is a valid address")
+                                break
                         elif returnedCode == int(1):
                                 print ("\n\nThis is not a vaid address")
                 except KeyboardInterrupt:

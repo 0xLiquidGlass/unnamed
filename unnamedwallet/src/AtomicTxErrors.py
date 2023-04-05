@@ -22,7 +22,7 @@ the balance of each UTXO:
 """
 
 from globals.AlgodUtils import algodClient
-from globals.ValueConstants import txFeeConst
+from globals.ValueConstants import txFeeConst, keepAccountAliveAmountConst
 
 class UtxoZeroBalance(Exception):
         pass
@@ -30,7 +30,7 @@ class UtxoZeroBalance(Exception):
 class UtxoUnsafeDust(Exception):
         pass
 
-minDustLimit = (txFeeConst * 3)
+minDustLimit = (keepAccountAliveAmountConst * 3)
 
 def check_valid_utxo(utxoToCheck):
         accountInfo = algodClient.account_info(utxoToCheck)

@@ -11,7 +11,7 @@ Returns the whole wallet's balance in microAlgos when the query_balance_per_addr
 """
 
 from algosdk import account
-from CombineKeypairs import query_address
+from CombineKeypairs import query_address, query_private_key
 from globals.AlgodUtils import algodClient
 
 def query_balance_per_address():

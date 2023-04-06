@@ -14,7 +14,7 @@ Retruns generated address when generate_keypair(generatedSalt, stretchedKey)
 is called and used as output
 """
 
-from PasswordUtils import get_key, generate_kdf_salt, stretch_key
+from PasswordUtils import get_key_for_encryption, generate_kdf_salt, stretch_key
 from Encrypt import encrypt_plaintext
 from globals.Encoding import textEncodingFormat
 from globals.FilePaths import unspentUtxoPath
@@ -42,7 +42,7 @@ def generate_keypair(generatedSalt, stretchedKey):
                 return generatedAddress
 
 if __name__ == "__main__":
-        obtainedKey = get_key()
+        obtainedKey = get_key_for_encryption()
         while True:
                 try:
                         numberOfKeypairs = int(input("\n\nNumber of addresses to generate: "))

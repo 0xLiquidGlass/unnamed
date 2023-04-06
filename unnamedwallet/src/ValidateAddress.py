@@ -26,7 +26,8 @@ if __name__ == "__main__":
         while True:
                 try:
                         receivingAddress = str(input("\n\nAddress to check: "))
-                        returnedCode = validate_address(receivingAddress)
+                        receivingAddressNoWhitespace = receivingAddress.strip()
+                        returnedCode = validate_address(receivingAddressNoWhiteSpace)
                         if returnedCode == int(0):
                                 print("\n\nThis is a valid address")
                                 break

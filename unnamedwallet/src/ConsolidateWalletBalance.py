@@ -26,12 +26,13 @@ import os
 
 listOfKeypairs = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
 
+listChangeAddress = []
 listMovedKeypairs = []
 
 # Sensitive data, private keys involved
 listRelevantPrivateKeys = []
 
-countFrom = 0
+countFrom = int(0)
 
 def consolidate_wallet_balance():
         obtainedKey = get_key()
@@ -44,12 +45,19 @@ def consolidate_wallet_balance():
         generatedSalt = generate_kdf_salt()
         newStretchedKey = stretch_key(obtainedKey, generatedSalt)
         receivingAddress = generate_keypair(generatedSalt, newStretchedKey)
+        listChangeAddress.append(receivingAddress)
 
         countUpTo = len(listOfUtxos)
         countIncrement = int(1)
 
         for currentUtxoIndex in range(countFrom, countUpTo, countIncrement):
                 currentUtxo = listOfUtxos[currentUtxoIndex]
+                # Sensitive data, private keys involved
+                currentPrivateKey = listOfPrivateKeys[currentUtxoIndex]
+                if currentPrivateKey == None:
+                        print("\nThe private key for {} cannot be decrypted" .format(currentUtxo))
+                        print("\nMoving on to the next one")
+                        continue
                 accountInfo = algodClient.account_info(currentUtxo)
                 txFee = txFeeConst
                 utxoBalance = (int(accountInfo.get("amount")) - txFee)
@@ -65,7 +73,6 @@ def consolidate_wallet_balance():
                                                                                 , receivingAddress)
 
                         # Sensitive data, private keys involved
-                        currentPrivateKey = listOfPrivateKeys[currentUtxoIndex]
                         listRelevantPrivateKeys.append(currentPrivateKey)
 
                         movedUtxo = WalletMovement.move_utxo_to_spent_dir(currentUtxoIndex)
@@ -106,12 +113,6 @@ def consolidate_wallet_balance():
 
                 AtomicTx.broadcast_atomic_txs()
 
-def revert_moved_utxo():
-        WalletMovement.unmove_spent_utxos(listMovedKeypairs)
-
-        print("\n\nThe process has been interrupted")
-        print("\nMoving all spent UTXOs back to unspent")
-        exit(1)
 
 if __name__ == "__main__":
         try:
@@ -124,4 +125,4 @@ if __name__ == "__main__":
                         consolidate_wallet_balance()
 
         except:
-                revert_moved_utxo()
+                WalletMovement.revert_moved_utxo(listMovedKeypairs, listChangeAddress)

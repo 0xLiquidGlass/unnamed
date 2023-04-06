@@ -5,6 +5,9 @@ Useable functions when imported:
 1. query_address()
 2. query_private_key(obtainedKey)
 Where obtainedKey is the password that can be obtained via PasswordUtils using get_key()
+
+If the encrypted seed phrase (which is then converted to a private key) cannot be decrypted,
+None will be passed and will continue to the next one
 """
 
 from PasswordUtils import get_key, stretch_key
@@ -12,6 +15,7 @@ from Decrypt import decrypt_ciphertext
 from globals.FilePaths import unspentUtxoPath
 from algosdk import mnemonic
 from base64 import b64decode
+import nacl
 import os
 
 walletFile = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
@@ -25,14 +29,19 @@ def query_address():
 def query_private_key(obtainedKey):
         listOfPrivateKeys = []
         for fileList in walletFile:
-                encryptedSeedPhrase = open_and_read_wallet("seed_phrase", fileList)
-                individualSalt = open_and_read_wallet("salt", fileList)
-                stretchedKey = stretch_key(obtainedKey, individualSalt)
-                decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase, stretchedKey)
-                # For testing
-                # print(decryptedSeedPhrase)
-                privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
-                listOfPrivateKeys.append(privateKey)
+                try:
+                        encryptedSeedPhrase = open_and_read_wallet("seed_phrase", fileList)
+                        individualSalt = open_and_read_wallet("salt", fileList)
+                        stretchedKey = stretch_key(obtainedKey, individualSalt)
+                        decryptedSeedPhrase = decrypt_ciphertext(encryptedSeedPhrase, stretchedKey)
+                        # For testing
+                        # print(decryptedSeedPhrase)
+                        privateKey = mnemonic.to_private_key(decryptedSeedPhrase)
+                        listOfPrivateKeys.append(privateKey)
+
+                except nacl.exceptions.CryptoError:
+                        listOfPrivateKeys.append(None)
+
         return listOfPrivateKeys
 
 def open_and_read_wallet(getType, fileList):

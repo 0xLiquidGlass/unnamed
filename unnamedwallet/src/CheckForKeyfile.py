@@ -30,13 +30,15 @@ def check_for_keyfile():
 def read_bookmarked_keyfile_path():
         with open("PreviousKeyfilePath.txt", "r") as bookmarkedKeyfilePath:
                 bookmarkedKeyfilePath = bookmarkedKeyfilePath.read()
-        return bookmarkedKeyfilePath
+                bookmarkedKeyfilePathNoQuotes = bookmarkedKeyfilePath.strip('"')
+        return bookmarkedKeyfilePathNoQuotes
 
 def manual_input_keyfile_path():
         print("\n\nPlease INSERT and MOUNT your external drive for your keyfile")
         print("\n\nIf you do not have a keyfile, press enter")
         inputKeyfilePath = str(input("\n\nKeyfile path: "))
-        return inputKeyfilePath
+        inputKeyfilePathNoQuotes = inputKeyfilePath.strip('"')
+        return inputKeyfilePathNoQuotes
 
 def read_keyfile_data(anyKeyfilePath):
         try:

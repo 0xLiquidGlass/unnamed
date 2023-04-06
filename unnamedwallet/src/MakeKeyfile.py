@@ -34,12 +34,13 @@ def manual_input_keyfile_path():
         print("\n\nEnsure that you have INSERTED and MOUNTED your external drive for your keyfile properly")
         print("\n\nEnter the full path to the external drive below")
         inputKeyfilePath = str(input("\n\nKeyfile path: "))
-        if path.exists(inputKeyfilePath) == True:
-                bookmark_keyfile_path(inputKeyfilePath)
-                ask_if_overwrite_existing_file(inputKeyfilePath)
+        inputKeyfilePathNoQuotes = inputKeyfilePath.strip('"')
+        if path.exists(inputKeyfilePathNoQuotes) == True:
+                bookmark_keyfile_path(inputKeyfilePathNoQuotes)
+                ask_if_overwrite_existing_file(inputKeyfilePathNoQuotes)
         else:
-                bookmark_keyfile_path(inputKeyfilePath)
-                generate_keyfile_urandom_data(inputKeyfilePath)
+                bookmark_keyfile_path(inputKeyfilePathNoQuotes)
+                generate_keyfile_urandom_data(inputKeyfilePathNoQuotes)
 
 def ask_if_overwrite_existing_file(anyKeyfilePath):
         existingFileOverwrite = str(input("\n\nThis file exists. Overwrite? (y/n): "))

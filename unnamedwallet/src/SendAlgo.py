@@ -6,8 +6,10 @@ Useable functions when imported:
 1. prompt_send_algos()
 
 This function allows you to manually input the amount you want to spend and the
-the address that will receive the specified amount of Algos. An interface for
-prepare_send_algos(sendAmountMicroAlgos, receivingAddress)
+the address that will receive the specified amount of Algos. Removes whitespace
+when pasting receiving address
+
+An interface for prepare_send_algos(sendAmountMicroAlgos, receivingAddress)
 
 2. prepare_send_algos(sendAmountMicroAlgos, receivingAddress)
 
@@ -37,6 +39,7 @@ import os, shutil
 
 listOfKeypairs = [filename for filename in os.listdir(unspentUtxoPath) if filename.endswith(".txt")]\
 
+listChangeAddress = []
 listMovedKeypairs = []
 
 # Sensitive data, private keys involved
@@ -67,14 +70,15 @@ def prompt_send_algos():
 
                 elif sendAmountMicroAlgos <= totalWalletBalanceMicroAlgos:
                         receivingAddress = str(input("\nReceiving Address: "))
-                        addressErrorCodes = validate_address(receivingAddress)
+                        receivingAddressNoWhitespace = receivingAddress.strip()
+                        addressErrorCodes = validate_address(receivingAddressNoWhitespace)
                         if addressErrorCodes == int(1):
                                 print("\nThis address is not valid")
                                 print("\nPlease try again")
                                 prompt_send_algos()
 
                         else:
-                                prepare_send_algos(sendAmountMicroAlgos, receivingAddress)
+                                prepare_send_algos(sendAmountMicroAlgos, receivingAddressNoWhitespace)
 
                 else:
                         print("\nYou do not have enough balance in your wallet")
@@ -166,6 +170,8 @@ def tx_with_change(changeSwitch, obtainedKey, currentUtxo
 
                 changeAddress = generate_keypair(generatedSalt, stretchedKey)
 
+                listChangeAddress.append(changeAddress)
+
                 changeAmount = currentBalance - receivingAmount - txFee
 
                 AtomicTx.initiate_unsigned_tx(currentUtxo, receivingAddress, receivingAmount
@@ -176,6 +182,11 @@ def tx_with_change(changeSwitch, obtainedKey, currentUtxo
 
 def prepare_private_keys(changeSwitch, currentUtxoIndex, listOfPrivateKeys):
         currentPrivateKey = listOfPrivateKeys[currentUtxoIndex]
+        if currentPrivateKey == None:
+                print("\nThe private key for {} cannot be decrypted" .format(currentUtxo))
+                print("\nMoving on to the next one")
+                return
+
         if changeSwitch == int(0):
                 listRelevantPrivateKeys.append(currentPrivateKey)
                 WalletMovement.move_utxo_to_spent_dir(currentUtxoIndex)
@@ -212,13 +223,6 @@ def execute_send_algos(unsignedNormalTx):
 
                 AtomicTx.broadcast_atomic_txs()
 
-def revert_moved_utxo():
-        WalletMovement.unmove_spent_utxos(listMovedKeypairs)
-
-        print("\n\nThe process has been interrupted")
-        print("\nMoving all spent UTXOs back to unspent")
-        exit(1)
-
 if __name__ == "__main__":
         try:
                 if len(listOfKeypairs) == int(0):
@@ -230,4 +234,4 @@ if __name__ == "__main__":
                         prompt_send_algos()
 
         except:
-                revert_moved_utxo()
+                WalletMovement.revert_moved_utxo(listMovedKeypairs, listChangeAddress)

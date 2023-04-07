@@ -25,7 +25,7 @@ If there is no change address, simply put None in the changeAddress parameter
 
 Note: Requires a list of keypairs that has been moved to spent/ directory during runtime
 
-4. revert_moved_utxo(listMovedKeypairs, listChangeAddress)
+5. revert_moved_utxo(listMovedKeypairs, listChangeAddress)
 
 This function when called, will prepare the list of keypairs that has been moved to the
 spent directory and the change address generated to revert it back to the state before

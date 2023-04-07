@@ -88,10 +88,15 @@ def batch_every_signed_tx():
                 listBatchedSignedTx.append(batchedSignedTx)
 
 def broadcast_atomic_txs():
+        numberOfTransactions = len(listBatchedSignedTx)
         countUpTo = len(listBatchedSignedTx)
         countIncrement = int(1)
-        for currentBatchedSignedTx in range(countFrom, countUpTo, countIncrement):
-                currentTxBatch = listBatchedSignedTx[currentBatchedSignedTx]
+        print("\nYou have {} transactions in queue" .format(numberOfTransactions))
+        print("\nDo not quit while the transaction is still in progress")
+        for currentBatchedSignedTxIndex in range(countFrom, countUpTo, countIncrement):
+                numberOfBatchesLeft = numberOfTransactions - (currentBatchedSignedTxIndex + int(1))
+                print("\nNumber of batches left: {}" .format(numberOfBatchesLeft))
+                currentTxBatch = listBatchedSignedTx[currentBatchedSignedTxIndex]
                 txId = algodClient.send_transactions(currentTxBatch)
                 confirmedTx =  transaction.wait_for_confirmation(algodClient, txId, 10)
                 print("\nTransaction ID: {}" .format(txId))

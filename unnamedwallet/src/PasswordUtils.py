@@ -36,38 +36,51 @@ existing keypair
 
 from globals.Encoding import textEncodingFormat
 from CheckForKeyfile import check_for_keyfile
+from PasswordChecker import check_password_conditions
 from nacl import secret, utils, pwhash
 from getpass import getpass
 
 def get_key():
-        textPassword = getpass(prompt = "\n\nPassword: ")
+        textPassword = getpass(prompt = "\n\nPassword (If no password, press enter): ")
         encodedPassword = textPassword.encode(textEncodingFormat)
         input("\n\nInsert your external drive containing the keyfile and mount it\n\nPress enter to continue")
         encodedKey = encodedPassword + check_for_keyfile()
         return encodedKey
 
 def get_key_for_encryption():
-        textPassword = validate_password()
-        encodedPassword = textPassword.encode(textEncodingFormat)
+        passwordSwitch = ask_if_use_password()
+
+        if passwordSwitch == int(0):
+                textPassword = validate_password()
+                encodedPassword = textPassword.encode(textEncodingFormat)
+        elif passwordSwitch == int(1):
+                print("\n\nUsing a keyfile instead")
+                emptyString = str("")
+                encodedPassword = emptyString.encode(textEncodingFormat)
+
         input("\n\nInsert your external drive containing the keyfile and mount it\n\nPress enter to continue")
         encodedKey = encodedPassword + check_for_keyfile()
         return encodedKey
 
 def validate_password():
-        listPasswordHold = []
         while True:
-                for numberOfAttempts in range(int(2)):
-                        plainPassword = getpass(prompt = "\n\nPassword: ")
-                # For testing
-                # print(plainPassword)
-                firstAttempt = listPasswordHold[0]
-                secondAttempt = listPasswordHold[1]
-                if firstAttempt == secondAttempt:
-                                # For testing
-                                # print("Correct password")
-                                return firstAttempt
+                firstAttempt = getpass(prompt = "\n\nPassword: ")
+                secondAttempt = getpass(prompt = "\nConfirm Password: ")
+                checkedPasswordStatus = check_password_conditions(firstAttempt, secondAttempt)
+                if checkedPasswordStatus == None:
+                        print("\nPlease try again")
+
                 else:
-                        print("\n\nThe password does not match")
+                        return checkedPasswordStatus
+
+def ask_if_use_password():
+        while True:
+                usePasswordChoice = str(input("\n\nDo you want to use a password? (y/n): "))
+                if usePasswordChoice == ("y" or "Y"):
+                        return int(0)
+                elif usePasswordChoice == ("n" or "N"):
+                        return int(1)
+                else:
                         print("\nPlease try again")
 
 def generate_kdf_salt():

@@ -47,8 +47,9 @@ def main_mode():
                 print("\n4 --> Check Algo balance")
                 print("\n5 --> Consolidate UTXO balance")
                 print("\n6 --> Send Algos to others")
-                print("\n7 --> More options")
-                print("\n8 --> Quit\n")
+                print("\n7 --> Import your old wallet and sweep")
+                print("\n8 --> More options")
+                print("\n9 --> Quit\n")
 
                 simpleChoice = str(input("\nYour choice: "))
 
@@ -99,10 +100,18 @@ def main_mode():
 
                 elif simpleChoice == str(7):
                         clear_screen()
-                        more_options_mode()
+                        os.chdir("src/")
+                        run_process(["python", "ImportAndSweep.py"])
+                        os.chdir("../")
+                        enc_message()
                         clear_screen()
 
                 elif simpleChoice == str(8):
+                        clear_screen()
+                        more_options_mode()
+                        clear_screen()
+
+                elif simpleChoice == str(9):
                         initiate_shutdown_stuff()
 
                 else:

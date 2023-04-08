@@ -114,7 +114,7 @@ def main_mode():
                         os.chdir("src/")
                         run_process(["python3", "ImportAndSweep.py"])
                         os.chdir("../")
-                        enc_message()
+                        end_message()
                         clear_screen()
 
                 elif simpleChoice == str(8):

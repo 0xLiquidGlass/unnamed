@@ -14,9 +14,10 @@ Unnamed wallet mimics Unspent Transaction Outputs, or UTXO for short. This is th
 
 [Algorand Python SDK](https://github.com/algorand/py-algorand-sdk)
 
-## Operating System
+## Operating System (Full Functionality)
 
 - Linux (Debian, Fedora)
+- Windows
 
 More Operating Systems and distributions will be added as soon as the necessary dependencies or modifications are written for them
 
@@ -54,6 +55,50 @@ mkdir wallet\transaction\unsafe
 ```
 
 Paste the code above into the command prompt
+
+## Updates And Upgrades
+
+### 1. To update or upgrade Unnamed Wallet:
+
+- Extract the archived app and go into the first directory
+
+- Cut or copy all of the files and directories in the directory with the new version
+
+- Paste all of the files that was cut or copied from the directory containing the new version of Unnamed Wallet into the directory of the current wallet that you are using
+
+- Overwrite all of the files when prompted
+
+### 2. To make sure that you are getting the correct software:
+
+- Get GPG [here for Windows users](https://gnupg.org/download/index.html) or if you are using Linux or BSD, make sure your distribution has `gpg` installed by running `gpg --version`
+
+- For Windows users, you may want to use Kleopatra, as it will be easier to use rather than the `gpg` command
+
+- Download the .asc file from releases. Make sure the file you are downloading is for the correct operating system (e.g. unnamedwallet-linux.tar.gz will be unnamedwallet-linux.tar.gz.asc)
+
+- Get the PGP public key from the `#pgp-keys` channel in [Unnamed Wallet's Discord server](https://discord.gg/kePECdcXad)
+
+- As of v1.0.0, 0xLiquidGlass `(PGP Fingerprint: 7C7B A828 4F67 3865 A4B7 9FD2 2957 408A B3BB 6E56)` signs the release
+
+- For import the public key to GPG
+
+- For Windows users, click on `Decrypt/Verify` and select the .asc file
+
+- For Command Line Interface users, do `gpg --verify /path/to/asc-file/`. Note that `asc-file` refers to the name of the .asc file that  you just downloaded
+
+- The PGP Fingerprint should show the correct fingerprint. If not, the software is either corrupted, tampered with, or malicious
+
+- Your .asc file and the app must be in the same directory
+
+### 3. To check the file using sha256sum
+
+- Download the .sha256 file from releases
+
+- For Windows, use apps like [7zip](https://www.7-zip.org/download.html) to verify your sha256 checksum easily
+
+- For Linux users, use sha256sum to verify the checksum of your app using the .sha256 file
+
+- Your .sha256 file and the app must be in the same directory
 
 ## Project Related
 

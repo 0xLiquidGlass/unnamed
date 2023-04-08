@@ -17,10 +17,7 @@ Unnamed wallet mimics Unspent Transaction Outputs, or UTXO for short. This is th
 ## Operating System (Full Functionality)
 
 - Linux (Debian, Fedora)
-<<<<<<< HEAD
 - Windows
-=======
->>>>>>> 62c52b194097b9123dab883c3ef9b5d4049ac7df
 
 More Operating Systems and distributions will be added as soon as the necessary dependencies or modifications are written for them
 

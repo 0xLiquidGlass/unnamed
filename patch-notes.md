@@ -1,11 +1,5 @@
 # Patch Notes For Unnamed Wallet
 
-## Unnamed Wallet v1.1.1
-
-1. Added ASA functionality
-
-2. Convert hard-coded bookmarked keyfile filename to global variables
-
 ## Unnamed Wallet v0.0.0 Testing Release
 
 1. Completed Unnamed Wallet for Linux

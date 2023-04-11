@@ -1,10 +1,10 @@
 # Patch Notes For Unnamed Wallet
 
-## Unnamed Wallet v0.0.0 Testing Release
+## Unnamed Wallet v1.1.0
 
-1. Completed Unnamed Wallet for Linux
+1. Added ASA functionality
 
-## Unnamed Wallet v1.0.0 Testing Release
+## Unnamed Wallet v1.0.0
 
 1. Modified files for Unnamed Wallet to work properly on Windows
 
@@ -21,3 +21,7 @@
 7. Users will now know how many batched transactions are left when sending. Useful for transactions that involve more than 16 UTXOs
 
 8. Users will now be able to import their seed phrase from other wallets and send the remaining balance to Unnamed Wallet with a new address that they own
+
+## Unnamed Wallet v0.0.0 Testing Release
+
+1. Completed Unnamed Wallet for Linux

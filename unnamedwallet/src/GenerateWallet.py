@@ -23,7 +23,7 @@ from base64 import b64encode
 
 def generate_keypair(generatedSalt, stretchedKey):
         generatedPrivateKey, generatedAddress = account.generate_account()
-        with open(unspentUtxoPath + generatedAddress + ".txt", "x") as newDocumentPath:
+        with open(unspentUtxoPath+generatedAddress+".txt", "x") as newDocumentPath:
                 newDocumentPath.write("Address: {}\n\n" .format(generatedAddress))
                 if __name__ == "__main__":
                          print("\n\nAddress: {}\n\n" .format(generatedAddress))

@@ -1,9 +1,5 @@
 # Patch Notes For Unnamed Wallet
 
-## Unnamed Wallet v1.1.0
-
-1. Added ASA functionality
-
 ## Unnamed Wallet v1.0.0
 
 1. Modified files for Unnamed Wallet to work properly on Windows

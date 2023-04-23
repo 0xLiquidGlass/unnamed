@@ -11,6 +11,7 @@ there is no filepath (i.e. the user does not have a keyfile), an empty string
 will be passed
 """
 
+from globals.FileNamed import keyfileBookmark
 from globals.Encoding import textEncodingFormat
 from base64 import b64decode
 from os import path
@@ -28,7 +29,7 @@ def check_for_keyfile():
                 return read_keyfile_data(currentKeyfilePath)
 
 def read_bookmarked_keyfile_path():
-        with open("PreviousKeyfilePath.txt", "r") as bookmarkedKeyfilePath:
+        with open(keyfileBookmark, "r") as bookmarkedKeyfilePath:
                 bookmarkedKeyfilePath = bookmarkedKeyfilePath.read()
                 bookmarkedKeyfilePathNoQuotes = bookmarkedKeyfilePath.strip('"')
         return bookmarkedKeyfilePathNoQuotes

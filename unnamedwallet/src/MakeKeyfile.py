@@ -14,6 +14,7 @@ to be used as a keyfile. Will exit if the user says no but will carry on with ov
 if yes
 """
 
+from globals.FileNames import keyfileBookmark
 from globals.Encoding import textEncodingFormat
 from os import path, urandom
 from base64 import b64encode
@@ -53,7 +54,7 @@ def ask_if_overwrite_existing_file(anyKeyfilePath):
                 ask_if_overwrite_existing_file(anyKeyfilePath)
 
 def bookmark_keyfile_path(inputKeyfilePath):
-        with open("PreviousKeyfilePath.txt", "w") as bookmarkKeyfilePath:
+        with open(keyfileBookmark, "w") as bookmarkKeyfilePath:
                 bookmarkKeyfilePath.write(inputKeyfilePath)
 
 def generate_keyfile_urandom_data(anyKeyfilePath):

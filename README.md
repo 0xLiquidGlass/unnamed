@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Unnamed wallet is built with mainly privacy, and security in mind. The project was originally thought of as a solution to combat successful attempts on phishing attacks by leveraging Public Key Cryptography, which all cryptocurrency wallet uses.
+Unnamed wallet is built with mainly privacy (pseudonymity) and security in mind. The project was originally thought of as a solution to combat successful attempts on phishing attacks by leveraging Public Key Cryptography, which all cryptocurrency wallet uses
 
-Unnamed wallet mimics Unspent Transaction Outputs, or UTXO for short. This is the model used by Bitcoin to solve the double spending problem by not reusing the same address twice after the address has been spent. The wallet will use the properties of privacy and security present in UTXO without using the Algorand blockchain to ensure that Algorand users can benefit from the properties that the UTXO model can provide even though Algorand is using the account model. You can find out more about the difference between the UTXO model and Account model [here](https://www.youtube.com/watch?v=HT6_j_ZyAms).
+Unnamed wallet mimics Unspent Transaction Outputs, or UTXO for short. This is the model used by Bitcoin to solve the double spending problem by not reusing the same address twice after the address has been spent. The wallet will use the properties of privacy and security present in UTXO without using the Algorand blockchain to ensure that Algorand users can benefit from the properties that the UTXO model can provide even though Algorand is using the account model. You can find out more about the difference between the UTXO model and Account model [here](https://www.youtube.com/watch?v=HT6_j_ZyAms)
 
 ## Why should you use Unnamed Wallet?
 

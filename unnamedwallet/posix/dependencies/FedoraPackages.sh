@@ -14,8 +14,13 @@ mkdir ../wallet/transaction/unsafe
 
 if command -v dnf >/dev/null 2>&1; then
   # Fedora or Red Hat 8 or later
-  sudo dnf install python3-pip
+    sudo dnf install python3-pip
+    sudo dnf install python3-tkinter
 else
-  # Red Hat 7 or earlier
-  sudo yum install python3-pip
+    # Red Hat 7 or earlier
+    sudo yum install python3-pip
+    sudo yum install python3-tkinter
 fi
+
+pip install pynacl
+pip install py-algorand-sdk

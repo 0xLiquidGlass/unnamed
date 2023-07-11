@@ -6,6 +6,19 @@ Unnamed wallet is built with mainly privacy, and security in mind. The project w
 
 Unnamed wallet mimics Unspent Transaction Outputs, or UTXO for short. This is the model used by Bitcoin to solve the double spending problem by not reusing the same address twice after the address has been spent. The wallet will use the properties of privacy and security present in UTXO without using the Algorand blockchain to ensure that Algorand users can benefit from the properties that the UTXO model can provide even though Algorand is using the account model. You can find out more about the difference between the UTXO model and Account model [here](https://www.youtube.com/watch?v=HT6_j_ZyAms).
 
+## Donations
+
+If you support this project, please donate. The proceeds will be used for the development of this project.
+
+``` 
+  Algorand: 7VMA5N3QN6EN4DZ5WE4FZB4YTYDLPVELJNPX3GANZ7DMR4DL7YVXKO7WCM
+```
+
+## Socials
+
+- [Discord](https://discord.gg/kePECdcXad)
+- [Reddit (Stale)](https://www.reddit.com/r/unnamed_wallet/)
+
 ## Why should you use Unnamed Wallet?
 
 [These privacy and security features](https://github.com/0xLiquidGlass/unnamed/blob/labs-liquidglass/unnamedwallet/src/README.md) in Unnamed Wallet ensures that you have financial privacy and your funds are always safe with you
@@ -104,36 +117,11 @@ Paste the code above into the command prompt
 
 The project is currently looking for volunteers to help contribute to Unnamed Wallet. Here are some of the roles that you can apply for:
 
-### 1. Social Network Moderators
-- Maintain order for various social networks
-- Interact with the Unnamed Wallet community
-- PGP optional, but encouraged
-- Submit Linkedin or Github profile
-
-### 2. Endowment Managers
+### 1. Endowment Managers
 - Manage crowdsourcing funds and be a part of the multisig key holder
 - Manage endowments
 - Must have PGP
 - Must be ready to identify yourself
 - Submit Linkedin profile
 
-### 3. Marketing
-- Reach out to people to raise awareness of Unnamed Wallet
-- Find partnerships
-- PGP optional, but encouraged
-- Submit Linkedin or Github profile
-
 If you are interested in volunteering for the project, please contact 0xLiquidGlass through [any of the contacts listed here](https://github.com/0xLiquidGlass/0xLiquidGlass/blob/main/README.md#contact).
-
-## Socials
-
-- [Discord](https://discord.gg/kePECdcXad)
-- [Reddit](https://www.reddit.com/r/unnamed_wallet/)
-
-## Donations
-
-If you support this project, please donate. The proceeds will be used for the development of this project.
-
-``` 
-  Algorand: 7VMA5N3QN6EN4DZ5WE4FZB4YTYDLPVELJNPX3GANZ7DMR4DL7YVXKO7WCM
-```
